@@ -12,4 +12,8 @@
     <type name="Magento\Theme\Block\Html\Header">
         <plugin name="change_welcome_text" type="Yogesh\Mod1\Plugin\ChangeWelcomeText"/>
     </type>
+
+    <type name="Magento\Theme\Block\Html\Breadcrumbs">
+        <plugin name="change_breadcrumbs_text" type="Yogesh\Mod1\Plugin\AppendHummingBird"/>
+    </type>
 </config>
