@@ -16,4 +16,8 @@
     <type name="Magento\Theme\Block\Html\Breadcrumbs">
         <plugin name="change_breadcrumbs_text" type="Yogesh\Mod1\Plugin\AppendHummingBird"/>
     </type>
+
+    <type name="Magento\Catalog\Model\Product">
+        <plugin name="change_product_contents" type="Yogesh\Mod1\Plugin\ChangeProductContents"/>
+    </type>
 </config>
