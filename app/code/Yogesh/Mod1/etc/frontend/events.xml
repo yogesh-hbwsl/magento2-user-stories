@@ -4,4 +4,9 @@
     <event name="catalog_controller_product_view">
         <observer name="log_product_name" instance="Yogesh\Mod1\Observer\LogProductName" />
     </event>
+
+     <event name="controller_front_send_response_before">
+        <observer name="log_html" instance="Yogesh\Mod1\Observer\LogHtml" />
+    </event>
+
 </config>
