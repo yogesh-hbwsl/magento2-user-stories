@@ -1,0 +1,1 @@
+/var/www/magento2/lib/web/js-storage/storage-wrapper.js
