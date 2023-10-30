@@ -8,4 +8,8 @@
     <type name="Magento\Theme\Block\Html\Footer">
         <plugin name="change_copyright_text" type="Yogesh\Mod1\Plugin\ChangeCopyrightText"/>
     </type>
+
+    <type name="Magento\Theme\Block\Html\Header">
+        <plugin name="change_welcome_text" type="Yogesh\Mod1\Plugin\ChangeWelcomeText"/>
+    </type>
 </config>
