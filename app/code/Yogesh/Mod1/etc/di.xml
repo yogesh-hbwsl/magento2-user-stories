@@ -4,4 +4,8 @@
     <type name="Magento\Catalog\Model\Product">
         <plugin name="append_on_sale" type="Yogesh\Mod1\Plugin\AppendOnSale"/>
     </type>
+
+    <type name="Magento\Theme\Block\Html\Footer">
+        <plugin name="change_copyright_text" type="Yogesh\Mod1\Plugin\ChangeCopyrightText"/>
+    </type>
 </config>
