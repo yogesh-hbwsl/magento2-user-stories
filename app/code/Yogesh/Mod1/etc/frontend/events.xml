@@ -7,6 +7,8 @@
 
      <event name="controller_front_send_response_before">
         <observer name="log_html" instance="Yogesh\Mod1\Observer\LogHtml" />
+        <observer name="log_router" instance="Yogesh\Mod1\Observer\LogRouter"/>
+
     </event>
 
 </config>
