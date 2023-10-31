@@ -16,4 +16,9 @@ class Message extends Template
     {
         return "Welcome Message";
     }
+
+    public function _afterToHtml($html)
+    {
+        return "After welcome : $html";
+    }
 }
