@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+   <table name="employee_table" resource="default" engine="innodb" comment="Employee Table">
+      <column xsi:type="smallint" name="employee_id" padding="7" unsigned="false" nullable="false" identity="true" comment="ID" />
+      <column xsi:type="varchar" name="first_name" nullable="false" length="20" comment="First Name" />
+      <column xsi:type="varchar" name="last_name" nullable="false" length="20" comment="Last Name" />
+      <column xsi:type="varchar" name="email_id" nullable="false" length="255" comment="Email" />
+      <constraint xsi:type="primary" referenceId="PRIMARY">
+         <column name="employee_id" />
+      </constraint>
+   </table>
+</schema>

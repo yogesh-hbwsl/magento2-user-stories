@@ -1,0 +1,13 @@
+{
+    "employee_table": {
+        "column": {
+            "employee_id": true,
+            "first_name": true,
+            "last_name": true,
+            "email_id": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}
