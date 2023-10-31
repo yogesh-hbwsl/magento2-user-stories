@@ -20,4 +20,8 @@
     <type name="Magento\Catalog\Model\Product">
         <plugin name="change_product_contents" type="Yogesh\Mod1\Plugin\ChangeProductContents"/>
     </type>
+
+    <type name="Magento\Catalog\Block\Product\View\Description">
+        <plugin name="change_desc" type="Yogesh\Mod1\Plugin\SetDescOfProduct"/>
+    </type>
 </config>
