@@ -1,0 +1,29 @@
+<?php
+$employeeCollection = $block->getEmployeeData();
+?>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Employee ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($employeeCollection as $employee) :
+        ?>
+            <tr>
+                <td><?php echo $employee->getEmployeeId();
+                    ?></td>
+                <td><?php echo $employee->getFirstName();
+                    ?></td>
+                <td><?php echo $employee->getLastName();
+                    ?></td>
+                <td><?php echo $employee->getEmailId();
+                    ?></td>
+            </tr>
+        <?php endforeach;
+        ?>
+    </tbody>
+</table>
