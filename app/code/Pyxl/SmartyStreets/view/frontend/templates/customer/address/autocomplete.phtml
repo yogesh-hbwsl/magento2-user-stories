@@ -1,0 +1,15 @@
+<?php /** @var $block \Pyxl\SmartyStreets\Block\Address\Autocomplete */ ?>
+<?php if ($block->isEnabled()): ?>
+<script>
+    window.autocompleteConfig = <?php echo $block->getSerializedAutocompleteConfig() ?>;
+</script>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Pyxl_SmartyStreets/js/autocomplete": {
+                "isCheckout": false
+            }
+        }
+    }
+</script>
+<?php endif; ?>
