@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "96461c966c7c8caa8e227212b575303d",
+    "content-hash": "a5d6a22c745622b84e8a89a96b6a2ac9",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -20833,6 +20833,54 @@
             "time": "2023-09-03T09:24:00+00:00"
         },
         {
+            "name": "smartystreets/phpsdk",
+            "version": "4.17.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/smartystreets/smartystreets-php-sdk.git",
+                "reference": "86d9556168ac4e6f8a55cabbdde81b829de5e7cf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smartystreets/smartystreets-php-sdk/zipball/86d9556168ac4e6f8a55cabbdde81b829de5e7cf",
+                "reference": "86d9556168ac4e6f8a55cabbdde81b829de5e7cf",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9",
+                "psr/log": "^1.0.1"
+            },
+            "suggest": {
+                "psr/log": "^1.0.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SmartyStreets\\PhpSdk\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "SmartyStreets SDK Team",
+                    "email": "support@smarty.com"
+                }
+            ],
+            "description": "The official PHP client library from SmartyStreets.",
+            "homepage": "https://github.com/smartystreets/smartystreets-php-sdk",
+            "support": {
+                "issues": "https://github.com/smartystreets/smartystreets-php-sdk/issues",
+                "source": "https://github.com/smartystreets/smartystreets-php-sdk/tree/4.17.1"
+            },
+            "time": "2023-10-26T16:16:57+00:00"
+        },
+        {
             "name": "spomky-labs/aes-key-wrap",
             "version": "v7.0.0",
             "source": {
@@ -28266,5 +28314,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.2.0"
 }
