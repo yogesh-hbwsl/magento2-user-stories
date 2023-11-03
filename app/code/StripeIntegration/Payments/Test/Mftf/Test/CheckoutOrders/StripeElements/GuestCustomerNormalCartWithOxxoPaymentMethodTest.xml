@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="GuestCustomerNormalCartWithOxxoPaymentMethodTest">
+        <annotations>
+            <features value="Order"/>
+            <stories value="Checkout Orders using OXXO"/>
+            <title value="Guest customer normal order with Stripe Oxxo payment method"/>
+            <description value="With Guest Customer ; and a selected store view currency of MXN Currency, add to the cart the products of NormalCart , proceed to the checkout page and specify US Address as the shipping address and FlatRateShippingMethod as the shipping method. Click Next and specify StripeElementsMethod as the payment method, using Oxxo payment method. Finally click Place Order."/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="GuestCustomerNormalCartWithOxxoPaymentMethodTest"/>
+            <group value="normal_cart"/>
+            <group value="card_success"/>
+            <group value="stripe_elements"/>
+            <group value="guest_customer"/>
+        </annotations>
+
+        <before>
+            <!-- Update the API details for OXXO payment method -->
+            <actionGroup ref="AdminStripeSaveConfigurationActionGroup" stepKey="configureAPIKeys">
+                <argument name="pk" value="{{_CREDS.stripe/api_acc1_oxxo_pk}}" />
+                <argument name="sk" value="{{_CREDS.stripe/api_acc1_oxxo_sk}}" />
+            </actionGroup>
+
+            <actionGroup ref="AdminStripeUpdateCurrencyActionGroup" stepKey="updateStoreCurrency">
+                <argument name="currency" value="MXN" />
+            </actionGroup>
+        </before>
+
+        <!-- Add Simple Product to cart -->
+        <amOnPage url="{{StorefrontProductPage.url(StripeSimpleProduct.urlKey)}}" stepKey="navigateToSimpleProductPage"/>
+        <waitForPageLoad stepKey="waitForSimpleProductPageLoad"/>
+        <actionGroup ref="AddToCartFromStorefrontProductPageActionGroup" stepKey="addToCartFromStorefrontProductPage">
+            <argument name="productName" value="StripeSimpleProduct.name"/>
+        </actionGroup>
+
+        <!-- Go to checkout -->
+        <actionGroup ref="GoToCheckoutFromMinicartActionGroup" stepKey="goToCheckoutFromMinicart"/>
+
+        <!-- Fill Shipment form -->
+        <actionGroup ref="FillGuestCheckoutShippingAddressWithCountryAndStateActionGroup" stepKey="checkoutFillingShippingSection" >
+            <argument name="customer" value="Simple_Mexico_Customer"/>
+            <argument name="customerAddress" value="Mexico_Address"/>
+        </actionGroup>
+
+        <actionGroup ref="StorefrontCheckoutClickNextButtonActionGroup" stepKey="clickOnNextButton"/>
+
+        <!-- Wait for payment page -->
+        <waitForPageLoad stepKey="waitForPaymentPageToLoad"/>
+
+        <!-- Select the payment method -->
+        <actionGroup ref="SelectPaymentMethodActionGroup" stepKey="selectPaymentMethod">
+            <argument name="MethodSelector" value="{{StorefrontCheckoutPaymentMethodSection.checkPaymentMethodByName('Pay by Card')}}"/>
+        </actionGroup>
+
+        <!-- Select OXXO Payment Method -->
+        <actionGroup ref="SelectOxxoPaymentMethodActionGroup" stepKey="selectRedirectTypePaymentMethod"/>
+
+        <!-- Place the order -->
+        <actionGroup ref="ClickPlaceOrderWithPopupActionGroup" stepKey="clickPlaceOrder"/>
+
+        <after>
+            <actionGroup ref="AdminStripeUpdateCurrencyActionGroup" stepKey="resetStoreCurrency">
+                <argument name="currency" value="USD" />
+            </actionGroup>
+
+            <!-- Reset the API details -->
+            <actionGroup ref="AdminStripeSaveConfigurationActionGroup" stepKey="resetStripeSettings">
+                <argument name="pk" value="{{_CREDS.stripe/api_acc1_pk}}" />
+                <argument name="sk" value="{{_CREDS.stripe/api_acc1_sk}}" />
+            </actionGroup>
+        </after>
+
+    </test>
+</tests>

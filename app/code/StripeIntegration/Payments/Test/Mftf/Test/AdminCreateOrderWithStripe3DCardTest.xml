@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AdminCreateOrderWithStripe3DCardTest">
+        <annotations>
+            <title value="Create Order in Admin with Stripe Payment and 3D secure card"/>
+            <stories value="Admin Stripe Orders with 3DS"/>
+            <description value="Create order with simple product and the payment using Stripe - 3D Secure card."/>
+            <features value="Sales"/>
+            <testCaseId value="AdminCreateOrderWithStripe3DCardTest"/>
+            <severity value="MAJOR"/>
+        </annotations>
+        <before>
+            <createData entity="FlatRateShippingMethodDefault" stepKey="setDefaultFlatRateShippingMethod"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
+        </before>
+        <actionGroup ref="NavigateToNewOrderPageExistingCustomerActionGroup" stepKey="navigateToNewOrderWithExistingCustomer">
+            <argument name="customer" value="SimpleStripeCustomerAdmin"/>
+        </actionGroup>
+        <actionGroup ref="AddSimpleProductToOrderActionGroup" stepKey="addSimpleProductToOrder">
+            <argument name="product" value="StripeSimpleProduct"/>
+            <argument name="productQty" value="1"/>
+        </actionGroup>
+        <actionGroup ref="OrderSelectFlatRateShippingActionGroup" stepKey="orderSelectFlatRateShippingMethod"/>
+        <actionGroup ref="AdminSelectStripePaymentMethodActionGroup" stepKey="selectPaymentMethod"/>
+        <actionGroup ref="AdminFillCardDetailsActionGroup" stepKey="fillCardDetails">
+            <argument name="CardNumber" value="{{Cards.AuthenticationRequiredCard}}"/>
+        </actionGroup>
+        <actionGroup ref="AdminStripeSubmitOrderActionGroup" stepKey="submitOrder"/>
+        <actionGroup ref="VerifyCreatedOrderResponseMessageActionGroup" stepKey="verifyCreatedOrderResponseMessage"/>
+        <after>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
+        </after>
+    </test>
+</tests>

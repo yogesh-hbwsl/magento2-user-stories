@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="AdminStripeUpdateCurrencyActionGroup">
+        <annotations>
+            <description>Configure the store currency.</description>
+        </annotations>
+        <arguments>
+            <argument name="currency" type="string"/>
+        </arguments>
+
+        <!-- Save Stripe configuration -->
+        <magentoCLI command="config:set currency/options/base {{currency}}" stepKey="saveBaseCurrency"/>
+        <magentoCLI command="config:set currency/options/allow {{Currency.AllowedCurrency}}" stepKey="saveAllowedCurrency"/>
+        <magentoCLI command="config:set currency/options/default {{currency}}" stepKey="saveDefaultCurrency"/>
+        <magentoCLI command="cache:clean config" stepKey="cleanConfigCache"/>
+    </actionGroup>
+</actionGroups>

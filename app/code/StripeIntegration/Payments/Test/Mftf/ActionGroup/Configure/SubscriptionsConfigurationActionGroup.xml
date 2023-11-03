@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="SubscriptionsConfigurationActionGroup">
+        <annotations>
+            <description>Configure subscription products.</description>
+        </annotations>
+
+        <executeJS function="var http = new XMLHttpRequest(); http.open('GET', '{{_ENV.MAGENTO_BASE_URL}}/tests/configure/subscriptions', true); http.send(null);" stepKey="configureSubscriptions" />
+
+        <return value="1" stepKey="returnValue" />
+
+    </actionGroup>
+</actionGroups>

@@ -1,0 +1,265 @@
+<?php
+    $methods = $this->getSavedPaymentMethods();
+?>
+
+<div class="stripe-saved-payment-methods">
+    <?php if (empty($methods)): ?>
+        <input type="hidden" id="new_card" value="" name="payment[cc_stripejs_token]" />
+    <?php else: ?>
+        <?php foreach ($methods as $method): ?>
+            <div class="saved-payment-method-option">
+                <input type="radio" id="<?php echo $method['id']; ?>" value="<?php echo $method['id']; ?>" name="payment[cc_stripejs_token]" />
+                <label for="<?php echo $method['id']; ?>">
+                    <span class="payment-method-name">
+                        <?php
+                            if (isset($method['brand']))
+                                echo ucwords($method['brand']) . "&nbsp;&nbsp;";
+
+                            echo $method['label']
+                        ?>
+                    </span>
+                    <img src="<?php echo $method['icon']; ?>" class="payment-method-icon" />
+                </label>
+            </div>
+        <?php endforeach; ?>
+
+        <div class="saved-payment-method-option">
+            <input type="radio" id="new_card" value="" name="payment[cc_stripejs_token]" data-validate="{'validate-no-empty': true}" />
+            <label for="new_card">
+                <span class="payment-method-name"><?php echo __("Use a new card"); ?></span>
+            </label>
+        </div>
+    <?php endif; ?>
+
+    <div id="new_card_container" style="display: none;">
+        <div id="stripe-card-element"></div>
+        <input id="save_payment_method" type="checkbox" name="payment[save_payment_method]" class="admin__control-checkbox" />
+        <label class="save-payment-method admin__field-label" for="save_payment_method">
+            <span><?php echo __("Save card on customer"); ?></span>
+        </label>
+        <a class=" action-add" target="_blank" href="<?php echo $block->getAddNewPaymentMethodURL(); ?>">
+            <?php echo __("Manage customer"); ?>
+        </a>
+    </div>
+
+    <label for="payment[cc_stripejs_token]" class="stripe mage-error" id="payment[cc_stripejs_token]-error" style="display: none;">
+        <?php echo __("Please select a payment method."); ?>
+    </label>
+
+</div>
+
+
+<script type="text/javascript">
+    var billingDetails = null;
+    var cardElement = null;
+    var params = <?php echo $block->getStripeParams(); ?>;
+
+    var getBillingDetails = function()
+    {
+        if (!order)
+            return null;
+
+        var data = order.serializeData(order.billingAddressContainer).toObject();
+
+        var details = {
+            address: {
+                city: data["order[billing_address][city]"],
+                country: data["order[billing_address][country_id]"],
+                line1: data["order[billing_address][street][0]"],
+                line2: data["order[billing_address][street][1]"],
+                postal_code: data["order[billing_address][postcode]"],
+                state: data["order[billing_address][region]"],
+            },
+            email: jQuery("#email").val(),
+            name: data["order[billing_address][firstname]"] + " " + data["order[billing_address][lastname]"],
+            phone: data["order[billing_address][telephone]"]
+        };
+
+        return details;
+    };
+
+    require(['StripeIntegration_Payments/js/stripe', 'domReady!', 'jquery', 'mage/translate', 'mage/mage'], function(stripe, domReady, $, $t)
+    {
+        var errorContainer = $('label.stripe.mage-error')[0];
+        var countSavedMethods = $('div.saved-payment-method-option').length;
+
+        var onPaymentMethodChange = function()
+        {
+            errorContainer.hide();
+            if (this.id == 'new_card')
+            {
+                $("#new_card_container").show();
+            }
+            else
+            {
+                $("#new_card_container").hide();
+            }
+        };
+
+        var onCardElementChange = function(event)
+        {
+            errorContainer.hide();
+        };
+
+        var isStripeMethodSelected = function()
+        {
+            var methods = $('[name^="payment["]');
+
+            if (methods.length === 0)
+                return false;
+
+            var stripe = methods.filter(function(index, value)
+            {
+                if (value.id == "p_method_stripe_payments")
+                    return value;
+            });
+
+            if (stripe.length == 0)
+                return false;
+
+            return stripe[0].checked;
+        };
+
+        var showError = function(message)
+        {
+            $('#edit_form').trigger('processStop');
+            $(errorContainer).text(message);
+            errorContainer.show();
+            $("#order-methods")[0].scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+            return false;
+        };
+
+        var onSubmitOrder = function(e)
+        {
+            errorContainer.hide();
+
+            var $editForm = $('#edit_form');
+            if (!$editForm.valid())
+                return;
+
+            if (!isStripeMethodSelected())
+                return order._submit();
+
+            if (countSavedMethods > 0)
+            {
+                var selection = $('input[name="payment[cc_stripejs_token]"]:checked');
+                if (selection.length == 0)
+                {
+                    return showError($t("Please select a payment method."));
+                }
+
+                if (selection[0].id != "new_card")
+                    return order._submit();
+            }
+
+            $('#edit_form').trigger('processStart');
+            var options = {
+                type: 'card',
+                card: cardElement
+            }
+
+            var billingDetails = getBillingDetails();
+            if (billingDetails)
+                options.billing_details = billingDetails;
+
+            stripe.stripeJs.createPaymentMethod(options)
+            .then(function(result)
+            {
+                if (result.error)
+                {
+                    return showError(result.error.message);
+                }
+
+                if (countSavedMethods > 0)
+                    selection[0].value = result.paymentMethod.id;
+                else
+                    $('input[name="payment[cc_stripejs_token]"]').val(result.paymentMethod.id);
+
+                order._submit();
+            });
+
+            return false;
+        };
+
+        var initCardElement = function()
+        {
+            if ($('div.saved-payment-method-option').length == 0)
+            {
+                $("#new_card_container").show();
+            }
+            else
+            {
+                $('input[type=radio][name="payment[cc_stripejs_token]"]').change(onPaymentMethodChange);
+            }
+
+            var elements = stripe.stripeJs.elements({
+                locale: params.locale
+            });
+
+            var options = {
+                hidePostalCode: true,
+                style: {
+                    base: {
+                    //     iconColor: '#c4f0ff',
+                    //     color: '#fff',
+                    //     fontWeight: '500',
+                        fontFamily: '"Open Sans","Helvetica Neue", Helvetica, Arial, sans-serif',
+                        fontSize: '16px',
+                    //     fontSmoothing: 'antialiased',
+                    //     ':-webkit-autofill': {
+                    //         color: '#fce883',
+                    //     },
+                    //     '::placeholder': {
+                    //         color: '#87BBFD',
+                    //     },
+                    },
+                    // invalid: {
+                    //     iconColor: '#FFC7EE',
+                    //     color: '#FFC7EE',
+                    // },
+                }
+            };
+
+            cardElement = elements.create('card', options);
+            cardElement.mount('#stripe-card-element');
+            cardElement.on('change', onCardElementChange);
+        };
+
+        var bindOrderSubmit = function()
+        {
+            if (typeof order == 'undefined')
+                return false;
+
+            if (typeof order._submit == "undefined")
+            {
+                order._submit = order.submit;
+            }
+
+            order.submit = onSubmitOrder;
+
+            return true;
+        };
+
+        stripe.initStripe(params, function(err)
+        {
+            if (err)
+            {
+                console.error(err);
+                return;
+            }
+
+            initCardElement();
+
+            if (!bindOrderSubmit())
+            {
+                setTimeout(bindOrderSubmit, 500);
+                setTimeout(bindOrderSubmit, 2000);
+                setTimeout(bindOrderSubmit, 5000);
+                setTimeout(bindOrderSubmit, 10000);
+            }
+        });
+    });
+</script>

@@ -1,0 +1,11 @@
+<?php if ($block->isEnabled("product_page")) : ?>
+    <div id="payment-request-button" class="payment-request-button action tocart">&nbsp;</div>
+    <script>
+        require(['domReady!', 'StripeIntegration_Payments/js/stripe_payments_express'], function(domReady, stripeExpress) {
+            stripeExpress.initStripeExpress('#payment-request-button', <?php echo $block->initParams->getWalletParams(); ?>, 'product:<?php echo $block->getProductId(); ?>', <?php echo $block->getButtonConfig(); ?>, function (paymentRequestButton, paymentRequest, params, prButton) {
+                stripeExpress.initProductWidget(paymentRequestButton, paymentRequest, params, prButton);
+                stripeExpress.bindConfigurableProductOptions('#payment-request-button', '<?php echo $block->initParams->getWalletParams(); ?>', '<?php echo $block->getProductId(); ?>', <?php echo $block->getButtonConfig(); ?>);
+            });
+        });
+    </script>
+<?php endif; ?>

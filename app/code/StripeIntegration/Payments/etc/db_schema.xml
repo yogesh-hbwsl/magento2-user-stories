@@ -1,0 +1,394 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="stripe_customers" resource="default" engine="innodb" comment="Table of associations between Magento customer IDs to Stripe customer IDs">
+        <column name="id" xsi:type="int" identity="true" unsigned="true" nullable="false" comment="Entity ID" />
+        <column name="customer_id" xsi:type="int" unsigned="true" nullable="false" comment="Magento customer ID" />
+        <column name="stripe_id" xsi:type="varchar" length="255" nullable="false" comment="Stripe customer ID" />
+        <column name="last_retrieved" xsi:type="int" unsigned="true" nullable="false" default="0" comment="Timestamp of last customer object retrieval from the Stripe API" />
+        <column name="customer_email" xsi:type="varchar" length="255" nullable="true" comment="Magento customer email" />
+        <column name="session_id" xsi:type="varchar" length="255" nullable="true" comment="Last session ID for this customer" />
+        <column name="pk" xsi:type="varchar" length="255" nullable="true" comment="Stripe account public key" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="STRIPE_CUSTOMERS_PK" indexType="btree">
+            <column name="pk"/>
+        </index>
+        <index referenceId="STRIPE_CUSTOMERS_STRIPE_ID" indexType="btree">
+            <column name="stripe_id"/>
+        </index>
+        <index referenceId="STRIPE_CUSTOMERS_CUSTOMER_ID" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+        <index referenceId="STRIPE_CUSTOMERS_CUSTOMER_EMAIL" indexType="btree">
+            <column name="customer_email"/>
+        </index>
+        <index referenceId="STRIPE_CUSTOMERS_SESSION_ID" indexType="btree">
+            <column name="session_id"/>
+        </index>
+    </table>
+    <table name="stripe_webhooks" resource="default" engine="innodb" comment="Webhooks configuration for each store view">
+        <column name="id" xsi:type="int" identity="true" unsigned="true" nullable="false" comment="Entity ID" />
+        <column name="config_version" xsi:type="int" unsigned="true" nullable="false" default="0" comment="Webhooks configuration version" />
+        <column name="webhook_id" xsi:type="varchar" length="255" nullable="false" comment="Webhook ID" />
+        <column name="publishable_key" xsi:type="varchar" length="255" nullable="false" comment="Stripe API publishable key" />
+        <column name="live_mode" xsi:type="int" unsigned="true" nullable="false" default="0" comment="Stripe API mode" />
+        <column name="active" xsi:type="int" unsigned="true" nullable="false" default="0" comment="Active" />
+        <column name="last_event" xsi:type="int" unsigned="true" nullable="false" default="0" comment="Timestamp of last received event" />
+        <column name="api_version" xsi:type="varchar" length="255" nullable="true" comment="Stripe API Version" />
+        <column name="url" xsi:type="text" nullable="true" comment="Webhook URL" />
+        <column name="enabled_events" xsi:type="text" nullable="true" comment="Enabled webhook events" />
+        <column name="secret" xsi:type="varchar" length="255" nullable="true" comment="Webhook signing secret" />
+        <column name="created_at" xsi:type="timestamp" nullable="false" default="CURRENT_TIMESTAMP" on_update="false" comment="Created at date"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+    <table name="stripe_webhook_events" resource="default" engine="innodb" comment="Processed webhook events">
+        <column name="id" xsi:type="int" identity="true" unsigned="true" nullable="false" comment="Entity ID" />
+        <column name="event_id" xsi:type="varchar" length="255" nullable="false" comment="Event ID" />
+        <column name="event_type" xsi:type="varchar" length="255" nullable="false" comment="Event Type" />
+        <column name="created_at" xsi:type="timestamp" nullable="false" default="CURRENT_TIMESTAMP" on_update="false" comment="Created at date"/>
+        <column name="order_increment_id" xsi:type="varchar" length="255" nullable="true" comment="Order Increment ID" />
+        <column name="payment_intent_id" xsi:type="varchar" length="255" nullable="true" comment="Payment Intent ID" />
+        <column name="is_processed" xsi:type="boolean" nullable="false" default="false" comment="Whether we have processed the event"/>
+        <column name="processed_at" xsi:type="timestamp" nullable="true" on_update="false" comment="Processed at date"/>
+        <column name="retries" xsi:type="int" nullable="false" default="0" comment="Amount of times we tried to process the event"/>
+        <column name="updated_at" xsi:type="timestamp" nullable="false" default="CURRENT_TIMESTAMP" on_update="true" comment="Updated at date"/>
+        <column name="last_error" xsi:type="text" nullable="true" comment="Last processing error" />
+        <column name="last_error_status_code" xsi:type="int" unsigned="true" nullable="true" comment="Last http response status code" />
+        <column name="last_error_at" xsi:type="timestamp" nullable="true" on_update="false" comment="Time of the last error"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="STRIPE_WEBHOOK_EVENTS_EVENT_ID_UNIQUE">
+            <column name="event_id"/>
+        </constraint>
+        <index referenceId="STRIPE_WEBHOOK_EVENTS_TYPE_INDEX" indexType="btree">
+            <column name="event_type"/>
+        </index>
+        <index referenceId="STRIPE_WEBHOOK_EVENTS_CREATED_AT_INDEX" indexType="btree">
+            <column name="created_at"/>
+        </index>
+        <index referenceId="STRIPE_WEBHOOK_EVENTS_ORDER_INCREMENT_ID_INDEX" indexType="btree">
+            <column name="order_increment_id"/>
+        </index>
+        <index referenceId="STRIPE_WEBHOOK_EVENTS_PAYMENT_INTENT_ID_INDEX" indexType="btree">
+            <column name="payment_intent_id"/>
+        </index>
+        <index referenceId="STRIPE_WEBHOOK_EVENTS_PROCESSED_INDEX" indexType="btree">
+            <column name="is_processed"/>
+        </index>
+        <index referenceId="STRIPE_WEBHOOK_EVENTS_RETRIES_INDEX" indexType="btree">
+            <column name="retries"/>
+        </index>
+    </table>
+    <table name="stripe_sources" resource="default" engine="innodb" comment="Source tokens">
+        <column name="id" xsi:type="int" identity="true" unsigned="true" nullable="false" comment="Entity ID" />
+        <column name="source_id" xsi:type="varchar" length="255" nullable="false" comment="Source ID" />
+        <column name="order_increment_id" xsi:type="varchar" length="255" nullable="true" comment="Order increment ID" />
+        <column name="stripe_customer_id" xsi:type="varchar" length="255" nullable="true" comment="Stripe customer ID" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="STRIPE_SOURCES_ID" indexType="btree">
+            <column name="source_id"/>
+        </index>
+        <index referenceId="STRIPE_SOURCES_ORDER_INCREMENT_ID" indexType="btree">
+            <column name="order_increment_id"/>
+        </index>
+        <index referenceId="STRIPE_SOURCES_STRIPE_CUSTOMER_ID" indexType="btree">
+            <column name="stripe_customer_id"/>
+        </index>
+    </table>
+    <table name="stripe_subscriptions" resource="default" engine="innodb" comment="Subscriptions">
+        <column name="id" xsi:type="int" identity="true" unsigned="true" nullable="false" comment="Entity ID" />
+        <column name="created_at" xsi:type="timestamp" nullable="false" default="CURRENT_TIMESTAMP" on_update="false" comment="Created at date"/>
+        <column name="store_id" xsi:type="smallint" unsigned="true" nullable="false" default="0" comment="Store ID"/>
+        <column name="livemode" xsi:type="boolean" nullable="false" default="true" comment="Stripe API mode"/>
+        <column name="subscription_id" xsi:type="varchar" length="255" nullable="false" comment="Stripe subscription ID" />
+        <column name="order_increment_id" xsi:type="varchar" length="255" nullable="false" comment="Order increment ID" />
+        <column name="product_id" xsi:type="int" unsigned="true" nullable="false" comment="Product ID" />
+        <column name="magento_customer_id" xsi:type="int" unsigned="true" nullable="true" default="0" comment="Product ID" />
+        <column name="stripe_customer_id" xsi:type="varchar" length="255" nullable="true" comment="Stripe customer ID" />
+        <column name="payment_method_id" xsi:type="varchar" length="255" nullable="false" comment="Payment method ID" />
+        <column name="name" xsi:type="text" nullable="false" comment="Subscription name" />
+        <column name="quantity" xsi:type="int" unsigned="true" nullable="false" default="1" comment="Subscription quantity" />
+        <column name="currency" xsi:type="varchar" length="255" nullable="false" comment="Currency code" />
+        <column name="grand_total" xsi:type="decimal" scale="4" precision="10" unsigned="false" nullable="false" default="0" comment="Grand total"/>
+        <column name="last_updated" xsi:type="timestamp" nullable="true" on_update="false" comment="Time when the subscription was last updated by the customer"/>
+        <column name="reorder_from_quote_id" xsi:type="int" unsigned="true" nullable="true" comment="Product ID" />
+        <column name="status" xsi:type="varchar" length="255" nullable="false" comment="Subscription Status" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="STRIPE_SUBSCRIPTIONS_SUBSCRIPTION_ID" indexType="btree">
+            <column name="subscription_id"/>
+        </index>
+        <index referenceId="STRIPE_SUBSCRIPTIONS_STORE_ID" indexType="btree">
+            <column name="store_id"/>
+        </index>
+        <index referenceId="STRIPE_SUBSCRIPTIONS_LIVEMODE" indexType="btree">
+            <column name="livemode"/>
+        </index>
+        <index referenceId="STRIPE_SUBSCRIPTIONS_STRIPE_CUSTOMER_ID" indexType="btree">
+            <column name="stripe_customer_id"/>
+        </index>
+        <index referenceId="STRIPE_SUBSCRIPTIONS_MAGENTO_CUSTOMER_ID" indexType="btree">
+            <column name="magento_customer_id"/>
+        </index>
+        <index referenceId="STRIPE_SUBSCRIPTIONS_PRODUCT_ID" indexType="btree">
+            <column name="product_id"/>
+        </index>
+        <index referenceId="STRIPE_SUBSCRIPTIONS_CREATED_AT" indexType="btree">
+            <column name="created_at"/>
+        </index>
+        <index referenceId="STRIPE_SUBSCRIPTIONS_ORDER_INCREMENT_ID" indexType="btree">
+            <column name="order_increment_id"/>
+        </index>
+    </table>
+    <table name="stripe_subscription_options" resource="default" engine="innodb" comment="Product subscription options">
+        <column name="product_id" xsi:type="int" identity="true" unsigned="true" nullable="false" comment="Product Entity ID" />
+        <column name="sub_enabled" xsi:type="boolean" nullable="false" default="false" comment="Subscription Enabled"/>
+        <column name="sub_interval" xsi:type="varchar" length="55" nullable="false" comment="Subscription Frequency"/>
+        <column name="sub_interval_count" xsi:type="int" nullable="true" default="0" comment="Subscription Repeat Every"/>
+        <column name="sub_trial" xsi:type="int" nullable="true" default="0" comment="Subscription Trial Days"/>
+        <column name="sub_initial_fee" xsi:type="int" nullable="true" default="0" comment="Subscription Initial Fee"/>
+        <column name="start_on_specific_date" xsi:type="boolean" nullable="false" default="false" comment="Start subscription on specific date"/>
+        <column xsi:type="date" name="start_date" nullable="true" comment="Subscription start date"/>
+        <column name="first_payment" xsi:type="varchar" length="255" nullable="true" comment="First payment collection happens on"/>
+        <column name="prorate_first_payment" xsi:type="boolean" nullable="false" default="false" comment="Prorate first payment"/>
+        <column name="upgrades_downgrades" xsi:type="boolean" nullable="false" default="false" comment="Upgrades and downgrades"/>
+        <column xsi:type="smallint" name="upgrades_downgrades_use_config" unsigned="true" nullable="false"
+                identity="false" default="1" comment="Use Config Upgrades and downgrades"/>
+        <column name="prorate_upgrades" xsi:type="boolean" nullable="false" default="false" comment="Prorations for upgrades"/>
+        <column xsi:type="smallint" name="prorate_upgrades_use_config" unsigned="true" nullable="false"
+                identity="false" default="1" comment="Use Config Prorations for upgrades"/>
+        <column name="prorate_downgrades" xsi:type="boolean" nullable="false" default="false" comment="Prorations for downgrades"/>
+        <column xsi:type="smallint" name="prorate_downgrades_use_config" unsigned="true" nullable="false"
+                identity="false" default="1" comment="Use Config Prorations for downgrades"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="product_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="STRIPE_SUBSCRIPTION_OPTIONS_PRODUCT_ENTITY_FK_CONSTRAINT" table="catalog_product_entity" column="product_id" referenceTable="catalog_product_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+    <table name="stripe_coupons" resource="default" engine="innodb" comment="Coupons">
+        <column name="id" xsi:type="int" identity="true" unsigned="true" nullable="false" comment="Entity ID" />
+        <column name="rule_id" xsi:type="int" nullable="false" comment="Sales rule ID"/>
+        <column name="coupon_duration" xsi:type="varchar" length="255" nullable="false" comment="Coupon duration"/>
+        <column name="coupon_months" xsi:type="int" nullable="false" default="0" comment="Number of months"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+    <table name="stripe_invoices" resource="default" engine="innodb" comment="Invoices">
+        <column name="id" xsi:type="int" identity="true" unsigned="true" nullable="false" comment="Entity ID" />
+        <column name="invoice_id" xsi:type="varchar" length="255" nullable="false" comment="Invoice ID" />
+        <column name="order_increment_id" xsi:type="varchar" length="255" nullable="false" comment="Order increment ID" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="STRIPE_INVOICES_INVOICE_ID" indexType="btree">
+            <column name="invoice_id"/>
+        </index>
+        <index referenceId="STRIPE_INVOICES_ORDER_INCREMENT_ID" indexType="btree">
+            <column name="order_increment_id"/>
+        </index>
+    </table>
+    <table name="stripe_payment_intents" resource="default" engine="innodb" comment="Payment Intents">
+        <column name="pi_id" xsi:type="varchar" length="255" nullable="false" comment="Payment Intent ID" />
+        <column name="quote_id" xsi:type="int" nullable="false" unsigned="true" comment="Quote ID"/>
+        <column name="order_increment_id" xsi:type="varchar" length="255" nullable="false" comment="Order increment ID" />
+        <column name="invoice_id" xsi:type="int" nullable="true" unsigned="true" comment="Magento invoice ID" />
+        <column name="customer_id" xsi:type="int" unsigned="true" nullable="false" default="0" comment="Magento customer ID" />
+        <column name="order_id" xsi:type="int" unsigned="true" nullable="true" comment="Order ID" />
+        <column name="pm_id" xsi:type="varchar" length="255" nullable="true" comment="Payment method ID" />
+        <column name="created_at" xsi:type="timestamp" nullable="false" default="CURRENT_TIMESTAMP" on_update="false" comment="Created at date"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="pi_id"/>
+        </constraint>
+        <index referenceId="STRIPE_PAYMENT_INTENTS_PI_ID" indexType="btree">
+            <column name="pi_id"/>
+        </index>
+        <index referenceId="STRIPE_PAYMENT_INTENTS_QUOTE_ID" indexType="btree">
+            <column name="quote_id"/>
+        </index>
+        <index referenceId="STRIPE_PAYMENT_INTENTS_ORDER_INCREMENT_ID" indexType="btree">
+            <column name="order_increment_id"/>
+        </index>
+        <index referenceId="STRIPE_PAYMENT_INTENTS_ORDER_ID" indexType="btree">
+            <column name="order_id"/>
+        </index>
+        <index referenceId="STRIPE_PAYMENT_INTENTS_CUSTOMER_ID" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+        <index referenceId="STRIPE_PAYMENT_INTENTS_PM_ID" indexType="btree">
+            <column name="pm_id"/>
+        </index>
+    </table>
+    <table name="stripe_checkout_sessions" resource="default" engine="innodb" comment="Payment Intents">
+        <column name="id" xsi:type="int" identity="true" unsigned="true" nullable="false" comment="Entity ID" />
+        <column name="quote_id" xsi:type="int" nullable="false" unsigned="true" comment="Quote ID"/>
+        <column name="order_increment_id" xsi:type="varchar" length="255" nullable="true" comment="Order increment ID" />
+        <column name="checkout_session_id" xsi:type="varchar" length="255" nullable="false" comment="Checkout session ID" />
+        <column name="created_at" xsi:type="timestamp" nullable="false" default="CURRENT_TIMESTAMP" on_update="false" comment="Created at date"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="STRIPE_CHECKOUT_SESSIONS_QUOTE_ID" indexType="btree">
+            <column name="quote_id"/>
+        </index>
+        <index referenceId="STRIPE_CHECKOUT_SESSIONS_CHECKOUT_SESSION_ID" indexType="btree">
+            <column name="checkout_session_id"/>
+        </index>
+    </table>
+    <table name="stripe_payment_elements" resource="default" engine="innodb" comment="Payment Elements">
+        <column name="id" xsi:type="int" identity="true" unsigned="true" nullable="false" comment="Entity ID" />
+        <column name="quote_id" xsi:type="int" nullable="false" unsigned="true" comment="Quote ID"/>
+        <column name="payment_intent_id" xsi:type="varchar" length="255" nullable="true" comment="Payment Intent ID" />
+        <column name="setup_intent_id" xsi:type="varchar" length="255" nullable="true" comment="Setup Intent ID" />
+        <column name="subscription_id" xsi:type="varchar" length="255" nullable="true" comment="Subscription ID" />
+        <column name="payment_method_id" xsi:type="varchar" length="255" nullable="true" comment="Payment Method ID" />
+        <column name="order_increment_id" xsi:type="varchar" length="255" nullable="true" comment="Order increment ID" />
+        <column name="created_at" xsi:type="timestamp" nullable="false" default="CURRENT_TIMESTAMP" on_update="false" comment="Created at date"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="STRIPE_PAYMENT_ELEMENTS_SESSIONS_QUOTE_ID" indexType="btree">
+            <column name="quote_id"/>
+        </index>
+        <index referenceId="STRIPE_PAYMENT_ELEMENTS_ORDER_INCREMENT_ID" indexType="btree">
+            <column name="order_increment_id"/>
+        </index>
+    </table>
+    <table name="stripe_multishipping_quotes" resource="default" engine="innodb" comment="Multishipping Quotes">
+        <column name="id" xsi:type="int" identity="true" unsigned="true" nullable="false" comment="Entity ID" />
+        <column name="quote_id" xsi:type="varchar" length="255" nullable="false" comment="Quote ID" />
+        <column name="payment_method_id" xsi:type="varchar" length="255" nullable="false" comment="Payment method ID" />
+        <column name="payment_intent_id" xsi:type="varchar" length="255" nullable="true" comment="Payment intent ID" />
+        <column name="manual_capture" xsi:type="boolean" nullable="false" default="true" comment="Payment action"/>
+        <column name="captured" xsi:type="boolean" default="false" comment="Whether the authorization has been captured"/>
+        <column name="warning_email_sent" xsi:type="boolean" default="false" comment="Email sent when the authorization is about to expire"/>
+        <column name="created_at" xsi:type="timestamp" nullable="false" default="CURRENT_TIMESTAMP" on_update="false" comment="Created at date"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="STRIPE_MULTISHIPPING_QUOTES_QUOTE_ID" indexType="btree">
+            <column name="quote_id"/>
+        </index>
+        <index referenceId="STRIPE_MULTISHIPPING_QUOTES_PAYMENT_INTENT_ID" indexType="btree">
+            <column name="payment_intent_id"/>
+        </index>
+        <index referenceId="STRIPE_MULTISHIPPING_QUOTES_MANUAL_CAPTURE" indexType="btree">
+            <column name="manual_capture"/>
+        </index>
+        <index referenceId="STRIPE_MULTISHIPPING_QUOTES_CREATED_AT" indexType="btree">
+            <column name="created_at"/>
+        </index>
+    </table>
+    <table name="stripe_multishipping_orders" resource="default" engine="innodb" comment="Multishipping Orders">
+        <column name="id" xsi:type="int" identity="true" unsigned="true" nullable="false" comment="Entity ID" />
+        <column name="quote_id" xsi:type="varchar" length="255" nullable="false" comment="Quote ID" />
+        <column name="order_id" xsi:type="int" nullable="false" unsigned="true" comment="Order ID" />
+        <column name="last_error" xsi:type="text" nullable="true" comment="Order placement error" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="STRIPE_MULTISHIPPING_ORDERS_QUOTE_ID" indexType="btree">
+            <column name="quote_id"/>
+        </index>
+        <index referenceId="STRIPE_MULTISHIPPING_ORDERS_ORDER_ID" indexType="btree">
+            <column name="order_id"/>
+        </index>
+    </table>
+    <table name="quote" resource="default" engine="innodb">
+        <column name="is_used_for_recurring_orders" xsi:type="boolean" default="false" comment="Added by the Stripe module"/>
+        <index referenceId="QUOTE_IS_USED_FOR_RECURRING_ORDERS" indexType="btree">
+            <column name="is_used_for_recurring_orders"/>
+        </index>
+    </table>
+    <table name="sales_payment_transaction" resource="default" engine="innodb">
+        <index referenceId="STRIPE_SALES_PAYMENT_TRANSACTION_TXN_ID" indexType="btree">
+            <column name="txn_id"/>
+        </index>
+    </table>
+    <table name="sales_order_item" resource="default" engine="innodb">
+        <column name="initial_fee" xsi:type="decimal" scale="4" precision="10" unsigned="true" nullable="true" comment="Stripe subscription initial fee"/>
+        <column name="base_initial_fee" xsi:type="decimal" scale="4" precision="10" unsigned="true" nullable="true" comment="Stripe subscription base initial fee"/>
+        <column name="initial_fee_tax" xsi:type="decimal" scale="4" precision="10" unsigned="true" nullable="true" comment="Stripe subscription initial fee tax"/>
+        <column name="base_initial_fee_tax" xsi:type="decimal" scale="4" precision="10" unsigned="true" nullable="true" comment="Stripe subscription base initial fee tax"/>
+    </table>
+    <table name="quote_item" resource="default" engine="innodb">
+        <column name="initial_fee" xsi:type="decimal" scale="4" precision="10" unsigned="true" nullable="true" comment="Stripe subscription initial fee"/>
+        <column name="base_initial_fee" xsi:type="decimal" scale="4" precision="10" unsigned="true" nullable="true" comment="Stripe subscription base initial fee"/>
+        <column name="initial_fee_tax" xsi:type="decimal" scale="4" precision="10" unsigned="true" nullable="true" comment="Stripe subscription initial fee tax"/>
+        <column name="base_initial_fee_tax" xsi:type="decimal" scale="4" precision="10" unsigned="true" nullable="true" comment="Stripe subscription base initial fee tax"/>
+    </table>
+    <table name="sales_order" resource="sales" comment="Sales Flat Order">
+        <column name="stripe_radar_risk_score" xsi:type="int" nullable="true" identity="false" comment="Stripe Radar Risk Score"/>
+        <column name="stripe_radar_risk_level" xsi:type="varchar" nullable="true" length="155" default="NA" comment="Stripe Radar Risk Level"/>
+        <index referenceId="SALES_ORDER_ENTITY_STRIPE_RADAR_RISK_SCORE" indexType="btree">
+            <column name="stripe_radar_risk_score"/>
+        </index>
+        <index referenceId="SALES_ORDER_ENTITY_STRIPE_RADAR_RISK_LEVEL" indexType="btree">
+            <column name="stripe_radar_risk_level"/>
+        </index>
+    </table>
+    <table name="stripe_payment_methods" resource="default" engine="innodb" comment="Stripe Payment Methods">
+        <column name="entity_id" xsi:type="int" identity="true" unsigned="true" nullable="false" comment="Entity ID" />
+        <column name="order_id" xsi:type="int" identity="false" nullable="false" comment="Order ID" />
+        <column name="payment_method_type" xsi:type="varchar" nullable="true" length="255" comment="Stripe Payment method Type"/>
+        <column name="payment_method_card_data" xsi:type="varchar" nullable="true" length="255" comment="Stripe payment method card data"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <index referenceId="STRIPE_PAYMENT_METHODS_ORDER_ID" indexType="btree">
+            <column name="order_id"/>
+        </index>
+        <index referenceId="STRIPE_PAYMENT_METHODS_PAYMENT_METHOD_TYPE" indexType="btree">
+            <column name="payment_method_type"/>
+        </index>
+        <index referenceId="STRIPE_PAYMENT_METHODS_PAYMENT_METHOD_CARD_DATA" indexType="btree">
+            <column name="payment_method_card_data"/>
+        </index>
+    </table>
+    <table name="sales_order_grid" resource="sales" comment="Sales Flat Order Grid">
+        <column name="stripe_radar_risk_score" xsi:type="int" nullable="true" identity="false" comment="Stripe Radar Risk Score"/>
+        <column name="stripe_radar_risk_level" xsi:type="varchar" nullable="true" length="155" default="NA" comment="Stripe Radar Risk Level"/>
+    </table>
+
+    <table name="stripe_account" resource="default" engine="innodb">
+        <column name="id" xsi:type="int" identity="true" unsigned="true" nullable="false" comment="Entity ID" />
+        <column name="account_id" xsi:type="varchar" length="255" nullable="false" comment="Stripe account ID" />
+        <column name="publishable_key" xsi:type="varchar" length="255" nullable="false" comment="Stripe API publishable key" />
+        <column name="secret_key" xsi:type="varchar" length="255" nullable="false" comment="Encrypted Stripe API secret key" />
+        <column name="default_currency" xsi:type="varchar" length="255" nullable="false" comment="Default currency" />
+        <column name="country" xsi:type="varchar" length="255" nullable="false" comment="Country" />
+        <column name="is_valid" xsi:type="boolean" nullable="false" default="false" comment="Whether the API keys are valid"/>
+        <column name="created_at" xsi:type="timestamp" nullable="false" default="CURRENT_TIMESTAMP" on_update="false" comment="Created at date"/>
+        <column name="updated_at" xsi:type="timestamp" nullable="false" default="CURRENT_TIMESTAMP" on_update="true" comment="Updated at date"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="STRIPE_ACCOUNT_ACCOUNT_ID" indexType="btree">
+            <column name="account_id"/>
+        </index>
+        <index referenceId="STRIPE_ACCOUNT_PUBLISHABLE_KEY" indexType="btree">
+            <column name="publishable_key"/>
+        </index>
+    </table>
+
+    <table name="stripe_subscription_reactivations" resource="default" engine="innodb" comment="Subscription Reactivations">
+        <column name="id" xsi:type="int" identity="true" unsigned="true" nullable="false" comment="Entity ID" />
+        <column name="order_increment_id" xsi:type="varchar" length="255" nullable="false" comment="Order increment ID" />
+        <column name="reactivated_at" xsi:type="timestamp" nullable="false" default="CURRENT_TIMESTAMP" on_update="false" comment="Reactivated at date"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="STRIPE_SUBSCRIPTION_REACTIVATIONS_ORDER_INCREMENT_ID" indexType="btree">
+            <column name="order_increment_id"/>
+        </index>
+    </table>
+</schema>

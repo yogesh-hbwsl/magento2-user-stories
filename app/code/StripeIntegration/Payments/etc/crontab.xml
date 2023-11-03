@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="stripe_payments">
+        <job name="stripe_webhooks_configure" instance="StripeIntegration\Payments\Cron\WebhooksConfigure" method="execute">
+            <schedule>10 * * * *</schedule>
+        </job>
+        <job name="stripe_webhook_events_retry" instance="StripeIntegration\Payments\Cron\RetryFailedWebhookEvents" method="execute">
+            <schedule>20 * * * *</schedule>
+        </job>
+        <job name="stripe_capture_authorizations" instance="StripeIntegration\Payments\Cron\CaptureAuthorizations" method="execute">
+            <schedule>40 * * * *</schedule>
+        </job>
+        <job name="stripe_webhooks_ping" instance="StripeIntegration\Payments\Cron\WebhooksPing" method="execute">
+            <schedule>45 * * * *</schedule>
+        </job>
+    </group>
+</config>

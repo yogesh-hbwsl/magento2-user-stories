@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<include xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_include.xsd">
+  <group id="express" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+    <label>Wallet Button</label>
+    <fieldset_css>wallet-button</fieldset_css>
+    <comment>Allow customers to place orders using device-supported payment buttons such as Apple Pay, Google Pay, Link etc.</comment>
+    <field id="global_enabled" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Enabled</label>
+      <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+      <config_path>payment/stripe_payments_express/global_enabled</config_path>
+    </field>
+    <field id="locations" translate="label" type="multiselect" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Locations</label>
+      <source_model>StripeIntegration\Payments\Model\Adminhtml\Source\WalletButton</source_model>
+      <config_path>payment/stripe_payments_express/enabled</config_path>
+      <depends>
+        <field id="global_enabled">1</field>
+      </depends>
+    </field>
+    <field id="button_type" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Button type</label>
+      <source_model>StripeIntegration\Payments\Model\Adminhtml\Source\ButtonType</source_model>
+      <config_path>payment/stripe_payments_express/button_type</config_path>
+      <depends>
+        <field id="global_enabled">1</field>
+      </depends>
+    </field>
+    <field id="button_theme" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Button theme</label>
+      <source_model>StripeIntegration\Payments\Model\Adminhtml\Source\ButtonTheme</source_model>
+      <config_path>payment/stripe_payments_express/button_theme</config_path>
+      <depends>
+        <field id="global_enabled">1</field>
+      </depends>
+    </field>
+    <field id="button_height" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Button height</label>
+      <config_path>payment/stripe_payments_express/button_height</config_path>
+      <depends>
+        <field id="global_enabled">1</field>
+      </depends>
+    </field>
+    <field id="seller_name" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Seller name</label>
+      <comment>
+        <![CDATA[This is the text that appears as PAY SELLER NAME in the payment modal.]]>
+      </comment>
+      <config_path>payment/stripe_payments_express/seller_name</config_path>
+      <depends>
+        <field id="global_enabled">1</field>
+      </depends>
+    </field>
+ </group>
+</include>

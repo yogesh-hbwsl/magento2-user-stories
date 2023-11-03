@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="subscriptions-by-stripe" sortOrder="10">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Subscriptions by Stripe</item>
+                <item name="collapsible" xsi:type="boolean">true</item>
+                <item name="sortOrder" xsi:type="number">10</item>
+                <item name="dataScope" xsi:type="string">data.product.subscription_options</item>
+            </item>
+        </argument>
+        <field name="sub_enabled" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">180</item>
+                </item>
+            </argument>
+            <settings>
+                <scopeLabel>[GLOBAL]</scopeLabel>
+                <label translate="true">Subscription Enabled</label>
+                <dataScope>sub_enabled</dataScope>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="boolean">false</map>
+                            <map name="true" xsi:type="boolean">true</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="sub_interval" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">182</item>
+                    <item name="default" xsi:type="string">month</item>
+                </item>
+            </argument>
+            <settings>
+                <scopeLabel>[GLOBAL]</scopeLabel>
+                <label translate="true">Frequency</label>
+                <dataType>text</dataType>
+                <dataScope>sub_interval</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options>
+                            <option name="month" xsi:type="array">
+                                <item name="value" xsi:type="string">month</item>
+                                <item name="label" xsi:type="string">Months</item>
+                            </option>
+                            <option name="week" xsi:type="array">
+                                <item name="value" xsi:type="string">week</item>
+                                <item name="label" xsi:type="string">Weeks</item>
+                            </option>
+                            <option name="day" xsi:type="array">
+                                <item name="value" xsi:type="string">day</item>
+                                <item name="label" xsi:type="string">Days</item>
+                            </option>
+                            <option name="year" xsi:type="array">
+                                <item name="value" xsi:type="string">year</item>
+                                <item name="label" xsi:type="string">Years</item>
+                            </option>
+                        </options>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="sub_interval_count" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">184</item>
+                </item>
+            </argument>
+            <settings>
+                <scopeLabel>[GLOBAL]</scopeLabel>
+                <dataType>text</dataType>
+                <label translate="true">Repeat Every</label>
+                <visible>true</visible>
+                <dataScope>sub_interval_count</dataScope>
+            </settings>
+        </field>
+        <field name="sub_trial" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">186</item>
+                </item>
+            </argument>
+            <settings>
+                <scopeLabel>[GLOBAL]</scopeLabel>
+                <dataType>text</dataType>
+                <label translate="true">Trial Days</label>
+                <visible>true</visible>
+                <dataScope>sub_trial</dataScope>
+            </settings>
+        </field>
+        <field name="sub_initial_fee" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">188</item>
+                </item>
+            </argument>
+            <settings>
+                <scopeLabel>[GLOBAL]</scopeLabel>
+                <dataType>text</dataType>
+                <label translate="true">Initial Fee</label>
+                <visible>true</visible>
+                <dataScope>sub_initial_fee</dataScope>
+            </settings>
+        </field>
+        <field name="start_on_specific_date" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">190</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Start on specific date</label>
+                <tooltip>
+                    <description translate="true">When disabled, the subscription will start on the date that the order is placed.</description>
+                </tooltip>
+                <dataScope>start_on_specific_date</dataScope>
+                <switcherConfig>
+                    <rules>
+                        <rule name="0">
+                            <value>0</value>
+                            <actions>
+                                <action name="0">
+                                    <target>product_form.product_form.subscriptions-by-stripe.start_date</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>product_form.product_form.subscriptions-by-stripe.first_payment</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>product_form.product_form.subscriptions-by-stripe.prorate_first_payment</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="3">
+                                    <target>product_form.product_form.subscriptions-by-stripe.sub_trial</target>
+                                    <callback>enable</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>product_form.product_form.subscriptions-by-stripe.start_date</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="1">
+                                    <target>product_form.product_form.subscriptions-by-stripe.first_payment</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="2">
+                                    <target>product_form.product_form.subscriptions-by-stripe.prorate_first_payment</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="3">
+                                    <target>product_form.product_form.subscriptions-by-stripe.sub_trial</target>
+                                    <callback>disable</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                    <enabled>true</enabled>
+                </switcherConfig>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="boolean">false</map>
+                            <map name="true" xsi:type="boolean">true</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="start_date" formElement="date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">192</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Pick start date</label>
+                <tooltip>
+                    <description translate="true">If the start date is January 1st, and the subscription repeats monthly, then subscriptions will start on the 1st of next month. If the subscription repeats every 6 months, subscriptions will start either on January 1st or July 1st.</description>
+                </tooltip>
+                <dataType>text</dataType>
+                <dataScope>start_date</dataScope>
+                <validation>
+                    <rule name="validate-date" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+        <field name="first_payment" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">First payment</item>
+                    <item name="sortOrder" xsi:type="number">194</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="dataScope" xsi:type="string">first_payment</item>
+                    <item name="default" xsi:type="string">on_start_date</item>
+                </item>
+            </argument>
+            <settings>
+                <switcherConfig>
+                    <rules>
+                        <rule name="0">
+                            <value>on_start_date</value>
+                            <actions>
+                                <action name="0">
+                                    <target>product_form.product_form.subscriptions-by-stripe.prorate_first_payment</target>
+                                    <callback>disable</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>on_order_date</value>
+                            <actions>
+                                <action name="0">
+                                    <target>product_form.product_form.subscriptions-by-stripe.prorate_first_payment</target>
+                                    <callback>enable</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                    <enabled>true</enabled>
+                </switcherConfig>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options>
+                            <option name="on_start_date" xsi:type="array">
+                                <item name="value" xsi:type="string">on_start_date</item>
+                                <item name="label" xsi:type="string">On start date</item>
+                            </option>
+                            <option name="on_order_date" xsi:type="array">
+                                <item name="value" xsi:type="string">on_order_date</item>
+                                <item name="label" xsi:type="string">On order placement, then on start date</item>
+                            </option>
+                        </options>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="prorate_first_payment" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">196</item>
+                    <item name="default" xsi:type="string">false</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Prorate first payment</label>
+                <tooltip>
+                    <description translate="true">When enabled, the first payment will be reduced to the amount of remaining time from the date of order placement to the subscription start date.</description>
+                </tooltip>
+                <dataScope>prorate_first_payment</dataScope>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="boolean">false</map>
+                            <map name="true" xsi:type="boolean">true</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="upgrades_downgrades" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="rawOptions" xsi:type="boolean">true</item>
+                    <item name="value" xsi:type="object">StripeIntegration\Payments\Model\Stripe\Source\ConfigUpgradesDowngrades</item>
+                    <item name="sortOrder" xsi:type="number">198</item>
+                </item>
+            </argument>
+            <settings>
+                <scopeLabel>[GLOBAL]</scopeLabel>
+                <label translate="true">Customers can change subscription</label>
+                <dataScope>upgrades_downgrades</dataScope>
+                <imports>
+                    <link name="disabled">${$.parentName}.upgrades_downgrades_use_config:disableParent</link>
+                </imports>
+                <tooltip>
+                    <description translate="true">Allow customers to change the quantity or options of active subscriptions from the customer account section.</description>
+                </tooltip>
+                <switcherConfig>
+                    <rules>
+                        <rule name="0">
+                            <value>0</value>
+                            <actions>
+                                <action name="0">
+                                    <target>product_form.product_form.subscriptions-by-stripe.prorate_upgrades</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>product_form.product_form.subscriptions-by-stripe.prorate_upgrades_use_config</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>product_form.product_form.subscriptions-by-stripe.prorate_downgrades</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="3">
+                                    <target>product_form.product_form.subscriptions-by-stripe.prorate_downgrades_use_config</target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>product_form.product_form.subscriptions-by-stripe.prorate_upgrades</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="1">
+                                    <target>product_form.product_form.subscriptions-by-stripe.prorate_upgrades_use_config</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="2">
+                                    <target>product_form.product_form.subscriptions-by-stripe.prorate_downgrades</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="3">
+                                    <target>product_form.product_form.subscriptions-by-stripe.prorate_downgrades_use_config</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                    <enabled>true</enabled>
+                </switcherConfig>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <options class="Magento\Config\Model\Config\Source\Enabledisable"/>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="boolean">false</map>
+                            <map name="true" xsi:type="boolean">true</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="upgrades_downgrades_use_config" component="StripeIntegration_Payments/js/components/use-config-settings" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="value" xsi:type="string">1</item>
+                    <item name="valueFromConfig" xsi:type="object">StripeIntegration\Payments\Model\Stripe\Source\ConfigUpgradesDowngrades</item>
+                    <item name="keyInConfiguration" xsi:type="string">upgrade_downgrade</item>
+                    <item name="sortOrder" xsi:type="number">200</item>
+                </item>
+            </argument>
+            <settings>
+                <dataScope>upgrades_downgrades_use_config</dataScope>
+                <links>
+                    <link name="linkedValue">${$.provider}:data.product.subscription_options.upgrades_downgrades</link>
+                </links>
+                <imports>
+                    <link name="disabled">ns = ${ $.ns }, index = subscription_options:disabled</link>
+                </imports>
+            </settings>
+            <formElements>
+                <checkbox class="StripeIntegration\Payments\Ui\Component\Product\Form\Element\UseConfigSettings">
+                    <settings>
+                        <description translate="true">Use Config Settings</description>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="prorate_upgrades" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="rawOptions" xsi:type="boolean">true</item>
+                    <item name="value" xsi:type="object">StripeIntegration\Payments\Model\Stripe\Source\ConfigUpgradesDowngrades</item>
+                    <item name="sortOrder" xsi:type="number">202</item>
+                </item>
+            </argument>
+            <settings>
+                <scopeLabel>[GLOBAL]</scopeLabel>
+                <label translate="true">Prorate upgrades</label>
+                <dataScope>prorate_upgrades</dataScope>
+                <imports>
+                    <link name="disabled">${$.parentName}.prorate_upgrades_use_config:disableParent</link>
+                </imports>
+                <tooltip>
+                    <description translate="true">When enabled, upgrades will incur an extra fee for the price difference.</description>
+                </tooltip>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <options class="Magento\Config\Model\Config\Source\Enabledisable"/>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="boolean">false</map>
+                            <map name="true" xsi:type="boolean">true</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="prorate_upgrades_use_config" component="StripeIntegration_Payments/js/components/use-config-settings" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="value" xsi:type="string">1</item>
+                    <item name="valueFromConfig" xsi:type="object">StripeIntegration\Payments\Model\Stripe\Source\ConfigUpgradesDowngrades</item>
+                    <item name="keyInConfiguration" xsi:type="string">prorations_upgrades</item>
+                    <item name="sortOrder" xsi:type="number">204</item>
+                </item>
+            </argument>
+            <settings>
+                <dataScope>prorate_upgrades_use_config</dataScope>
+                <links>
+                    <link name="linkedValue">${$.provider}:data.product.subscription_options.prorate_upgrades</link>
+                </links>
+                <imports>
+                    <link name="disabled">ns = ${ $.ns }, index = subscription_options:disabled</link>
+                </imports>
+            </settings>
+            <formElements>
+                <checkbox class="StripeIntegration\Payments\Ui\Component\Product\Form\Element\UseConfigSettings">
+                    <settings>
+                        <description translate="true">Use Config Settings</description>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="prorate_downgrades" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="rawOptions" xsi:type="boolean">true</item>
+                    <item name="value" xsi:type="object">StripeIntegration\Payments\Model\Stripe\Source\ConfigUpgradesDowngrades</item>
+                    <item name="sortOrder" xsi:type="number">206</item>
+                </item>
+            </argument>
+            <settings>
+                <scopeLabel>[GLOBAL]</scopeLabel>
+                <label translate="true">Prorate downgrades</label>
+                <dataScope>prorate_downgrades</dataScope>
+                <imports>
+                    <link name="disabled">${$.parentName}.prorate_downgrades_use_config:disableParent</link>
+                </imports>
+                <tooltip>
+                    <description translate="true">When enabled, downgrades will credit the customer's account balance, and will be used to offset future subscription payments.</description>
+                </tooltip>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <options class="Magento\Config\Model\Config\Source\Enabledisable"/>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="boolean">false</map>
+                            <map name="true" xsi:type="boolean">true</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="prorate_downgrades_use_config" component="StripeIntegration_Payments/js/components/use-config-settings" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="value" xsi:type="string">1</item>
+                    <item name="valueFromConfig" xsi:type="object">StripeIntegration\Payments\Model\Stripe\Source\ConfigUpgradesDowngrades</item>
+                    <item name="keyInConfiguration" xsi:type="string">prorations_downgrades</item>
+                    <item name="sortOrder" xsi:type="number">208</item>
+                </item>
+            </argument>
+            <settings>
+                <dataScope>prorate_downgrades_use_config</dataScope>
+                <links>
+                    <link name="linkedValue">${$.provider}:data.product.subscription_options.prorate_downgrades</link>
+                </links>
+                <imports>
+                    <link name="disabled">ns = ${ $.ns }, index = subscription_options:disabled</link>
+                </imports>
+            </settings>
+            <formElements>
+                <checkbox class="StripeIntegration\Payments\Ui\Component\Product\Form\Element\UseConfigSettings">
+                    <settings>
+                        <description translate="true">Use Config Settings</description>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+    </fieldset>
+</form>

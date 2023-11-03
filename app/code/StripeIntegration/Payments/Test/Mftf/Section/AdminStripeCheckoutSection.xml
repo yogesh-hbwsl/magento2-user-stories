@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="AdminStripeCheckoutSection">
+        <element name="payByCardPaymentMethod" type="radio" selector="#p_method_stripe_payments" timeout="10" />
+        <element name="payByCardIframe" type="iframe" selector="#payment_form_stripe_payments #stripe-card-element iframe" />
+        <element name="payByCardNumberField" type="input" selector="//input[@name='cardnumber']" />
+        <element name="payByCardExpField" type="input" selector="//input[@name='exp-date']" />
+        <element name="payByCardCvcField" type="input" selector="//input[@name='cvc']" />
+    </section>
+</sections>
+

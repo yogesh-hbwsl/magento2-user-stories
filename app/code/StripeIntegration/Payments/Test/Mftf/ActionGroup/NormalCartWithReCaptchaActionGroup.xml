@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="NormalCartWithReCaptchaActionGroup">
+        <annotations>
+            <description>Create a cart with SimpleProduct.</description>
+        </annotations>
+
+        <amOnPage url="{{StorefrontProductPage.url(StripeSimpleProduct.urlKey)}}" stepKey="goToStripeSimpleProductPage"/>
+        <waitForPageLoad stepKey="waitForStripeSimpleProductPageToLoad" time="60"/>
+        <fillField userInput="2" selector="{{StorefrontProductPageSection.qtyInput}}" stepKey="fillStripeSimpleProductQty"/>
+        <click selector="{{StorefrontProductInfoMainSection.AddToCart}}" stepKey="clickAddToCartStripeSimpleProduct"/>
+
+    </actionGroup>
+</actionGroups>
+
+
+
+

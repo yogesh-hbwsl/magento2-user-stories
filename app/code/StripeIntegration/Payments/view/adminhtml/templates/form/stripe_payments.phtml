@@ -1,0 +1,35 @@
+<?php
+  $savedMethodsBlock = $block->getLayout()->createBlock('StripeIntegration\Payments\Block\Adminhtml\SelectPaymentMethod');
+?>
+<fieldset id="payment_form_stripe_payments" class="stripe-payments standard-form admin__fieldset" style="display:none;">
+  <div class="fieldset indent">
+    <?php echo $savedMethodsBlock->toHtml(); ?>
+  </div>
+</fieldset>
+
+<script type="text/javascript">
+
+  var disableCardValidation = function()
+  {
+      // Disable server side card validation
+      if (typeof AdminOrder != 'undefined' && AdminOrder.prototype.loadArea && typeof AdminOrder.prototype._loadArea == 'undefined')
+      {
+          AdminOrder.prototype._loadArea = AdminOrder.prototype.loadArea;
+          AdminOrder.prototype.loadArea = function(area, indicator, params)
+          {
+            if (typeof area == "object" && area.indexOf('card_validation') >= 0)
+              area = area.splice(area.indexOf('card_validation'), 0);
+
+            if (area.length > 0)
+              return this._loadArea(area, indicator, params);
+          };
+      }
+  };
+
+  require(['domReady!', 'jquery', 'mage/mage'], function(domReady, $)
+  {
+    setTimeout(disableCardValidation, 5000);
+    var dataForm = $('#payment_form_stripe_payments');
+    dataForm.mage('validation', {});
+  });
+</script>

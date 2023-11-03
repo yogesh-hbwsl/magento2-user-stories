@@ -1,0 +1,20 @@
+<div data-bind="visible: isPaymentRequestAPISupported, afterRender: markPRAPIready">
+  <div class="payment-group">
+    <div class="step-title mobile" data-role="title">
+      <!-- ko i18n: 'Checkout with digital wallet' --><!-- /ko -->
+    </div>
+    <div class="payment-method stripe-payments mobile">
+      <div class="stripe-payments stripe-payments-apple-pay-section">
+        <div id="payment-request-button"></div>
+      </div>
+
+      <div class="checkout-agreements checkout-agreements-block">
+          <!-- ko foreach: getRegion('beforeMethods') -->
+              <!-- ko template: getTemplate() --><!-- /ko -->
+          <!--/ko-->
+      </div>
+
+    </div>
+  </div>
+</div>
+

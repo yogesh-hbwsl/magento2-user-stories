@@ -1,0 +1,110 @@
+<?php
+
+namespace StripeIntegration\Payments\Test\Integration\Frontend\CheckoutPage\EmbeddedFlow\AuthorizeCapture\Normal;
+
+use PHPUnit\Framework\Constraint\StringContains;
+
+/**
+ * Magento 2.3.7-p3 does not enable these at class level
+ * @magentoAppIsolation enabled
+ * @magentoDbIsolation enabled
+ */
+class MexicoInstallmentsTest extends \PHPUnit\Framework\TestCase
+{
+    public function setUp(): void
+    {
+        $this->objectManager = \Magento\TestFramework\ObjectManager::getInstance();
+        $this->helper = $this->objectManager->get(\StripeIntegration\Payments\Helper\Generic::class);
+        $this->stripeConfig = $this->objectManager->get(\StripeIntegration\Payments\Model\Config::class);
+        $this->quote = new \StripeIntegration\Payments\Test\Integration\Helper\Quote();
+        $this->tests = new \StripeIntegration\Payments\Test\Integration\Helper\Tests($this);
+        $this->api = $this->objectManager->get(\StripeIntegration\Payments\Api\Service::class);
+        $this->compare = new \StripeIntegration\Payments\Test\Integration\Helper\Compare($this);
+    }
+
+    /**
+     * @magentoConfigFixture current_store payment/stripe_payments/payment_flow 0
+     * @magentoConfigFixture current_store payment/stripe_payments/payment_action authorize_capture
+     *
+     * @magentoConfigFixture current_store payment/stripe_payments/installment_plans 1
+     * @magentoConfigFixture current_store currency/options/base MXN
+     * @magentoConfigFixture current_store currency/options/allow MXN
+     * @magentoConfigFixture current_store currency/options/default MXN
+     *
+     * @magentoDataFixture ../../../../app/code/StripeIntegration/Payments/Test/Integration/_files/Data/ApiKeysMX.php
+     */
+    public function testPlans()
+    {
+        $this->quote->create()
+            ->setCustomer('Guest')
+            ->setCart("Normal")
+            ->setShippingAddress("Mexico")
+            ->setShippingMethod("FlatRate")
+            ->setBillingAddress("Mexico")
+            ->setPaymentMethod("MexicoInstallmentsCard");
+
+        $quote = $this->quote->getQuote();
+
+        $paymentMethodId = $quote->getPayment()->getAdditionalInformation("token");
+        $this->assertNotEmpty($paymentMethodId);
+
+        $plans = $this->api->get_installment_plans($paymentMethodId);
+        $this->assertNotEmpty($plans);
+
+        $plans = json_decode($plans);
+        $this->assertCount(3, $plans);
+        $this->assertEquals(3, $plans[0]->count);
+        $this->assertEquals('month', $plans[0]->interval);
+        $this->assertEquals('fixed_count', $plans[0]->type);
+
+        $quote->getPayment()->importData([
+            'method' => 'stripe_payments',
+            'additional_data' => [
+                "cc_stripejs_token" => "$paymentMethodId:visa:4242"
+            ]
+        ]);
+
+        $order = $this->quote->placeOrder();
+
+        $paymentIntentId = $order->getPayment()->getLastTransId();
+        $paymentIntent = $this->stripeConfig->getStripeClient()->paymentIntents->retrieve($paymentIntentId);
+
+        $grandTotal = $order->getGrandTotal() * 100;
+        $orderIncrementId = $order->getIncrementId();
+
+        $this->compare->object($paymentIntent, [
+            "amount" => $grandTotal,
+            "currency" => "mxn",
+            "amount_received" => $grandTotal,
+            "description" => "Order #$orderIncrementId by Huyana Hopi",
+            "payment_method" => $paymentMethodId,
+            "charges" => [
+                "data" => [
+                    0 => [
+                        "amount" => $grandTotal,
+                        "amount_captured" => $grandTotal,
+                        "amount_refunded" => 0,
+                        "metadata" => [
+                            "Order #" => $orderIncrementId
+                        ],
+                        "payment_method_details" => [
+                            "card" => [
+                                "installments" => [
+                                    "plan" => [
+                                        "count" => 3,
+                                        "interval" => "month",
+                                        "type" => "fixed_count"
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            "metadata" => [
+                "Order #" => $orderIncrementId
+            ],
+            "status" => "succeeded"
+        ]);
+    }
+}

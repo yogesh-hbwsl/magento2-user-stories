@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="CheckoutModeConfigurationActionGroup">
+        <annotations>
+            <description>Set the checkout mode.</description>
+        </annotations>
+        <arguments>
+            <argument name="checkoutMode" defaultValue="0" type="string"/>
+        </arguments>
+
+        <magentoCLI command="app:config:dump" stepKey="dumpConfig"/>
+        <magentoCLI command="config:set -le payment/stripe_payments/payment_flow {{checkoutMode}}" stepKey="setCheckoutMode"/>
+        <magentoCLI command="app:config:import" stepKey="importConfig"/>
+    </actionGroup>
+</actionGroups>

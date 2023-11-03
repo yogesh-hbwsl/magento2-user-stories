@@ -1,0 +1,23 @@
+<?php if ($block->isEnabled("shopping_cart_page")) : ?>
+    <div id="payment-request-button-cart" class="payment-request-button cart">&nbsp;</div>
+    <script>
+        require(['domReady!', 'StripeIntegration_Payments/js/stripe_payments_express', 'Magento_Customer/js/customer-data'], function(domReady, stripeExpress, customerData)
+        {
+            var cart = customerData.get('cart');
+
+            var initPRAPI = function()
+            {
+                stripeExpress.initStripeExpress('#payment-request-button-cart', <?php echo $block->initParams->getWalletParams(); ?>, 'cart', <?php echo $block->getButtonConfig(); ?>, function (paymentRequestButton, paymentRequest, params, prButton) {
+                    stripeExpress.initCartWidget(paymentRequestButton, paymentRequest, params, prButton);
+                });
+            };
+            initPRAPI();
+
+            cart.subscribe(function ()
+            {
+                // Wait for Magento to commit the changes before re-initializing the PRAPI
+                setTimeout(initPRAPI, 500);
+            });
+        });
+    </script>
+<?php endif; ?>

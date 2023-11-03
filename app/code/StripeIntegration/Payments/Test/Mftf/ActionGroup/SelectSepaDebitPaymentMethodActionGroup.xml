@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="SelectSepaDebitPaymentMethodActionGroup">
+        <annotations>
+            <description>Switch to Stripe iFrame, switch to SEPA payment method, Fill IBAN number.</description>
+        </annotations>
+        <arguments>
+            <argument name="iban" defaultValue="{{_CREDS.stripe/iban}}" type="string"/>
+            <argument name="paymentMethodName" defaultValue="sepa_debit" type="string"/>
+        </arguments>
+
+        <!-- Switch to Pay By Card iFrame -->
+        <switchToIFrame selector="{{StorefrontCheckoutPaymentMethodSection.payByCardIframe}}" stepKey="switchToPayByCardIframe"/>
+
+        <!-- Wait to load the iFrame -->
+        <waitForAjaxLoad stepKey="waitForIframeLoad" time="10" />
+
+        <conditionalClick selector="{{StorefrontCheckoutPaymentMethodSection.sepaPaymentMethodTabId}}"
+                          dependentSelector="{{StorefrontCheckoutPaymentMethodSection.sepaPaymentMethodTabId}}"
+                          visible="true" stepKey="selectPaymentMethodBoxDefault"/>
+
+        <!-- Select Payment method based on the input -->
+        <helper class="StripeIntegration\Payments\Test\Mftf\Helper\PaymentMethodSelectHelper" method="selectPaymentMethodOption" stepKey="selectPaymentMethodOption">
+            <argument name="optionSelector">{{StorefrontCheckoutPaymentMethodSection.additionalPaymentSelectBox}}</argument>
+            <argument name="optionInput">{{paymentMethodName}}</argument>
+        </helper>
+        <click selector="{{StorefrontCheckoutPaymentMethodSection.sepaPaymentMethodTabId}}" stepKey="selectSepaDirectPaymentMethodTab"/>
+
+        <!-- Wait to load the SEPA Payment method -->
+        <waitForAjaxLoad stepKey="waitForNewPaymentMethodLoad" time="5" />
+
+        <!-- Fill the IBAN number -->
+        <fillField selector="{{StorefrontCheckoutPaymentMethodSection.ibanField}}" userInput="{{iban}}" stepKey="fillIbanNumber"/>
+
+        <switchToIFrame stepKey="switchOutOfPayByCardIframe"/>
+    </actionGroup>
+</actionGroups>

@@ -1,0 +1,19 @@
+{
+    "name": "stripe/module-payments",
+    "type": "magento2-module",
+    "description": "Shared component for accepting online payments in Magento 2 using the Stripe payment gateway.",
+    "version": "3.5.3",
+    "require": {
+        "stripe/stripe-php": "^12.7.0",
+        "php": ">=7.4"
+    },
+    "license": [
+        "https://stripe.com/magento/legal"
+    ],
+    "autoload": {
+        "files": [ "registration.php" ],
+        "psr-4": {
+            "StripeIntegration\\Payments\\": ""
+        }
+    }
+}

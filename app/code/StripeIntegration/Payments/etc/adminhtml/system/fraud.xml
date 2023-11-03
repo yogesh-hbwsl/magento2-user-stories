@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<include xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_include.xsd">
+  <group id="fraud" translate="label" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
+    <label>Fraud via Stripe Radar</label>
+    <comment>&lt;p&gt;Stripe Radar uses machine learning to automatically review your orders for fraud and automatically block many high-risk payments. Even if a card is new to your business, there's an 89% chance its already been seen on the Stripe network.&lt;/p&gt;
+
+    &lt;p&gt;Looking for enhanced fraud detection? You can create custom fraud detection rules right in the Stripe dashboard with Radar for Fraud Teams. &lt;a href="https://stripe.com/radar?utm_campaign=comarketing&amp;utm_source=magento&amp;utm_medium=referred" target="_blank" rel="noopener noreferrer"&lt;/a&gt;Learn more&lt;/a&gt; about Stripe Radar.&lt;/p&gt;</comment>
+    <field id="radar_risk_level" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Hold elevated risk orders</label>
+      <comment>
+        <![CDATA[If Stripe Radar marks a payment with Elevated Risk status, the order will be placed On Hold until it is reviewed.]]>
+      </comment>
+      <source_model>StripeIntegration\Payments\Model\Adminhtml\Source\StripeRadar</source_model>
+      <config_path>payment/stripe_payments/radar_risk_level</config_path>
+    </field>
+  </group>
+</include>

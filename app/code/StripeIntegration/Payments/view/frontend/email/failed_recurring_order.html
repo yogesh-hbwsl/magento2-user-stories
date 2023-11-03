@@ -1,0 +1,35 @@
+<!--@subject A recurring subscription order failed to be placed. @-->
+
+{{template config_path="design/email/header_template"}}
+
+<h2>Subscription order failed to be placed</h2>
+
+<p>A payment was successfully collected for a subscription, but the order failed to be placed in Magento.</p>
+
+<ul>
+    <li>View <a href="{{var paymentLink}}" target="_blank">payment</a>.</li>
+    <li>View <a href="{{var subscriptionLink}}" target="_blank">subscription</a>.</li>
+    <li>View <a href="{{var customerLink}}" target="_blank">customer</a>.</li>
+</ul>
+
+<p>Error:</p>
+
+<pre>{{var errorMessage}}</pre>
+
+<p>Stack trace:</p>
+
+<pre>{{var stackTrace}}</pre>
+
+<h2>Important information:</h2>
+
+<p>You will need to pass the above error to your developer for resolution assistance. Once the problem has been resolved, you can create the subscription order by re-sending the webhook event. To re-send the event:</p>
+<ul>
+    <li>Navigate to <a href="{{var eventLink}}" target="_blank">{{var eventLink}}</a>.</li>
+    <li>Scroll down to the <b>Webhook attempts</b> section.</li>
+    <li>If there is at least 1 successful delivery, <b>do not re-send the event</b>, as this will create 2 subscription orders for the same payment.</li>
+    <li>If there are no successful deliveries, click the Resend button to create the recurring subscription order.</li>
+</ul>
+
+<p><b>Warning:</b> You have 15 days to fix and resend the webhook event. After 15 days, you will not be able to re-send the event from the Stripe dashboard.</p>
+
+{{template config_path="design/email/footer_template"}}

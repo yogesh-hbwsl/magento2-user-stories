@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="ClickThreeDSecureActionGroup">
+        <annotations>
+            <description>Clicks a button inside the 3D Secure modal.</description>
+        </annotations>
+        <arguments>
+            <argument name="ButtonToClick" defaultValue="{{StorefrontCheckoutThreeDSecureSection.completeAuthenticationButton}}" type="string"/>
+        </arguments>
+
+        <waitForLoadingMaskToDisappear stepKey="waitForAllLoaders" />
+        <wait time="3" stepKey="waitFor3DSModalToRender"/>
+
+        <waitForElement selector="{{StorefrontCheckoutThreeDSecureSection.overlayIframe}}" time="30" stepKey="waitForOverlayIframe"/>
+        <switchToIFrame selector="{{StorefrontCheckoutThreeDSecureSection.overlayIframe}}" stepKey="switchToOverlayIframe"/>
+        <waitForElement selector="{{StorefrontCheckoutThreeDSecureSection.challengeIframe}}" time="10" stepKey="waitForChallengeIframe"/>
+        <switchToIFrame selector="{{StorefrontCheckoutThreeDSecureSection.challengeIframe}}" stepKey="switchToChallengeIframe"/>
+        <!--<waitForElement selector="{{StorefrontCheckoutThreeDSecureSection.fullScreenIframe}}" time="10" stepKey="waitForFullScreenIframe"/>
+        <switchToIFrame selector="{{StorefrontCheckoutThreeDSecureSection.fullScreenIframe}}" stepKey="switchToFullScreenIframe"/>-->
+
+        <waitForElement selector="{{ButtonToClick}}" time="10" stepKey="waitForButton"/>
+        <wait time="1" stepKey="waitForUIToRender"/>
+        <click selector="{{ButtonToClick}}" stepKey="clickButton"/>
+        <waitForElementNotVisible selector="{{ButtonToClick}}" stepKey="waitForButtonNotVisible"/>
+
+        <waitForElementNotVisible selector="{{StorefrontCheckoutThreeDSecureSection.fullScreenIframe}}" stepKey="waitForfullScreenIframeNotVisible"/>
+        <switchToIFrame stepKey="switchOutOfFullScreenIframe"/>
+        <waitForElementNotVisible selector="{{StorefrontCheckoutThreeDSecureSection.challengeIframe}}" stepKey="waitForChallengeNotVisible"/>
+        <switchToIFrame stepKey="switchOutOfChallengeIframe"/>
+        <!--<waitForElementNotVisible selector="{{StorefrontCheckoutThreeDSecureSection.overlayIframe}}" stepKey="waitForOverlayIframeNotVisible"/>
+        <switchToIFrame stepKey="switchOutOfOverlayIframe"/>-->
+
+        <wait time="2" stepKey="waitForTokenGeneration" />
+
+    </actionGroup>
+</actionGroups>
+
+

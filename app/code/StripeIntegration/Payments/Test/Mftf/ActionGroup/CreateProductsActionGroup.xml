@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="CreateProductsActionGroup">
+        <annotations>
+            <description>Creates all of the products needed for the tests.</description>
+        </annotations>
+
+        <createData entity="_defaultCategory" stepKey="createCategory"/>
+        <createData entity="StripeSimpleProduct" stepKey="createStripeSimpleProduct">
+            <requiredEntity createDataKey="createCategory"/>
+        </createData>
+        <createData entity="StripeVirtualProduct" stepKey="createStripeVirtualProduct">
+            <requiredEntity createDataKey="createCategory"/>
+        </createData>
+        <createData entity="SimpleMonthlySubscriptionProduct" stepKey="createSimpleMonthlySubscriptionProduct">
+            <requiredEntity createDataKey="createCategory"/>
+        </createData>
+        <createData entity="SimpleQuarterlySubscriptionProduct" stepKey="createSimpleQuarterlySubscriptionProduct">
+            <requiredEntity createDataKey="createCategory"/>
+        </createData>
+        <createData entity="SimpleTrialMonthlySubscriptionProduct" stepKey="createSimpleTrialMonthlySubscriptionProduct">
+            <requiredEntity createDataKey="createCategory"/>
+        </createData>
+        <createData entity="SimpleMonthlySubscriptionInitialFeeProduct" stepKey="createSimpleMonthlySubscriptionInitialFeeProduct">
+            <requiredEntity createDataKey="createCategory"/>
+        </createData>
+        <createData entity="SimpleTrialMonthlySubscriptionInitialFeeProduct" stepKey="createSimpleTrialMonthlySubscriptionInitialFeeProduct">
+            <requiredEntity createDataKey="createCategory"/>
+        </createData>
+        <createData entity="VirtualMonthlySubscriptionProduct" stepKey="createVirtualMonthlySubscriptionProduct">
+            <requiredEntity createDataKey="createCategory"/>
+        </createData>
+        <createData entity="VirtualTrialMonthlySubscriptionProduct" stepKey="createVirtualTrialMonthlySubscriptionProduct">
+            <requiredEntity createDataKey="createCategory"/>
+        </createData>
+        <createData entity="VirtualTrialMonthlySubscriptionInitialFeeProduct" stepKey="createVirtualTrialMonthlySubscriptionInitialFeeProduct">
+            <requiredEntity createDataKey="createCategory"/>
+        </createData>
+
+        <executeJS function="var http = new XMLHttpRequest(); http.open('GET', '{{_ENV.MAGENTO_BASE_URL}}/tests/configure/subscriptions', true); http.send(null);" stepKey="configureSubscriptions" />
+
+        <wait time="3" stepKey="waitForSubscriptionsConfiguration" />
+        <magentoCron stepKey="runCronIndex" groups="index"/>
+        <magentoCLI command="cache:clean config full_page" stepKey="clearConfigCache"/>
+
+    </actionGroup>
+</actionGroups>

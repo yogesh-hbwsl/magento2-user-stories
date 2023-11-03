@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="CheckoutOrdersGuestCustomerTrialSubscriptionsCartStripeElementsMethodTest">
+        <annotations>
+            <features value="Order"/>
+            <stories value="Checkout Orders"/>
+            <title value="Guest customer can buy trial subscription products via Stripe Elements."/>
+            <description value="With GuestCustomer ; and a selected store view currency of USDCurrency , add to the cart the products of TrialSubscriptionsCart , proceed to the checkout page and specify NewYorkAddress as the shipping address and FlatRateShippingMethod as the shipping method. Click Next and specify StripeElementsMethod as the payment method, filling SuccessCard in the payment form. Finally click Place Order."/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="CheckoutOrdersGuestCustomerTrialSubscriptionsCartStripeElementsMethod"/>
+            <group value="checkout_orders"/>
+            <group value="guest_customer"/>
+            <group value="trial_subscriptions_cart"/>
+            <group value="card_success"/>
+            <group value="stripe_elements"/>
+        </annotations>
+
+        <!-- Add products to the cart -->
+        <actionGroup ref="TrialSubscriptionsCartActionGroup" stepKey="createCart" />
+
+        <!-- Go to checkout -->
+        <actionGroup ref="GoToCheckoutFromMinicartActionGroup" stepKey="goToCheckoutPage"/>
+        <waitForPageLoad stepKey="waitForCheckoutPageToLoad"/>
+        <dontSeeJsError stepKey="dontSeeShippingPageJsError"/>
+
+        <!-- Fill Shipment form -->
+        <actionGroup ref="FillGuestCustomerShippingDetailsActionGroup" stepKey="checkoutFillingShippingSection" >
+            <argument name="customerVar" value="Simple_US_Customer"/>
+            <argument name="customerAddressVar" value="US_Address_TX"/>
+        </actionGroup>
+
+        <dontSeeJsError stepKey="dontSeePaymentPageJsError"/>
+
+        <!-- Select the payment method -->
+        <actionGroup ref="SelectPaymentMethodActionGroup" stepKey="selectPaymentMethod">
+            <argument name="MethodSelector" value="{{StorefrontCheckoutPaymentMethodSection.checkPaymentMethodByName('Pay by Card')}}"/>
+        </actionGroup>
+
+        <!-- Fill payment form -->
+        <actionGroup ref="FillCardDetailsActionGroup" stepKey="fillCardDetails">
+            <argument name="CardNumber" value="{{Cards.SuccessCard}}"/>
+        </actionGroup>
+
+        <!-- Place the order -->
+        <actionGroup ref="ClickPlaceOrderActionGroup" stepKey="clickPlaceOrder"/>
+
+        <!-- Wait for order success page -->
+        <waitForPageLoad stepKey="waitForOrderSuccessPageToLoad"/>
+        <grabTextFrom selector="{{CheckoutSuccessMainSection.orderNumber}}" stepKey="grabOrderNumber"/>
+
+    </test>
+</tests>

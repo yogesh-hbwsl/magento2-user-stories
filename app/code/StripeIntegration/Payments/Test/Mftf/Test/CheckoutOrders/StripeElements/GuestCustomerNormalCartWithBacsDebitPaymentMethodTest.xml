@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="GuestCustomerNormalCartWithBacsDebitPaymentMethodTest" extends="GuestCustomerNormalCartWithRedirectPaymentMethodTest">
+        <annotations>
+            <features value="Order"/>
+            <stories value="Checkout Orders using BACS Debit"/>
+            <title value="Guest customer normal order with Stripe Bacs Debit payment method"/>
+            <description value="With Guest Customer ; and a selected store view currency of GBP Currency, add to the cart the products of NormalCart , proceed to the checkout page and specify US Address as the shipping address and FlatRateShippingMethod as the shipping method. Click Next and specify StripeElementsMethod as the payment method, using Bacs Debit payment method. Finally click Place Order."/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="GuestCustomerNormalCartWithBacsDebitPaymentMethodTest"/>
+            <group value="normal_cart"/>
+            <group value="card_success"/>
+            <group value="stripe_elements"/>
+            <group value="guest_customer"/>
+        </annotations>
+
+        <before>
+            <!-- Update API Details for BACS Debit -->
+            <actionGroup ref="AdminStripeSaveConfigurationActionGroup" stepKey="configureAPIKeys">
+                <argument name="pk" value="{{_CREDS.stripe/api_bacs_pk}}" />
+                <argument name="sk" value="{{_CREDS.stripe/api_bacs_sk}}" />
+            </actionGroup>
+
+            <actionGroup ref="AdminStripeUpdateCurrencyActionGroup" stepKey="updateStoreCurrency">
+                <argument name="currency" value="GBP" />
+            </actionGroup>
+        </before>
+
+        <!-- Select Bacs Debit Payment Method -->
+        <actionGroup ref="SelectBacsDebitPaymentMethodActionGroup" stepKey="selectRedirectTypePaymentMethod" after="selectPaymentMethod">
+            <argument name="paymentMethodTabId" value="#bacs_debit-tab" />
+            <argument name="paymentMethodName" value="bacs_debit" />
+        </actionGroup>
+
+        <!-- Place the order -->
+        <actionGroup ref="ClickPlaceOrderBacsDebitActionGroup" stepKey="clickPlaceOrder"/>
+
+        <after>
+            <!-- Reset API details -->
+            <actionGroup ref="AdminStripeSaveConfigurationActionGroup" stepKey="resetStripeSettings">
+                <argument name="pk" value="{{_CREDS.stripe/api_acc1_pk}}" />
+                <argument name="sk" value="{{_CREDS.stripe/api_acc1_sk}}" />
+            </actionGroup>
+
+            <actionGroup ref="AdminStripeUpdateCurrencyActionGroup" stepKey="resetStoreCurrency">
+                <argument name="currency" value="USD" />
+            </actionGroup>
+        </after>
+
+    </test>
+</tests>

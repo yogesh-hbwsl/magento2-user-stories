@@ -1,0 +1,84 @@
+<div class="payment-method subscription-update review _active" data-bind="blockLoader: isLoading">
+  <div class="payment-method-content">
+    <p data-bind="i18n: 'You are about to change your subscription.'" class="note"></p>
+
+    <div class="current plan">
+      <h3 data-bind="i18n: 'Current Billing Plan'"></h3>
+      <table class="data table table-totals">
+        <tbody>
+          <tr class="totals current">
+            <th class="mark" scope="row">
+              <!-- ko i18n: 'Price' --><!-- /ko -->
+            </th>
+            <td class="amount">
+              <span class="price" data-bind="text: getConfig('current_price_label')">--</span>
+            </td>
+          </tr>
+          <tr class="totals new">
+            <th class="mark" scope="row">
+              <!-- ko i18n: 'Last billed' --><!-- /ko -->
+            </th>
+            <td class="amount">
+              <span class="date" data-bind="html: getConfig('last_billed_label')">--</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="new plan">
+      <h3 data-bind="i18n: 'New Billing Plan'"></h3>
+      <table class="data table table-totals">
+        <tbody>
+          <tr class="totals current">
+            <th class="mark" scope="row">
+              <!-- ko i18n: 'Price' --><!-- /ko -->
+            </th>
+            <td class="amount">
+              <span class="price" data-bind="text: newPrice">--</span>
+            </td>
+          </tr>
+          <tr class="totals new">
+            <th class="mark" scope="row">
+              <!-- ko i18n: 'Next billing date' --><!-- /ko -->
+            </th>
+            <td class="amount">
+              <span class="fee" data-bind="html: getConfig('next_billing_date')"></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="credit" data-bind="text: credit"></p>
+
+    <div data-bind="if: permanentError, visible: permanentError" class="stripe-permanent-error">
+      <span><!-- ko i18n: permanentError --><!-- /ko --></span>
+    </div>
+
+    <div class="checkout-agreements-block" data-bind="ifnot: permanentError">
+      <!-- ko foreach: $parent.getRegion('before-place-order') -->
+      <!-- ko template: getTemplate() --><!-- /ko -->
+      <!--/ko-->
+    </div>
+
+    <!-- ko foreach: getRegion('messages') -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <!--/ko-->
+
+    <div class="actions-toolbar" id="actions-toolbar" data-bind="ifnot: permanentError">
+      <div class="primary">
+        <button class="action primary checkout" type="submit"
+          data-bind="
+          click: placeOrder,
+          enable: isPlaceOrderEnabled(),
+          attr: {title: $t('Update Subscription')}
+          ">
+          <span data-bind="i18n: 'Update Subscription'"></span>
+        </button>
+      </div>
+  </div>
+
+</div>
+
+</div>

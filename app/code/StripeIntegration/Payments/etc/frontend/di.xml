@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Checkout\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="stripe_payments_config_provider" xsi:type="object">StripeIntegration\Payments\Model\Ui\ConfigProvider</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="StripeIntegration\Payments\Block\Info">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item xsi:type="string" name="is_secure_mode">1</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\App\Action\AbstractAction">
+        <plugin name="stripe_context_currency" type="StripeIntegration\Payments\Plugin\Context" sortOrder="100"/>
+    </type>
+
+    <type name="Magento\Checkout\Controller\Cart\UpdateItemOptions">
+        <plugin name="redirect_to_checkout_after_update" type="StripeIntegration\Payments\Plugin\Checkout\Controller\Cart\UpdateItemOptions" sortOrder="10" disabled="false"/>
+    </type>
+</config>

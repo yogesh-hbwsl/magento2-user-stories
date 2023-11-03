@@ -1,0 +1,56 @@
+input PaymentMethodInput {
+    stripe_payments: StripePaymentsInput @doc(description:"Required input for Stripe Payments")
+}
+
+input StripePaymentsInput {
+    payment_element: Boolean @doc(description: "Set this to true if you will be using stripe.handleNextAction(client_secret) after the order placement, which handles all alternative payment methods offered by the PaymentElement.")
+    payment_method: String @doc(description: "If payment_element is true, pass the payment method id here instead of using cc_stripejs_token")
+    save_payment_method: Boolean @doc(description: "Specify whether the payment method should be saved")
+    manual_authentication: String @doc(description: "Advanced usage: Comma separated list of payment method types for which you intend to perform manual customer authentication at the front-end. When set, the order will not be placed until the customer is manually authenticated.")
+    cvc_token: String @doc(description:"When CVC is enabled for saved cards, pass the CVC token here to perform the verification.")
+    cc_stripejs_token: String @doc(description:"Deprecated: Stripe.js generated payment method token. This flow only supports tokens from CardElement and Stripe Elements.")
+}
+
+type Order @doc(description: "Contains the order ID.") {
+    client_secret: String @doc(description: "The client secret of the PaymentIntent or SetupIntent that is associated with this order")
+}
+
+input StripePaymentMethodId {
+    payment_method: String! @doc(description: "The ID of a payment method object")
+    fingerprint: String @doc(description: "When this is passed, the action will be performed on all duplicate payment methods which match the fingerprint.")
+}
+
+type StripePaymentMethod {
+    id: ID! @doc(description: "Payment method ID")
+    created: Int @doc(description: "UNIX timestamp representing the date that the payment method was created.")
+    type: String @doc(description: "The type of the payment method, i.e. card, klarna, sepa_debit.")
+    fingerprint: String @doc(description: "A unique identifier for the card number, tax id, bank account etc.")
+    label: String @doc(description: "A formatted payment method label that you can display to the customer.")
+    icon: String @doc(description: "A payment method icon URL that can be used at the front-end.")
+    cvc: Boolean @doc(description: "Indicates whether this saved payment method requires a CVC token to be submitted when placing an order.")
+    brand: String @doc(description: "Card brand")
+    exp_month: Int @doc(description: "Card expiration month")
+    exp_year: Int @doc(description: "Card expiration year")
+}
+
+type Mutation {
+    addStripePaymentMethod(input: StripePaymentMethodId!): StripePaymentMethod @doc(description: "Saves a payment method on the logged in customer") @resolver(class: "\\StripeIntegration\\Payments\\Model\\GraphQL\\Resolver\\AddStripePaymentMethod")
+    listStripePaymentMethods: [StripePaymentMethod] @doc(description: "List all saved payment methods of a logged in customer") @resolver(class: "\\StripeIntegration\\Payments\\Model\\GraphQL\\Resolver\\ListStripePaymentMethods")
+    deleteStripePaymentMethod(input: StripePaymentMethodId!): String @doc(description: "Deletes a saved payment method from a logged in customer") @resolver(class: "\\StripeIntegration\\Payments\\Model\\GraphQL\\Resolver\\DeleteStripePaymentMethod")
+}
+
+type Query {
+    getModuleConfiguration: ModuleConfiguration @resolver(class: "\\StripeIntegration\\Payments\\Model\\GraphQL\\Resolver\\ModuleConfiguration") @doc(description: "Get Module Configuration to initialize Stripe Elements.")
+}
+
+type ModuleConfiguration {
+    apiKey: String @doc(description: "The Public Key of the Stripe payment.")
+    locale: String @doc(description: "Locale")
+    appInfo: [String] @doc(description: "Module Version and Partner ID etc")
+    options: ModuleOptions @doc(description: "Betas and API version")
+}
+
+type ModuleOptions {
+    betas: [String] @doc(description: "Betas.")
+    apiVersion: String @doc(description: "API Version")
+}

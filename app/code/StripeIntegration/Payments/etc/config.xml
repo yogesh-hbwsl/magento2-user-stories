@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <stripe_settings>
+            <automatic_webhooks_configuration>1</automatic_webhooks_configuration>
+            <payment_methods>
+                <!-- You can use the following xml format to filter down payment methods on specific store views -->
+                <!-- CAUTION ADVISED: Passing a non-supported payment method type may crash the payment form -->
+                <!--
+                <store_code>
+                    <currency_code>card,klarna</currency_code>
+                    <other_currency_code>bancontact,sepa_debit</other_currency_code>
+                </store_code>
+                <other_store_code>
+                    <currency_code>card,afterpay_clearpay</currency_code>
+                </other_store_code>
+                -->
+                <!-- For stores and currencies which are not included, all supported and enabled payment methods will be displayed -->
+            </payment_methods>
+        </stripe_settings>
+        <payment>
+            <stripe_payments>
+                <active>1</active>
+                <model>StripePaymentsFacade</model>
+                <stripe_test_sk backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <stripe_live_sk backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <payment_action>authorize_capture</payment_action>
+                <title>Pay online</title>
+                <card_icons>0</card_icons>
+                <card_icons_specific>amex,discover,diners,jcb,mastercard,visa,cartes_bancaires</card_icons_specific>
+                <radar_risk_level>10</radar_risk_level>
+                <currency>USD</currency>
+                <sort_order>1</sort_order>
+                <card_autodetect>2</card_autodetect>
+                <cctypes>visa,mastercard,amex,jcb,discover,diners,cartes_bancaires</cctypes>
+                <save_payment_method>0</save_payment_method>
+                <receipt_emails>0</receipt_emails>
+                <level3_data>0</level3_data>
+                <payment_flow>0</payment_flow>
+                <webhook_origin_check>1</webhook_origin_check>
+                <cvc_code>new_cards</cvc_code>
+
+                <!-- What can we do? -->
+                <is_gateway>1</is_gateway>
+                <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
+                <can_capture_once>1</can_capture_once>
+                <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <can_void>1</can_void>
+                <can_cancel>1</can_cancel>
+                <can_use_internal>1</can_use_internal>
+                <can_use_checkout>1</can_use_checkout>
+                <can_save_cc>0</can_save_cc>
+                <can_use_for_multishipping>0</can_use_for_multishipping>
+            </stripe_payments>
+            <stripe_payments_invoice>
+                <active>1</active>
+                <model>StripePaymentsInvoiceFacade</model>
+                <title>Stripe Billing</title>
+                <payment_action>authorize_capture</payment_action>
+                <sort_order>5</sort_order>
+                <off_session>1</off_session>
+                <can_capture>1</can_capture>
+                <can_use_internal>1</can_use_internal>
+                <can_use_checkout>0</can_use_checkout>
+                <can_use_for_multishipping>0</can_use_for_multishipping>
+                <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <can_void>1</can_void>
+                <can_cancel>1</can_cancel>
+                <can_cancel_invoice>1</can_cancel_invoice>
+                <can_save_cc>0</can_save_cc>
+            </stripe_payments_invoice>
+            <stripe_payments_checkout>
+                <active>1</active>
+                <model>StripeIntegration\Payments\Model\Method\Checkout</model>
+                <!-- The title is displayed in the admin grid only -->
+                <title>Stripe Checkout</title>
+            </stripe_payments_checkout>
+            <stripe_payments_subscriptions>
+                <model>StripeSubscriptionsFacade</model>
+                <active>1</active>
+                <upgrade_downgrade>1</upgrade_downgrade>
+                <prorations_upgrades>0</prorations_upgrades>
+                <prorations_downgrades>0</prorations_downgrades>
+                <additional_info>1</additional_info>
+            </stripe_payments_subscriptions>
+            <stripe_payments_bank_transfers>
+                <active>0</active>
+                <payment_action>order</payment_action>
+                <minimum_amount>100</minimum_amount>
+                <model>StripeIntegration\Payments\Model\Method\BankTransfers</model>
+                <title>Bank transfer</title>
+                <sort_order>10</sort_order>
+
+                <!-- Capabilities -->
+                <can_use_internal>0</can_use_internal>
+                <can_use_checkout>1</can_use_checkout>
+                <can_use_for_multishipping>0</can_use_for_multishipping>
+                <can_refund>1</can_refund>
+                <can_void>1</can_void>
+                <can_cancel>1</can_cancel>
+                <can_cancel_invoice>1</can_cancel_invoice>
+                <can_save_cc>0</can_save_cc>
+                <can_order>1</can_order>
+                <can_authorize>0</can_authorize>
+                <can_capture>0</can_capture>
+            </stripe_payments_bank_transfers>
+            <stripe_payments_express>
+                <model>StripeExpressFacade</model>
+                <title>Wallet payment via Stripe</title>
+                <global_enabled>1</global_enabled>
+                <enabled>product_page,minicart,shopping_cart_page,checkout_page</enabled>
+                <button_type>default</button_type>
+                <button_theme>dark</button_theme>
+                <button_height>50</button_height>
+
+                <!-- What can we do? -->
+                <is_gateway>1</is_gateway>
+                <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
+                <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <can_void>1</can_void>
+                <can_cancel>1</can_cancel>
+                <can_use_internal>1</can_use_internal>
+                <can_use_checkout>1</can_use_checkout>
+                <can_save_cc>0</can_save_cc>
+            </stripe_payments_express>
+        </payment>
+    </default>
+</config>

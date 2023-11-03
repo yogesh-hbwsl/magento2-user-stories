@@ -1,0 +1,57 @@
+<?php
+$canceledSubscriptions = $this->getCanceledSubscriptions();
+if (empty($canceledSubscriptions))
+  return;
+?>
+
+<tr>
+  <td colspan="3" style="border-top: 0">
+    <h3><?php echo __("Canceled Subscriptions"); ?></h3>
+  </td>
+</tr>
+<?php foreach ($canceledSubscriptions as $subscription) : ?>
+  <?php
+  /** @var \StripeIntegration\Payments\Model\Stripe\Subscription $stripeSubscriptionModel */
+  $stripeSubscriptionModel = $block->getSubscriptionModel($subscription);
+  ?>
+  <tr class="<?php echo $subscription->id; ?>">
+    <td data-th="Order #" class="col order">
+      <a href="viewOrder/<?php echo $subscription->metadata["Order #"]; ?>">
+        <?php echo $subscription->metadata["Order #"]; ?>
+      </a>
+    </td>
+    <td data-th="<?php echo __("Subscription"); ?>" class="col id">
+      <div class="subscription-name">
+        <?php echo $this->getSubscriptionName($subscription); ?>
+      </div>
+      <div class="billed">
+        <?php echo $stripeSubscriptionModel->getFormattedBilling(); ?>
+      </div>
+      <div class="<?php echo $subscription->id; ?> payment-method stripe-subscription-edit">
+        <div class="static section">
+          <div class="details stripe-payments">
+            <?php $paymentMethod = $block->getSubscriptionDefaultPaymentMethod($subscription); ?>
+            <?php if ($paymentMethod) : ?>
+              <img class="icon" src="<?php echo $paymentMethod['icon']; ?>" alt="<?php echo $paymentMethod['label']; ?>">
+              <span class="label"><?php echo $paymentMethod['label']; ?></span>
+              <?php if (!empty($paymentMethod['exp_month'])) : ?>
+                <span class="exp">
+                  <?php echo $paymentMethod['exp_month']; ?>/<?php echo $paymentMethod['exp_year']; ?>
+                </span>
+              <?php endif; ?>
+            <?php else : ?>
+              <?php echo __("No payment method."); ?>
+            <?php endif; ?>
+          </div>
+        </div>
+      </div>
+    </td>
+    <td data-th="Actions" class="col">
+      <div class="primary">
+        <button type="button" onclick="location.href='<?php echo $block->getUrl('stripe/customer/subscriptions/reactivate/' . $subscription->id); ?>';" class="action" title="<?php echo __("Reactivate"); ?>">
+          <span><?php echo __("Reactivate"); ?></span>
+        </button>
+      </div>
+    </td>
+  </tr>
+<?php endforeach; ?>

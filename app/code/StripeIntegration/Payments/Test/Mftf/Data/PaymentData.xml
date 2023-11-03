@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+    <entity name="Cards">
+        <data key="SuccessCard">4242424242424242</data>
+        <data key="DeclinedCard">4000000000000002</data>
+        <data key="InsufficientFundsCard">4000000000009995</data>
+        <data key="ElevatedRiskCard">4000000000009235</data>
+        <data key="AuthenticationRequiredCard">4000000000003220</data>
+        <data key="InstallmentsCard">4000004840000008</data>
+        <data key="ExpDate">1225</data>
+        <data key="CVC">123</data>
+    </entity>
+    <entity name="SEPA">
+        <data key="Success">DE89370400440532013000</data>
+        <data key="Failed">DE62370400440532013001</data>
+    </entity>
+    <entity name="Klarna">
+        <data key="SuccessCard">4111111111111111</data>
+    </entity>
+    <entity name="Currency">
+        <data key="AllowedCurrency">USD,EUR,MXN,GBP,AUD,PLN</data>
+    </entity>
+    <entity name="savedPaymentMethod">
+        <data key="country">US</data>
+        <data key="zipCode">90210</data>
+    </entity>
+</entities>

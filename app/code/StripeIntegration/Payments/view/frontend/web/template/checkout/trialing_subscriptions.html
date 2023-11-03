@@ -1,0 +1,41 @@
+<!-- ko if: hasTrialingSubscriptions -->
+
+<tr class="totals trialing_subscriptions excl">
+
+    <th class="mark" colspan="1" scope="row" data-bind="text: title"></th>
+    <td class="amount">
+        <span class="price" data-bind="text: getFormattedSubscriptionsPrice()"></span>
+    </td>
+</tr>
+
+<!-- ko if: hasDiscount -->
+<tr class="totals trialing_discount excl">
+
+    <th class="mark" colspan="1" scope="row" data-bind="text: discountTitle()"></th>
+    <td class="amount">
+        <span class="discount" data-bind="text: getFormattedDiscount()"></span>
+    </td>
+</tr>
+<!-- /ko -->
+
+<!-- ko if: hasShipping -->
+<tr class="totals trialing_shipping excl">
+
+    <th class="mark" colspan="1" scope="row" data-bind="text: shippingTitle()"></th>
+    <td class="amount">
+        <span class="shipping" data-bind="text: getFormattedShipping()"></span>
+    </td>
+</tr>
+<!-- /ko -->
+
+<!-- ko if: hasTax -->
+<tr class="totals trialing_tax excl">
+
+    <th class="mark" colspan="1" scope="row" data-bind="text: taxTitle()"></th>
+    <td class="amount">
+        <span class="tax" data-bind="text: getFormattedTax()"></span>
+    </td>
+</tr>
+<!-- /ko -->
+
+<!-- /ko -->

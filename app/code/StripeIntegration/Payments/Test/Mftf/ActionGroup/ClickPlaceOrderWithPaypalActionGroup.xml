@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="ClickPlaceOrderWithPaypalActionGroup">
+        <annotations>
+            <description>Clicks on the 'Place Order' button. Waits for the Stripe Payment page to open.</description>
+        </annotations>
+        <arguments>
+            <argument name="username" defaultValue="{{_CREDS.stripe/paypal_username}}" type="string"/>
+            <argument name="password" defaultValue="{{_CREDS.stripe/paypal_password}}" type="string"/>
+        </arguments>
+
+        <!-- Wait for place order button and click on it -->
+        <waitForElement selector="{{CheckoutPaymentSection.placeOrder}}" time="30" stepKey="waitForPlaceOrderButton"/>
+        <click selector="{{CheckoutPaymentSection.placeOrder}}" stepKey="clickPlaceOrder"/>
+
+        <waitForPageLoad stepKey="waitForStripePaypalPageToLoad" time="10"/>
+
+        <!-- Verify the stripe paypal page loads -->
+        <seeCurrentUrlMatches regex="~sandbox.paypal.com/checkoutnow~" stepKey="seeInStripePaypalUrl"/>
+
+        <!-- Fill Email Field -->
+        <waitForElementVisible selector="{{StorefrontCheckoutPaypalSection.emailField}}" time="5" stepKey="waitForEmailField"/>
+        <fillField  userInput="{{username}}" selector="{{StorefrontCheckoutPaypalSection.emailField}}" stepKey="fillUsername"/>
+
+        <!-- Fill Password Field -->
+        <waitForElementVisible selector="{{StorefrontCheckoutPaypalSection.passwordField}}" time="5" stepKey="waitForPasswordField"/>
+        <fillField  userInput="{{password}}" selector="{{StorefrontCheckoutPaypalSection.passwordField}}" stepKey="fillPassword"/>
+
+        <click selector="{{StorefrontCheckoutPaypalSection.loginBtnField}}" stepKey="clickLoginButton"/>
+
+        <!-- Verify the stripe paypal confirmation page loads -->
+        <waitForPageLoad stepKey="waitForStripePaypalConfirmationPageToLoad" time="10"/>
+
+        <!-- Verify the stripe paypal confirmation page loads -->
+        <seeCurrentUrlMatches regex="~sandbox.paypal.com/webapps~" stepKey="seeInStripePaypalConfirmationUrl"/>
+
+        <waitForElementVisible selector="{{StorefrontCheckoutPaypalSection.paymentSubmitBtnField}}" time="5" stepKey="waitForPaymentSubmitField"/>
+        <click selector="{{StorefrontCheckoutPaypalSection.paymentSubmitBtnField}}" stepKey="clickPaymentSubmitButton"/>
+
+        <waitForPageLoad stepKey="waitForSuccessPageToLoad" time="30"/>
+
+        <!-- Check if success message is displayed -->
+        <see selector="{{CheckoutSuccessMainSection.successTitle}}" userInput="Thank you for your purchase!" stepKey="seeOrderSuccessMessage"/>
+    </actionGroup>
+</actionGroups>

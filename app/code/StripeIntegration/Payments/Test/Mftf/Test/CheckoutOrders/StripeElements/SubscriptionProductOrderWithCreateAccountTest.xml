@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="SubscriptionProductOrderWithCreateAccount">
+        <annotations>
+            <features value="Order"/>
+            <stories value="Checkout Orders and Create account"/>
+            <title value="Guest customer normal order using subscription product and create account after placing order"/>
+            <description value="With Guest Customer ; and a selected store view currency of USD Currency, add to the cart the subscription products of NormalCart , proceed to the checkout page and specify US Address as the shipping address and FlatRateShippingMethod as the shipping method. Click Next and specify StripeElementsMethod as the payment method. Finally click Place Order, Create Account, Check subscription product added into the account"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="SubscriptionProductOrderWithCreateAccount"/>
+            <group value="normal_cart"/>
+            <group value="card_success"/>
+            <group value="stripe_elements"/>
+            <group value="guest_customer"/>
+        </annotations>
+
+        <!-- Navigate to the product page -->
+        <amOnPage url="{{StorefrontProductPage.url(SimpleMonthlySubscriptionProduct.urlKey)}}" stepKey="navigateToSimpleProductPage"/>
+        <waitForPageLoad stepKey="waitForSimpleProductPageLoad"/>
+
+        <!-- Add Simple Product to cart -->
+        <actionGroup ref="AddToCartFromStorefrontProductPageActionGroup" stepKey="addToCartFromStorefrontProductPage">
+            <argument name="productName" value="SimpleMonthlySubscriptionProduct.name"/>
+        </actionGroup>
+
+        <!-- Go to checkout -->
+        <actionGroup ref="GoToCheckoutFromMinicartActionGroup" stepKey="goToCheckoutFromMinicart"/>
+
+        <!-- Fill Shipment form -->
+        <actionGroup ref="FillGuestCustomerShippingDetailsActionGroup" stepKey="checkoutFillingShippingSection" >
+            <argument name="customerVar" value="Simple_US_Customer"/>
+            <argument name="customerAddressVar" value="US_Address_TX"/>
+        </actionGroup>
+
+        <!-- Wait for payment page -->
+        <waitForPageLoad stepKey="waitForPaymentPageToLoad"/>
+
+        <!-- Select the payment method -->
+        <actionGroup ref="SelectPaymentMethodActionGroup" stepKey="selectPaymentMethod">
+            <argument name="MethodSelector" value="{{StorefrontCheckoutPaymentMethodSection.checkPaymentMethodByName('Pay by Card')}}"/>
+        </actionGroup>
+
+        <!-- Fill payment form -->
+        <actionGroup ref="FillCardDetailsInCardPaymentActionGroup" stepKey="fillCardDetails">
+            <argument name="CardNumber" value="{{Cards.SuccessCard}}"/>
+        </actionGroup>
+
+        <!-- Place the order -->
+        <actionGroup ref="ClickPlaceOrderActionGroup" stepKey="clickPlaceOrder"/>
+
+        <!-- Create account after placing the order -->
+        <actionGroup ref="CreateAccountAfterPlacingOrderActionGroup" stepKey="createAccountAfterPlacingOrder"/>
+
+        <!-- Navigate to customer stripe subscription page -->
+        <actionGroup ref="NavigateCustomerSubscriptionPageActionGroup" stepKey="navigateToCustomerSubscriptionPage"/>
+
+        <!-- Check the subscription product Name -->
+        <see userInput="{{SimpleMonthlySubscriptionProduct.name}}" selector="{{StorefrontCustomerSubscriptionSection.subscriptionItemTitleElement}}" stepKey="checkSubscriptionProduct"/>
+    </test>
+</tests>

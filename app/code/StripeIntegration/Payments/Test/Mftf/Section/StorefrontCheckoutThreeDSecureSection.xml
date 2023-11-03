@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="StorefrontCheckoutThreeDSecureSection">
+        <element name="overlayIframe" type="iframe" selector="(//body//div)[1]//iframe" />
+        <element name="challengeIframe" type="iframe" selector="//iframe[@id='challengeFrame']" />
+        <element name="fullScreenIframe" type="iframe" selector="//iframe[@name='acsFrame']" />
+        <element name="completeAuthenticationButton" type="button" selector="//button[@id='test-source-authorize-3ds']" />
+        <element name="failAuthenticationButton" type="button" selector="//button[@id='test-source-fail-3ds']" />
+    </section>
+</sections>

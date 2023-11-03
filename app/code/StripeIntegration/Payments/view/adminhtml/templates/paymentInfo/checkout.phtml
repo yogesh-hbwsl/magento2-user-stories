@@ -1,0 +1,100 @@
+<h4>
+    <span class="stripe-method-title"><?php echo __('Stripe Checkout - %1', $this->getTitle()); ?></span>
+
+    <?php if (!empty($this->getPaymentMethodCode())): ?>
+    <span class="stripe-payment-method">
+        <?php if ($block->getPaymentMethodIconUrl()): ?>
+            <img src="<?php echo $block->getPaymentMethodIconUrl(); ?>" class="stripe-payment-method-icon">
+        <?php endif; ?>
+        <?php if ($block->getPaymentMethodName()): ?>
+            <span class="stripe-payment-method-name"><?php echo $block->getPaymentMethodName(); ?></span>
+        <?php endif; ?>
+    </span>
+    <?php endif; ?>
+</h4>
+
+<table class="admin__table-secondary order-information-table stripe payment-info">
+  <tbody>
+
+    <?php if (!empty($this->getFormattedAmount())): ?>
+    <tr>
+        <th><?php echo __('Amount'); ?></th>
+        <td class="stripe-amount">
+            <strong>
+                <?php echo $this->getFormattedAmount(); ?>
+            </strong>
+        </td>
+    </tr>
+    <?php endif; ?>
+
+    <?php if (!empty($this->getPaymentStatus())): ?>
+    <tr>
+        <th><?php echo __('Payment status'); ?></th>
+        <td class="stripe-payment-status">
+            <span class="stripe-payment-status-<?php echo $block->getPaymentStatus(); ?>">
+                <?php echo $block->getPaymentStatusName(); ?>
+            </span>
+        </td>
+    </tr>
+    <?php endif; ?>
+
+    <?php if (!empty($this->getFormattedSubscriptionAmount())): ?>
+    <tr>
+        <th><?php echo __('Subscription amount'); ?></th>
+        <td class="stripe-subscription-amount">
+            <?php echo $this->getFormattedSubscriptionAmount(); ?>
+        </td>
+    </tr>
+    <?php endif; ?>
+
+    <?php if (!empty($this->getSubscriptionStatus())): ?>
+    <tr>
+        <th><?php echo __('Subscription status'); ?></th>
+        <td class="stripe-subscription-status">
+            <span class="stripe-subscription-status-<?php echo $block->getSubscriptionStatus(); ?>">
+                <?php echo $this->getSubscriptionStatusName(); ?>
+            </span>
+        </td>
+    </tr>
+    <?php endif; ?>
+
+    <?php if (!empty($this->getRiskScore())): ?>
+    <tr>
+        <th><?php echo __('Risk evaluation'); ?></th>
+        <td class="stripe-payment-risk-<?php echo $this->getRiskLevelCode(); ?>">
+            <span class="stripe-payment-risk-score <?php echo ucfirst($this->getRiskScore()); ?>">
+                <span class="score-value">
+                    <?php echo ucfirst($this->getRiskScore()); ?>
+                </span>
+            </span>
+            <span class="stripe-payment-risk-level"><?php echo ucfirst($this->getRiskEvaluation()); ?></span>
+        </td>
+    </tr>
+    <?php endif; ?>
+    <?php if ($block->getPaymentId()): ?>
+    <tr>
+        <th><?php echo __('Payment'); ?></th>
+        <td class="payment">
+            <a href="https://dashboard.stripe.com/<?php echo $block->getMode(); ?>payments/<?php echo $block->getPaymentId(); ?>" target="_blank" rel="noopener noreferrer">View in Stripe</a>
+        </td>
+    </tr>
+    <?php endif; ?>
+    <?php if ($block->getSubscription()): ?>
+    <tr>
+        <th><?php echo __('Subscription'); ?></th>
+        <td class="subscription">
+            <a href="https://dashboard.stripe.com/<?php echo $block->getMode(); ?>subscriptions/<?php echo $block->getSubscription()->id; ?>" target="_blank" rel="noopener noreferrer">View in Stripe</a>
+        </td>
+    </tr>
+    <?php endif; ?>
+    <?php if ($block->getCustomerId()): ?>
+    <tr>
+        <th><?php echo __('Customer'); ?></th>
+        <td class="customer">
+            <a href="https://dashboard.stripe.com/<?php echo $block->getMode(); ?>customers/<?php echo $block->getCustomerId(); ?>" target="_blank" rel="noopener noreferrer">View in Stripe</a>
+        </td>
+    </tr>
+    <?php endif; ?>
+
+    </tbody>
+</table>

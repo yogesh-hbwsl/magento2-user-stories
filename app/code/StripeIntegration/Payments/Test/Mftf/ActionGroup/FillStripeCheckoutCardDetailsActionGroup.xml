@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="FillStripeCheckoutCardDetailsActionGroup">
+        <annotations>
+            <description>Fills the card number, expiration date and the security code on a Stripe Checkout payment form.</description>
+        </annotations>
+        <arguments>
+            <argument name="CardNumber" defaultValue="{{Cards.Success}}" type="string"/>
+            <argument name="ExpDate" defaultValue="{{Cards.ExpDate}}" type="string"/>
+            <argument name="CVC" defaultValue="{{Cards.CVC}}" type="string"/>
+            <argument name="BillingCountry" defaultValue="US" type="string"/>
+            <argument name="BillingPostalCode" defaultValue="12345" type="string"/>
+        </arguments>
+
+        <!-- Fill the card number -->
+        <waitForElementVisible selector="{{StripeCheckoutSection.cardNumberField}}" stepKey="waitForCardNumberField" />
+        <wait time="2" stepKey="waitForFieldToInitialize" />
+        <fillField selector="{{StripeCheckoutSection.cardNumberField}}" userInput="{{CardNumber}}" stepKey="fillCardNumber"/>
+
+        <!-- Fill the expiration date -->
+        <waitForElementVisible selector="{{StripeCheckoutSection.expDateField}}" stepKey="waitForExpDateField" />
+        <fillField selector="{{StripeCheckoutSection.expDateField}}" userInput="{{ExpDate}}" stepKey="fillExpDate"/>
+
+        <!-- Fill the CVC number -->
+        <waitForElementVisible selector="{{StripeCheckoutSection.cvcField}}" stepKey="waitForCVCField" />
+        <fillField selector="{{StripeCheckoutSection.cvcField}}" userInput="{{CVC}}" stepKey="fillCVC"/>
+
+        <!-- Fill the Cardholder name -->
+        <waitForElementVisible selector="{{StripeCheckoutSection.cvcField}}" stepKey="waitForCardholderNameField" />
+        <fillField selector="{{StripeCheckoutSection.cardNameField}}" userInput="{{CVC}}" stepKey="fillCardholderName"/>
+
+        <!-- Set the country -->
+        <selectOption userInput="{{BillingCountry}}" selector="select#billingCountry" stepKey="selectCountry"/>
+
+        <!-- Fill postal code -->
+        <waitForElementVisible selector="#billingPostalCode" stepKey="waitForPostalCodeField" />
+        <fillField selector="#billingPostalCode" userInput="{{BillingPostalCode}}" stepKey="fillPostalCode"/>
+
+    </actionGroup>
+</actionGroups>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+    <entity name="RegionAGU" type="region">
+        <data key="region">Aguascalientes</data>
+        <data key="region_code">AGU</data>
+        <data key="region_id">921</data>
+    </entity>
+    <entity name="RegionTX" type="region">
+        <data key="region">Texas</data>
+        <data key="region_code">TX</data>
+        <data key="region_id">57</data>
+    </entity>
+    <entity name="RegionPLN" type="region">
+        <data key="region">lubelskie</data>
+        <data key="region_code">PL-06</data>
+        <data key="region_id">999</data>
+    </entity>
+</entities>

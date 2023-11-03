@@ -1,0 +1,29 @@
+<?php
+// This template is loaded on the multi-shipping checkout page
+?>
+
+<fieldset id="payment_form_stripe_payments" class="stripe-payments standard-form fieldset items" style="display: none;">
+  <div data-bind="scope: 'payment_method_stripe_payments'">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+  </div>
+
+  <script type="text/javascript">
+    window.initParams = <?php echo $this->getInitParams(); ?>;
+
+    require([ 'uiLayout' ], function (layout)
+    {
+        layout([
+            {
+                component: 'StripeIntegration_Payments/js/view/multishipping/method-renderer/payment_element',
+                name: 'payment_method_stripe_payments',
+                method: 'stripe_payments',
+                item: {
+                    method: 'stripe_payments'
+                },
+                captureMethod: '<?php echo $this->getCaptureMethod() ?>'
+            }
+        ]);
+    });
+  </script>
+
+</fieldset>

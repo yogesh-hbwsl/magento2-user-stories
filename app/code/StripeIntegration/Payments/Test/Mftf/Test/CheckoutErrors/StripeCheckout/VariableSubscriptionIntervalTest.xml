@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="CheckoutErrorsVariableSubscriptionIntervalStripeCheckoutMethodTest">
+        <annotations>
+            <features value="Order"/>
+            <stories value="Checkout Errors"/>
+            <title value="A customer should not be able to buy subscriptions which renew on different dates using the Stripe Checkout method."/>
+            <description value="With GuestCustomer ; and a selected store view currency of USDCurrency ; add to the cart the products of VariableSubscriptionsCart ; proceed to the checkout page and if a shipping address is required, specify NewYorkAddress as the shipping address, FlatRateShippingMethod as the shipping method, click Next and specify StripeCheckoutMethod as the payment method, filling SuccessCard in the payment form. Click Place Order. Assert that the following error is visible: 'Sorry, it is not possible to buy subscriptions that are billed on different dates. All subscription items must be billed on the same date. Please buy the subscriptions separately.'"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="CheckoutErrorsVariableSubscriptionIntervalStripeCheckoutMethod"/>
+            <group value="checkout_errors"/>
+            <group value="guest_customer"/>
+            <group value="variable_subscriptions_cart"/>
+            <group value="stripe_checkout"/>
+            <group value="success_card"/>
+        </annotations>
+
+        <!-- Add products to the cart -->
+        <actionGroup ref="VariableSubscriptionsCartActionGroup" stepKey="createVariableSubscriptionsCart" />
+
+        <!-- Go to checkout -->
+        <actionGroup ref="GoToCheckoutFromMinicartActionGroup" stepKey="goToCheckoutPage"/>
+        <waitForPageLoad stepKey="waitForCheckoutPageToLoad"/>
+        <dontSeeJsError stepKey="dontSeeShippingPageJsError"/>
+
+        <!-- Fill Shipment form -->
+        <actionGroup ref="GuestCheckoutFillingShippingSectionActionGroup" stepKey="checkoutFillingShippingSection" >
+            <argument name="customerVar" value="Simple_US_Customer"/>
+            <argument name="customerAddressVar" value="US_Address_TX"/>
+        </actionGroup>
+
+        <dontSeeJsError stepKey="dontSeePaymentPageJsError"/>
+
+        <!-- Select the payment method -->
+        <actionGroup ref="SelectPaymentMethodActionGroup" stepKey="selectPaymentMethod">
+            <argument name="MethodSelector" value="{{StorefrontCheckoutPaymentMethodSection.checkPaymentMethodByName('Pay by Card')}}"/>
+        </actionGroup>
+
+        <waitForElement selector="{{CheckoutPaymentSection.placeOrder}}" time="30" stepKey="waitForPlaceOrderButton"/>
+
+        <helper class="\StripeIntegration\Payments\Test\Mftf\Helper\PlaceOrderHelper" method="placeOrderRedirect" stepKey="placeOrder">
+            <argument name="buttonSelector">{{CheckoutPaymentSection.placeOrder}}</argument>
+        </helper>
+
+        <actionGroup ref="StorefrontAssertCheckoutErrorMessageActionGroup" stepKey="assertCantPlaceOrder">
+            <argument name="message" value="Sorry, it is not possible to buy subscriptions that are billed on different dates. All subscription items must be billed on the same date. Please buy the subscriptions separately." />
+        </actionGroup>
+
+    </test>
+</tests>

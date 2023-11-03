@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<include xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_include.xsd">
+  <group id="subscriptions" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+    <label>Subscriptions via Stripe Billing</label>
+    <comment>Create and manage subscriptions directly via your Magento Admin to easily add a recurring line of revenue to your business model. &lt;a href="http://stripe.com/billing?utm_campaign=comarketing&amp;utm_source=magento&amp;utm_medium=referred" target="_blank" rel="noopener noreferrer"&gt;Learn More&lt;/a&gt; about Stripe Billing.</comment>
+    <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Enabled</label>
+      <comment><![CDATA[If you do not sell subscriptions, disabling them is recommended.]]></comment>
+      <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+      <config_path>payment/stripe_payments_subscriptions/active</config_path>
+    </field>
+    <field id="upgrade_downgrade" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Customers can change subscription</label>
+      <source_model>StripeIntegration\Payments\Model\Adminhtml\Source\Enabled</source_model>
+      <config_path>payment/stripe_payments_subscriptions/upgrade_downgrade</config_path>
+      <comment><![CDATA[Allow customers to change the quantity or options of active subscriptions from the customer account section.]]></comment>
+      <depends>
+        <field id="active">1</field>
+      </depends>
+    </field>
+    <field id="prorations_upgrades" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Prorations for upgrades</label>
+      <source_model>StripeIntegration\Payments\Model\Adminhtml\Source\Enabled</source_model>
+      <config_path>payment/stripe_payments_subscriptions/prorations_upgrades</config_path>
+      <comment><![CDATA[Upgrades will incur an extra fee for the price difference.]]></comment>
+      <depends>
+        <field id="active">1</field>
+        <field id="upgrade_downgrade">1</field>
+      </depends>
+    </field>
+    <field id="prorations_downgrades" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Prorations for downgrades</label>
+      <source_model>StripeIntegration\Payments\Model\Adminhtml\Source\Enabled</source_model>
+      <config_path>payment/stripe_payments_subscriptions/prorations_downgrades</config_path>
+      <comment><![CDATA[Downgrades will credit the customer's account balance, and will be used to offset future subscription payments.]]></comment>
+      <depends>
+        <field id="active">1</field>
+        <field id="upgrade_downgrade">1</field>
+      </depends>
+    </field>
+    <field id="additional_info" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Additional info</label>
+      <source_model>StripeIntegration\Payments\Model\Adminhtml\Source\Enabled</source_model>
+      <config_path>payment/stripe_payments_subscriptions/additional_info</config_path>
+      <comment><![CDATA[When a product is added to the cart, subscription details are added to the cart item's info block]]></comment>
+      <depends>
+        <field id="active">1</field>
+      </depends>
+    </field>
+  </group>
+</include>

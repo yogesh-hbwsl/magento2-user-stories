@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="ClickPlaceOrderAUBecsDebitActionGroup">
+        <annotations>
+            <description>Clicks on the 'Place Order' button. Waits for the Success page is to display.</description>
+        </annotations>
+
+        <!-- Wait for place order button and click on it -->
+        <waitForElement selector="{{CheckoutPaymentSection.placeOrder}}" stepKey="waitForPlaceOrderButton"/>
+        <click selector="{{CheckoutPaymentSection.placeOrder}}" stepKey="clickPlaceOrder"/>
+
+        <!-- Check if success message is displayed -->
+        <waitForPageLoad stepKey="waitForCheckout" time="30"/>
+        <see selector="{{CheckoutSuccessMainSection.successTitle}}" userInput="Thank you for your purchase!" stepKey="seeOrderSuccessMessage"/>
+    </actionGroup>
+</actionGroups>

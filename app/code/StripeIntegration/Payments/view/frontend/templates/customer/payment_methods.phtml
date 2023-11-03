@@ -1,0 +1,22 @@
+<div data-bind="scope: 'payment_method_stripe_payments'">
+  <!-- ko template: getTemplate() --><!-- /ko -->
+</div>
+
+<script type="text/javascript">
+  // Not the best place to have this, but it offers a performance benefit (one less API call). The template is non-cacheable.
+  window.initParams = <?php echo $this->getInitParams(); ?>;
+
+  require([ 'uiLayout' ], function (layout)
+  {
+      layout([
+          {
+              component: 'StripeIntegration_Payments/js/view/ui_components/setup_element',
+              name: 'payment_method_stripe_payments',
+              method: 'stripe_payments',
+              item: {
+                  method: 'stripe_payments'
+              }
+          }
+      ]);
+  });
+</script>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="StorefrontCheckoutKlarnaSection">
+        <element name="klarnaOverlayIframe" type="iframe" selector="(//body)//iframe[@id='klarna-payments-device-recognition']" />
+        <element name="klarnaApfIframe" type="iframe" selector="(//body//div)//iframe[@id='klarna-apf-iframe']" />
+        <element name="klarnaOnContinueButton" type="button" selector="//button[@id='onContinue']" />
+        <element name="KlarnaOtpField" type="input" selector="//input[@id='otp_field']" />
+        <element name="KlarnaPayLaterField" type="input" selector="//body//div[@id='root']//div[@id='dialog']//div//div//div//div//div//div//div//div//div//input[@id='pay_later-pay_later']" />
+        <element name="klarnaSelectPaymentCategoryButton" type="button" selector="//body//div[@id='root']//div[@id='dialog']//div//div//div//div//div//div//div//div//button[@data-testid='select-payment-category']" />
+        <element name="klarnaConfirmAndPayButton" type="button" selector="//body//div[@id='root']//div//div//div//div//button[@data-testid='confirm-and-pay']" />
+        <element name="klarnaCheckoutButton" type="button" selector="//body//div[@id='root']//div[@id='dialog']//div//div//div//div//div//div//div//div//button[@data-testid='SmoothCheckoutPopUp:enable']" />
+    </section>
+</sections>

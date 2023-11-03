@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+    <entity name="Mexico_Address" type="address">
+        <data key="firstname">John</data>
+        <data key="lastname">Doe</data>
+        <data key="company">Magento</data>
+        <array key="street">
+            <item>ALDAMA SUR NO. 1210</item>
+        </array>
+        <data key="city">Estado De Mexico</data>
+        <data key="country_id">MX</data>
+        <data key="country">Mexico</data>
+        <data key="state">Aguascalientes</data>
+        <data key="postcode">50130</data>
+        <data key="telephone">722.212-2555</data>
+        <data key="default_billing">Yes</data>
+        <data key="default_shipping">Yes</data>
+        <requiredEntity type="region">RegionAGU</requiredEntity>
+    </entity>
+    <entity name="US_Address_TX" type="address">
+        <data key="firstname">John</data>
+        <data key="lastname">Doe</data>
+        <data key="company">Magento</data>
+        <array key="street">
+            <item>7700 West Parmer Lane</item>
+        </array>
+        <data key="city">Austin</data>
+        <data key="state">Texas</data>
+        <data key="country_id">US</data>
+        <data key="country">United States</data>
+        <data key="postcode">78729</data>
+        <data key="telephone">512-345-6789</data>
+        <data key="vat_id">47458714</data>
+        <data key="default_billing">Yes</data>
+        <data key="default_shipping">Yes</data>
+        <requiredEntity type="region">RegionTX</requiredEntity>
+    </entity>
+    <entity name="KlarnaUkAddress" type="address">
+        <data key="firstname">John</data>
+        <data key="lastname">Doe</data>
+        <data key="company">Magento</data>
+        <data key="telephone">+4408082580300</data>
+        <array key="street">
+            <item>172, Westminster Bridge Rd</item>
+            <item>7700 xyz street</item>
+        </array>
+        <data key="country_id">GB</data>
+        <data key="country">United Kingdom</data>
+        <data key="city">London</data>
+        <!-- State not required for UK address on frontend-->
+        <data key="state"> </data>
+        <data key="postcode">12345</data>
+        <data key="default_billing">Yes</data>
+        <data key="default_shipping">Yes</data>
+    </entity>
+    <entity name="PLNAddress" type="address">
+        <data key="firstname">John</data>
+        <data key="lastname">Doe</data>
+        <data key="company">Magento</data>
+        <array key="street">
+            <item>ul. Reymonta 1</item>
+        </array>
+        <data key="city">Koszalin</data>
+        <data key="state">lubelskie</data>
+        <data key="country_id">PL</data>
+        <data key="country">Poland</data>
+        <data key="postcode">75-706</data>
+        <data key="telephone">78 683 04 88</data>
+        <data key="vat_id">47458714</data>
+        <data key="default_billing">Yes</data>
+        <data key="default_shipping">Yes</data>
+        <requiredEntity type="region">RegionPLN</requiredEntity>
+    </entity>
+</entities>

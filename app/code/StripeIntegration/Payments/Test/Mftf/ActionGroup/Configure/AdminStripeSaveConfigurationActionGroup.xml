@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="AdminStripeSaveConfigurationActionGroup">
+        <annotations>
+            <description>Configure the Stripe API keys.</description>
+        </annotations>
+        <arguments>
+            <argument name="pk" defaultValue="{{_CREDS.stripe/api_acc1_pk}}" type="string"/>
+            <argument name="sk" defaultValue="{{_CREDS.stripe/api_acc1_sk}}" type="string"/>
+            <argument name="active" defaultValue="1" type="string"/>
+        </arguments>
+
+        <!-- Save Stripe configuration -->
+        <magentoCLI command="config:set payment/stripe_payments_basic/stripe_test_pk {{pk}}" stepKey="setPublishableKey"/>
+        <magentoCLI command="config:set payment/stripe_payments_basic/stripe_test_sk {{sk}}" stepKey="setSecretKey"/>
+        <magentoCLI command="config:set payment/stripe_payments/active {{active}}" stepKey="activeStripePayment"/>
+        <magentoCLI command="cache:clean config" stepKey="cleanConfigCache"/>
+    </actionGroup>
+</actionGroups>

@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+  <body>
+    <referenceBlock name="checkout.root">
+      <arguments>
+        <argument name="jsLayout" xsi:type="array">
+          <item name="components" xsi:type="array">
+            <item name="checkout" xsi:type="array">
+              <item name="children" xsi:type="array">
+                <item name="sidebar" xsi:type="array">
+                  <item name="children" xsi:type="array">
+                    <item name="subscription-update" xsi:type="array">
+                        <item name="sortOrder" xsi:type="string">1</item>
+                        <item name="component" xsi:type="string">StripeIntegration_Payments/js/view/subscription_update/sidebar</item>
+                        <item name="displayArea" xsi:type="string">summary</item>
+                        <item name="config" xsi:type="array">
+                            <item name="template" xsi:type="string">StripeIntegration_Payments/subscription_update/sidebar</item>
+                        </item>
+                    </item>
+                    <item name="summary" xsi:type="array">
+                      <item name="sortOrder" xsi:type="string">2</item>
+                      <item name="children" xsi:type="array">
+                        <item name="totals" xsi:type="array">
+                          <item name="children" xsi:type="array">
+                            <item name="initial_fee" xsi:type="array">
+                              <item name="component"  xsi:type="string">StripeIntegration_Payments/js/view/checkout/cart/totals/initial_fee</item>
+                              <item name="sortOrder" xsi:type="string">20</item>
+                              <item name="config" xsi:type="array">
+                                <item name="template" xsi:type="string">StripeIntegration_Payments/checkout/cart/totals/initial_fee</item>
+                                <item name="title" xsi:type="string">Initial Fee</item>
+                              </item>
+                            </item>
+                            <item name="trialing_subscriptions" xsi:type="array">
+                                <item name="component" xsi:type="string">StripeIntegration_Payments/js/view/checkout/trialing_subscriptions</item>
+                                <item name="sortOrder" xsi:type="string">100</item>
+                                <item name="config" xsi:type="array">
+                                    <item name="template" xsi:type="string">StripeIntegration_Payments/checkout/trialing_subscriptions</item>
+                                    <item name="title" xsi:type="string">Trial Subscription(s)</item>
+                                </item>
+                            </item>
+                            <item name="prorations" xsi:type="array">
+                              <item name="component"  xsi:type="string">StripeIntegration_Payments/js/view/checkout/summary/prorations</item>
+                              <item name="sortOrder" xsi:type="string">100</item>
+                              <item name="config" xsi:type="array">
+                                <item name="template" xsi:type="string">StripeIntegration_Payments/checkout/summary/prorations</item>
+                                <item name="title" xsi:type="string">Subscription Proration</item>
+                              </item>
+                            </item>
+                          </item>
+                        </item>
+                        <item name="cart_items" xsi:type="array">
+                          <item name="children" xsi:type="array">
+                            <item name="details" xsi:type="array">
+                              <item name="children" xsi:type="array">
+                                <item name="subtotal" xsi:type="array">
+                                  <item name="component" xsi:type="string">Magento_Tax/js/view/checkout/summary/item/details/subtotal</item>
+                                </item>
+                              </item>
+                            </item>
+                          </item>
+                        </item>
+                      </item>
+                    </item>
+                  </item>
+                </item>
+                <item name="steps" xsi:type="array">
+                  <item name="children" xsi:type="array">
+                    <item name="billing-step" xsi:type="array">
+                      <item name="component" xsi:type="string">uiComponent</item>
+                      <item name="children" xsi:type="array">
+                        <item name="payment" xsi:type="array">
+                          <item name="children" xsi:type="array">
+                            <!-- Apple Pay can be configured to display outside the payment form -->
+                            <item name="beforeMethods" xsi:type="array">
+                              <item name="component" xsi:type="string">uiComponent</item>
+                              <item name="displayArea" xsi:type="string">beforeMethods</item>
+                              <item name="children" xsi:type="array">
+                                <item name="stripe_payments_apple_pay" xsi:type="array">
+                                  <item name="component" xsi:type="string">StripeIntegration_Payments/js/view/payment/apple_pay</item>
+                                  <item name="config" xsi:type="array">
+                                    <item name="template" xsi:type="string">StripeIntegration_Payments/payment/apple_pay_top</item>
+                                  </item>
+                                  <item name="children" xsi:type="array">
+                                    <item name="agreementss" xsi:type="array">
+                                      <item name="componentDisabled" xsi:type="boolean">false</item>
+                                      <item name="component" xsi:type="string">Magento_CheckoutAgreements/js/view/checkout-agreements</item>
+                                      <item name="sortOrder" xsi:type="string">100</item>
+                                      <item name="displayArea" xsi:type="string">beforeMethods</item>
+                                      <item name="dataScope" xsi:type="string">checkoutAgreements</item>
+                                      <item name="provider" xsi:type="string">checkoutProvider</item>
+                                    </item>
+                                  </item>
+                                </item>
+                              </item>
+                            </item>
+                            <!-- Merge these payment methods into the list of available methods at the checkout -->
+                            <item name="renders" xsi:type="array">
+                              <item name="children" xsi:type="array">
+                                <item name="stripe_payments" xsi:type="array">
+                                  <item name="component" xsi:type="string">StripeIntegration_Payments/js/view/payment/stripe_payments</item>
+                                  <item name="methods" xsi:type="array">
+                                    <item name="stripe_payments" xsi:type="array">
+                                      <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                    </item>
+                                    <item name="stripe_payments_checkout" xsi:type="array">
+                                      <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                    </item>
+                                    <item name="stripe_payments_bank_transfers" xsi:type="array">
+                                      <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                    </item>
+                                  </item>
+                                  <item name="children" xsi:type="array">
+                                    <item name="messages" xsi:type="array">
+                                      <item name="component" xsi:type="string">Magento_Ui/js/view/messages</item>
+                                      <item name="displayArea" xsi:type="string">messages</item>
+                                    </item>
+                                  </item>
+                                </item>
+                              </item>
+                            </item>
+                          </item>
+                        </item>
+                      </item>
+                    </item>
+                  </item>
+                </item>
+              </item>
+            </item>
+          </item>
+        </argument>
+      </arguments>
+    </referenceBlock>
+  </body>
+</page>

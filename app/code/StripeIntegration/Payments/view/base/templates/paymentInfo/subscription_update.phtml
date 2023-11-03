@@ -1,0 +1,42 @@
+<span class="stripe-method-title"><?php echo __('Subscription update'); ?></span>
+
+<table class="admin__table-secondary order-information-table stripe payment-info">
+  <tbody>
+
+    <?php if ($this->getOriginalSubscriptionOrderIncrementId()): ?>
+    <tr>
+        <td><?php echo __('Original order number'); ?></td>
+        <td class="stripe-original-order">
+            <a href="<?php echo $this->getSubscriptionOrderUrl($this->getOriginalSubscriptionOrderIncrementId()); ?>" target="_blank">
+                #<?php echo $this->getOriginalSubscriptionOrderIncrementId(); ?>
+            </a>
+        </td>
+    </tr>
+    <?php endif; ?>
+
+    <?php if (!empty($this->getFormattedAmount())): ?>
+    <tr>
+        <td><?php echo __('Amount'); ?></td>
+        <td class="stripe-amount">
+            <strong>
+                <?php if ($this->isMultiShipping()): ?>
+                    <?php echo $this->getFormattedMultishippingAmount(); ?>
+                <?php else: ?>
+                    <?php echo $this->getFormattedAmount(); ?>
+                <?php endif; ?>
+            </strong>
+        </td>
+    </tr>
+    <?php endif; ?>
+
+    <?php if (!empty($this->getFormattedSubscriptionAmount())): ?>
+    <tr>
+        <td><?php echo __('Subscription amount'); ?></td>
+        <td class="stripe-subscription-amount">
+            <?php echo $this->getFormattedSubscriptionAmount(); ?>
+        </td>
+    </tr>
+    <?php endif; ?>
+
+    </tbody>
+</table>

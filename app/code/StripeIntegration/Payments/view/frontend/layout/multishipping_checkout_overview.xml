@@ -1,0 +1,14 @@
+<?xml version="1.0"?><page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="multishipping_checkout"/>
+    <update handle="checkout_cart_item_renderers"/>
+    <body>
+        <referenceContainer name="content">
+            <block
+                class="StripeIntegration\Payments\Block\Multishipping\Overview"
+                name="stripe.multishipping.overview.payment_confirm"
+                template="StripeIntegration_Payments::multishipping/overview/payment_confirm.phtml"
+                after="checkout_overview"
+                cacheable="false"/>
+        </referenceContainer>
+    </body>
+</page>

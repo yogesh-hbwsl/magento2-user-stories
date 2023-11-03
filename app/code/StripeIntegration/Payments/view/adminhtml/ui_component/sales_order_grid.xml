@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <columns name="sales_order_columns">
+        <column name="stripe_radar_risk_score" class="StripeIntegration\Payments\Ui\Component\Listing\Column\Radar">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Stripe Radar</label>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="stripe_payment_method_type" class="StripeIntegration\Payments\Ui\Component\Listing\Column\PaymentMethod">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Stripe Payment Method</label>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+    </columns>
+</listing>

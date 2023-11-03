@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="GeneralCustomerPlaceOrderWithMultiShippingTest">
+        <annotations>
+            <features value="Order"/>
+            <stories value="Multiple Shipping with Stripe payment"/>
+            <title value="General customer normal order with multi shipping using Stripe payment"/>
+            <description value="With General Customer ; and a selected store view currency of USDCurrency , add to the cart the products of NormalCart, proceed to multi shipping page and complete the order"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="GeneralCustomerPlaceOrderWithMultiShippingTest"/>
+            <group value="normal_cart"/>
+            <group value="card_success"/>
+            <group value="stripe_elements"/>
+            <group value="multishipping"/>
+        </annotations>
+
+        <actionGroup stepKey="loginWithNewPassword" ref="LoginToStorefrontWithEmailAndPassword">
+            <argument name="email" value="{{SimpleStripeCustomerMultiShipping.email}}"/>
+            <argument name="password" value="{{SimpleStripeCustomerMultiShipping.password}}"/>
+        </actionGroup>
+
+        <!-- Navigate to the product page -->
+        <amOnPage url="{{StorefrontProductPage.url(StripeSimpleProduct.urlKey)}}" stepKey="navigateToSimpleProductPage"/>
+        <waitForPageLoad stepKey="waitForSimpleProductPageLoad"/>
+
+        <!-- Add Simple Product to cart -->
+        <actionGroup ref="AddToCartFromStorefrontProductPageActionGroup" stepKey="addToCartFromStorefrontProductPage">
+            <argument name="productName" value="StripeSimpleProduct.name"/>
+        </actionGroup>
+
+        <!-- Navigate to the product page -->
+        <amOnPage url="{{StorefrontProductPage.url(StripeSimpleProduct2.urlKey)}}" stepKey="navigateToSimpleProductPage2"/>
+        <waitForPageLoad stepKey="waitForSimpleProductPageLoad2"/>
+
+        <!-- Add Simple Product to cart -->
+        <actionGroup ref="AddToCartFromStorefrontProductPageActionGroup" stepKey="addToCartFromStorefrontProductPage2">
+            <argument name="productName" value="StripeSimpleProduct2.name"/>
+        </actionGroup>
+
+        <actionGroup ref="StorefrontOpenCartFromMinicartActionGroup" stepKey="openCart"/>
+        <actionGroup ref="CheckingWithSingleAddressActionGroup" stepKey="checkoutWithSingleAddresses"/>
+
+        <waitForPageLoad stepKey="waitForRadioOptions"/>
+        <click selector="{{ShippingMethodSection.goToBillingInfo}}" stepKey="goToBillingInformation"/>
+
+        <waitForPageLoad stepKey="waitForPaymentPageLoad"/>
+
+        <!-- Fill payment form -->
+        <actionGroup ref="FillCardDetailsMultiShippingActionGroup" stepKey="fillCardDetails">
+            <argument name="CardNumber" value="{{Cards.SuccessCard}}"/>
+        </actionGroup>
+
+        <!-- Click 'Go to Review Your Order' -->
+        <actionGroup ref="SelectBillingInfoActionGroup" stepKey="UseDefaultBillingMethodForIdenticalProducts"/>
+
+        <actionGroup ref="PlaceOrderActionGroup" stepKey="placeOrder"/>
+    </test>
+</tests>

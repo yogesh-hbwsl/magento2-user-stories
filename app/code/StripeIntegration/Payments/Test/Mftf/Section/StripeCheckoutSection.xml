@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="StripeCheckoutSection">
+        <element name="cardNumberField" type="input" selector="#cardNumber" />
+        <element name="expDateField" type="input" selector="#cardExpiry" />
+        <element name="cvcField" type="input" selector="#cardCvc" />
+        <element name="cardNameField" type="input" selector="#billingName" />
+        <element name="payButton" type="button" selector=".SubmitButton.SubmitButton--complete" />
+    </section>
+</sections>

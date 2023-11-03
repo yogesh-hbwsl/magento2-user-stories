@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="AdminStripeCvcConfigurationActionGroup">
+        <annotations>
+            <description>Configure the Stripe Cvc.</description>
+        </annotations>
+        <arguments>
+            <argument name="cvcCode" type="string"/>
+        </arguments>
+
+        <!-- Save Stripe configuration -->
+        <magentoCLI command="config:set payment/stripe_payments/cvc_code {{cvcCode}}" stepKey="saveStripeCvc"/>
+        <magentoCLI command="cache:clean config" stepKey="cleanConfigCache"/>
+    </actionGroup>
+</actionGroups>

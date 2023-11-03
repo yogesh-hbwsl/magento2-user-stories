@@ -1,0 +1,24 @@
+<?php if ($block->isEnabled("minicart")) : ?>
+<div class="stripe-payments-express-minicart">
+    <div id="payment-request-button-minicart" class="payment-request-button">&nbsp;</div>
+    <script>
+        require(['domReady!', 'StripeIntegration_Payments/js/stripe_payments_express', 'Magento_Customer/js/customer-data'], function(domReady, stripeExpress, customerData)
+        {
+            var cart = customerData.get('cart');
+            var initPRAPI = function()
+            {
+                stripeExpress.initStripeExpress('#payment-request-button-minicart', <?php echo $block->initParams->getWalletParams(); ?>, 'minicart', <?php echo $block->getButtonConfig(); ?>, function (paymentRequestButton, paymentRequest, params, prButton) {
+                    stripeExpress.initMiniCartWidget(paymentRequestButton, paymentRequest, params, prButton);
+                });
+            };
+            initPRAPI();
+
+            cart.subscribe(function ()
+            {
+                // Wait for Magento to commit the changes before re-initializing the PRAPI
+                setTimeout(initPRAPI, 500);
+            });
+        });
+    </script>
+</div>
+<?php endif; ?>

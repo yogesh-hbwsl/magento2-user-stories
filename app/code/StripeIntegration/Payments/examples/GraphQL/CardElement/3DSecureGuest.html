@@ -1,0 +1,501 @@
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.1.js" crossorigin="anonymous"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <style type="text/css">
+        textarea {
+            width: 600px;
+            height: 200px;
+        }
+        input[type="text"] {
+            width: 400px;
+        }
+        button {
+            margin-top: 1em;
+        }
+        #card-element {
+            margin: 20px 0 0 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 500px;
+        }
+    </style>
+</head>
+<body id="app" class="container">
+    <h1>3D Secure example for guest customers</h1>
+
+    <p class="alert alert-warning" role="alert">NOTE: Place this file inside your Magento pub/ directory to avoid CORS restrictions.</p>
+    <h2 class="mt-4">Configuration</h2>
+    <div class="col-md-6 mb-3">
+        <label for="base_url">Base Magento URL</label>
+        <input class="form-control" type="text" id="base_url" name="base_url" value="" onchange="save('base_url'), initCardElement()">
+    </div>
+    <div class="col-md-6 mb-3">
+        <label>Product SKU to purchase</label>
+        <input class="form-control" type="text" id="sku" value="24-MB02" onchange="save('sku')">
+    </div>
+
+    <h2 class="mt-4">Step 1: Create a guest cart</h2>
+    <textarea class="form-control" id="create_guest_cart_data">
+    mutation {
+      createEmptyCart
+    }
+        </textarea>
+    <button onclick="createGuestCart()" class="btn btn-primary">POST</button>
+    <pre id="create_guest_cart_response" class="alert alert-light"></pre>
+
+    <h2 class="mt-4">Step 2: Add product to cart</h2>
+    <textarea class="form-control" id="add_product_data">
+    mutation {
+      addSimpleProductsToCart(
+        input: {
+          cart_id: "CART_ID"
+          cart_items: [
+            {
+              data: {
+                quantity: 1
+                sku: "SIMPLE_PRODUCT_SKU"
+              }
+            }
+          ]
+        }
+      ) {
+        cart {
+          items {
+            id
+            product {
+              sku
+              stock_status
+            }
+            quantity
+          }
+        }
+      }
+    }
+        </textarea>
+    <button onclick="post('add_product')" class="btn btn-primary">POST</button>
+    <pre id="add_product_response" class="alert alert-light"></pre>
+
+    <h2 class="mt-4">Step 3: Set guest email address</h2>
+    <textarea class="form-control" id="set_guest_email_data">
+    mutation {
+      setGuestEmailOnCart(input: {
+        cart_id: "CART_ID"
+        email: "guest@example.com"
+      }) {
+        cart {
+          email
+        }
+      }
+    }
+        </textarea>
+    <button onclick="post('set_guest_email')" class="btn btn-primary">POST</button>
+    <pre id="set_guest_email_response" class="alert alert-light"></pre>
+
+    <h2 class="mt-4">Step 4: Set shipping address</h2>
+    <textarea class="form-control" id="set_shipping_data">
+    mutation {
+      setShippingAddressesOnCart(
+        input: {
+          cart_id: "CART_ID"
+          shipping_addresses: [
+            {
+              address: {
+                firstname: "John"
+                lastname: "Doe"
+                company: "Company Name"
+                street: ["3320 N Crescent Dr", "Beverly Hills"]
+                city: "Los Angeles"
+                region: "CA"
+                region_id: 12
+                postcode: "90210"
+                country_code: "US"
+                telephone: "123-456-0000"
+                save_in_address_book: false
+              }
+            }
+          ]
+        }
+      ) {
+        cart {
+          shipping_addresses {
+            firstname
+            lastname
+            company
+            street
+            city
+            region {
+              code
+              label
+            }
+            postcode
+            telephone
+            country {
+              code
+              label
+            }
+            available_shipping_methods{
+              carrier_code
+              carrier_title
+              method_code
+              method_title
+            }
+          }
+        }
+      }
+    }
+        </textarea>
+    <button onclick="post('set_shipping')" class="btn btn-primary">POST</button>
+    <pre id="set_shipping_response" class="alert alert-light"></pre>
+
+    <h2 class="mt-4">Step 5: Set billing address</h2>
+    <textarea class="form-control" id="set_billing_data">
+    mutation {
+      setBillingAddressOnCart(
+        input: {
+          cart_id: "CART_ID"
+          billing_address: {
+            address: {
+              firstname: "John"
+              lastname: "Doe"
+              company: "Company Name"
+              street: ["64 Strawberry Dr", "Beverly Hills"]
+              city: "Los Angeles"
+              region: "CA"
+              region_id: 12
+              postcode: "90210"
+              country_code: "US"
+              telephone: "123-456-0000"
+              save_in_address_book: true
+            }
+          }
+        }
+      ) {
+        cart {
+          billing_address {
+            firstname
+            lastname
+            company
+            street
+            city
+            region{
+              code
+              label
+            }
+            postcode
+            telephone
+            country {
+              code
+              label
+            }
+          }
+        }
+      }
+    }
+        </textarea>
+    <button onclick="post('set_billing')" class="btn btn-primary">POST</button>
+    <pre id="set_billing_response" class="alert alert-light"></pre>
+
+    <h2 class="mt-4">Step 6: Set shipping method</h2>
+    <textarea class="form-control" id="set_shipping_method_data">
+    mutation {
+      setShippingMethodsOnCart(input: {
+        cart_id: "CART_ID"
+        shipping_methods: [
+          {
+            carrier_code: "flatrate"
+            method_code: "flatrate"
+          }
+        ]
+      }) {
+        cart {
+          shipping_addresses {
+            selected_shipping_method {
+              carrier_code
+              method_code
+              carrier_title
+              method_title
+            }
+          }
+        }
+      }
+    }
+        </textarea>
+    <button onclick="post('set_shipping_method')" class="btn btn-primary">POST</button>
+    <pre id="set_shipping_method_response" class="alert alert-light"></pre>
+
+    <h2 class="mt-4">Step 7: Create Payment Method</h2>
+    <div id="card-element">
+        <!-- Elements will create input elements here -->
+    </div>
+    <button onclick="createPaymentMethod()" class="btn btn-primary">Create Payment Method</button>
+    <pre id="initialize_card_element_response" class="alert alert-light"></pre>
+
+    <h2 class="mt-4">Step 8: Set payment method</h2>
+    <textarea class="form-control" id="set_payment_method_data">
+    mutation {
+      setPaymentMethodOnCart(input: {
+          cart_id: "CART_ID"
+          payment_method: {
+            code: "stripe_payments"
+            stripe_payments: {
+              cc_stripejs_token: "PAYMENT_METHOD_ID"
+              save_payment_method: true
+            }
+          }
+      }) {
+        cart {
+          selected_payment_method {
+            code
+          }
+        }
+      }
+    }
+        </textarea>
+    <button onclick="post('set_payment_method')" class="btn btn-primary">POST</button>
+    <pre id="set_payment_method_response" class="alert alert-light"></pre>
+
+    <h2 class="mt-4">Place order</h2>
+    <textarea class="form-control" id="place_order_data">
+    mutation {
+      placeOrder(input: {cart_id: "CART_ID"}) {
+        order {
+          order_number
+        }
+      }
+    }
+        </textarea>
+    <button onclick="placeOrder()" class="btn btn-primary">POST</button>
+    <pre id="place_order_response" class="alert alert-light"></pre>
+
+    <br>
+    <br>
+    <br>
+    <script>
+        var customerToken = null;
+        var cartId = null;
+        var clientSecret = null;
+        var stripe = null;
+        var card = null;
+        var payment_method_id = null;
+        var stripeVariables = null;
+        var moduleConfigurationQuery = 'query { getModuleConfiguration {\n' +
+            '        apiKey\n' +
+            '        locale\n' +
+            '        appInfo\n' +
+            '        options {\n' +
+            '            betas\n' +
+            '            apiVersion\n' +
+            '        }\n' +
+            '    } }'
+
+        var $ = jQuery;
+
+        var getStripeModuleConfiguration = function()
+        {
+            post("get_module_configuration", function(response)
+            {
+                stripeVariables = response.data.getModuleConfiguration;
+                initCardElement();
+            });
+        };
+
+        if (localStorage.getItem("base_url"))
+        {
+            $("#base_url").val(localStorage.getItem("base_url"));
+        }
+        else
+        {
+            $("#base_url").val(window.location.protocol + "//" + window.location.hostname);
+        }
+
+        if (localStorage.getItem("sku"))
+        {
+            $("#sku").val(localStorage.getItem("sku").toString());
+        }
+
+        var getStripeCardElementStyle = function () {
+            return {
+                base: {
+                    fontFamily: '"Open Sans","Helvetica Neue", Helvetica, Arial, sans-serif',
+                    fontSize: '16px',
+                },
+            };
+        }
+
+        var initCardElement = function () {
+            stripe = Stripe(stripeVariables.apiKey);
+
+            var options = {
+                hidePostalCode: true,
+                style: getStripeCardElementStyle()
+            };
+
+            const elements = stripe.elements();
+            card = elements.create('card', options);
+            card.mount('#card-element');
+        }
+
+        var createPaymentMethod = function () {
+            var options = {
+                type: 'card',
+                card: card,
+                billing_details: {
+                    name: 'John Doe'
+                },
+            };
+
+            stripe.createPaymentMethod(options).then(function(result)
+            {
+                if (result.error) {
+                    $("#initialize_card_element_response").html(result.error.message);
+                } else {
+                    $("#initialize_card_element_response").html(JSON.stringify(result, null, 2));
+                    payment_method_id = result.paymentMethod.id;
+                }
+            });
+        }
+
+        var post = function(step, onSuccess)
+        {
+            var endpoint = $("#base_url").val() + '/graphql';
+            var sku = $("#sku").val();
+
+            if (step === 'get_module_configuration') {
+                var data = JSON.stringify({
+                    query: moduleConfigurationQuery
+                });
+            } else {
+                var data = JSON.stringify({
+                    query: $("#" + step + "_data").val().replace("CART_ID", cartId).replace("SIMPLE_PRODUCT_SKU", sku).replace("PAYMENT_METHOD_ID", payment_method_id)
+                });
+            }
+            $( "#" + step + "_response" ).html("");
+
+            $.ajax({
+                url: endpoint,
+                type: "POST",
+                data: data,
+                contentType:"application/json; charset=utf-8",
+                dataType:"json",
+                beforeSend: function (xhr)
+                {
+                    if (customerToken)
+                    {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + customerToken);
+                    }
+                },
+                success: function(response)
+                {
+                    $( "#" + step + "_response" ).html( JSON.stringify(response, null, 2) );
+                    if (typeof onSuccess != "undefined")
+                    {
+                        onSuccess(response);
+                    }
+                }
+            });
+        };
+
+        var createGuestCart = function()
+        {
+            post("create_guest_cart", function(response)
+            {
+                cartId = response.data.createEmptyCart;
+            });
+        };
+
+        var placeOrder = function()
+        {
+            post("place_order", function(response)
+            {
+                if (response.errors)
+                {
+                    var message = response.errors[0].message;
+                    if (message && message.indexOf("Authentication Required: ") === 0)
+                    {
+                        clientSecret = message.substring("Authentication Required: ".length);
+                        authenticate(clientSecret);
+                    }
+                }
+            });
+        }
+
+        var authenticate = function(pi_client_secret)
+        {
+            stripe.retrievePaymentIntent(pi_client_secret).then(function(result)
+            {
+                if (result.error)
+                    alert(result.error.message);
+                else if (result.paymentIntent.confirmation_method == "manual")
+                    return handleCardAction(pi_client_secret, placeAuthenticatedOrder);
+                else
+                    return handleCardPayment(pi_client_secret, placeAuthenticatedOrder);
+            });
+        };
+
+        var handleCardPayment = function(pi_client_secret, done)
+        {
+            try
+            {
+                stripe.handleCardPayment(pi_client_secret).then(function(result)
+                {
+                    if (result.error)
+                        return done(result.error.message);
+
+                    return done();
+                });
+            }
+            catch (e)
+            {
+                done(e.message);
+            }
+        };
+
+        var handleCardAction = function(pi_client_secret, done)
+        {
+            try
+            {
+                stripe.handleCardAction(pi_client_secret).then(function(result)
+                {
+                    if (result.error)
+                        return done(result.error.message);
+
+                    return done();
+                });
+            }
+            catch (e)
+            {
+                done(e.message);
+            }
+        };
+
+        var placeAuthenticatedOrder = function(error)
+        {
+            if (typeof error != "undefined")
+            {
+                alert("Authentication failed: " + error);
+            }
+            else
+            {
+                alert("Authentication succeeded. Try placing the order again.");
+            }
+        };
+
+        var save = function(key)
+        {
+            var value = $("#" + key).val();
+            localStorage.setItem(key, value);
+        }
+
+        try
+        {
+            getStripeModuleConfiguration();
+        }
+        catch (e)
+        {
+            console.warn(e);
+        }
+    </script>
+</body>

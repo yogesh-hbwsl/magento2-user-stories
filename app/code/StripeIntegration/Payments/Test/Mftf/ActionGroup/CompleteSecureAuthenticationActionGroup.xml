@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="CompleteSecureAuthenticationActionGroup">
+        <annotations>
+            <description>Complete secure card authentication.</description>
+        </annotations>
+
+        <!-- Halt test execution for 4 seconds before continuing. -->
+        <wait time="4" stepKey="waitFourSeconds"/>
+
+        <!-- Switch to authentication iFrame popup -->
+        <switchToIFrame selector="{{StorefrontCheckoutPaymentMethodSection.secureCardIframe}}" stepKey="switchToSecureCardIframe"/>
+
+        <!-- Wait to load the iFrame -->
+        <waitForAjaxLoad stepKey="waitForIframeLoad" time="30" />
+
+        <!-- Click the complete authentication button -->
+        <click selector="{{StorefrontCheckoutPaymentMethodSection.secureCardButtonField}}" stepKey="clickAuthenticationButton"/>
+
+        <switchToIFrame stepKey="switchOutOfPayByCardIframe"/>
+    </actionGroup>
+</actionGroups>

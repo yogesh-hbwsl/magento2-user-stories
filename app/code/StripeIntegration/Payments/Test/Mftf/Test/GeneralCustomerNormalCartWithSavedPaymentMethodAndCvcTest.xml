@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="GeneralCustomerNormalCartWithSavedPaymentMethodAndCvcTest" extends="GeneralCustomerNormalCartWithSavedPaymentMethodTest">
+        <annotations>
+            <features value="Order"/>
+            <stories value="Checkout Orders using Saved payment method"/>
+            <title value="General customer normal order with Stripe saved card payment method and cvc"/>
+            <description value="With General Customer ; and a selected store view currency of USDCurrency , save the new payment method, add to the cart the products of NormalCart , proceed to the checkout page and specify NewYorkAddress as the shipping address and FlatRateShippingMethod as the shipping method. Click Next and specify StripeElementsMethod as the payment method, using saved payment method. Finally click Place Order."/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="GeneralCustomerNormalCartWithSavedPaymentMethodAndCvcTest"/>
+            <group value="normal_cart"/>
+            <group value="card_success"/>
+            <group value="stripe_elements"/>
+        </annotations>
+
+        <before>
+            <!-- Save Cvc Settings -->
+            <actionGroup ref="AdminStripeCvcConfigurationActionGroup" stepKey="configureStripeCvc">
+                <argument name="cvcCode" value="{{CvcCode.newAndSavedCard}}" />
+            </actionGroup>
+        </before>
+
+        <!-- Store front customer login -->
+        <actionGroup ref="LoginToStorefrontActionGroup" stepKey="storefrontCustomerLogin">
+            <argument name="Customer" value="SimpleStripeCustomerSavedPaymentCvc"/>
+        </actionGroup>
+
+        <!-- Fill the CVC for saved payment method -->
+        <actionGroup ref="FillCardCvcForSavedPaymentMethodActionGroup" stepKey="fillCvcPaymentMethod" after="selectPaymentMethod"/>
+
+        <after>
+            <!-- Reset Cvc Settings -->
+            <actionGroup ref="AdminStripeCvcConfigurationActionGroup" stepKey="resetConfigureStripeCvc">
+                <argument name="cvcCode" value="{{CvcCode.newCard}}" />
+            </actionGroup>
+        </after>
+    </test>
+</tests>

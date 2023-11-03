@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="SubscriptionsCartActionGroup">
+        <annotations>
+            <description>Create a cart which includes a virtual and a simple trial subscription.</description>
+        </annotations>
+
+        <amOnPage url="{{StorefrontProductPage.url(VirtualMonthlySubscriptionProduct.urlKey)}}" stepKey="goToVirtualMonthlySubscriptionProductPage"/>
+        <waitForPageLoad stepKey="waitForVirtualMonthlySubscriptionProductPageToLoad" time="60"/>
+        <fillField userInput="2" selector="{{StorefrontProductPageSection.qtyInput}}" stepKey="fillVirtualMonthlySubscriptionProductQty"/>
+        <click selector="{{StorefrontProductInfoMainSection.AddToCart}}" stepKey="clickAddToCartVirtualMonthlySubscriptionProduct"/>
+
+        <amOnPage url="{{StorefrontProductPage.url(SimpleMonthlySubscriptionInitialFeeProduct.urlKey)}}" stepKey="goToSimpleMonthlySubscriptionInitialFeeProductPage"/>
+        <waitForPageLoad stepKey="waitForSimpleMonthlySubscriptionInitialFeeProductPageToLoad" time="60"/>
+        <fillField userInput="2" selector="{{StorefrontProductPageSection.qtyInput}}" stepKey="fillSimpleMonthlySubscriptionInitialFeeProductQty"/>
+        <click selector="{{StorefrontProductInfoMainSection.AddToCart}}" stepKey="clickAddToCartSimpleMonthlySubscriptionInitialFeeProduct"/>
+
+    </actionGroup>
+</actionGroups>
+
+
+
+

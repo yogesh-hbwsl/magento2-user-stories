@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<include xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_include.xsd">
+  <group id="basic" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+    <label>General settings</label>
+    <comment>&lt;p&gt;You will need to set your API keys before you can accept payments. If you do not yet have a Stripe account, please &lt;a href="https://dashboard.stripe.com/register?utm_campaign=comarketing&amp;utm_source=magento&amp;utm_medium=referred" target="_blank" rel="noopener noreferrer"&gt;click here&lt;/a&gt; to register.&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href="https://stripe.com/docs/plugins/magento?utm_campaign=comarketing&amp;utm_source=magento&amp;utm_medium=referred" target="_blank" rel="noopener noreferrer"&gt;Learn more&lt;/a&gt; about configuring this module from Stripe's official Magento Documentation.&lt;/p&gt;
+
+    &lt;p&gt;For additional technical support contact &lt;a href="mailto:magento@stripe.com" target="_blank" rel="noopener noreferrer"&gt;magento@stripe.com&lt;/a&gt;.&lt;/p&gt;</comment>
+    <field id="module_version" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Module version</label>
+      <frontend_model>StripeIntegration\Payments\Model\Adminhtml\Frontend\ModuleVersion</frontend_model>
+    </field>
+    <field id="stripe_mode" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Mode</label>
+      <comment><![CDATA[Set this to live when you are ready to accept payments]]></comment>
+      <source_model>StripeIntegration\Payments\Model\Adminhtml\Source\Mode</source_model>
+      <config_path>payment/stripe_payments_basic/stripe_mode</config_path>
+    </field>
+    <field id="stripe_test_sk" translate="label" type="obscure" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Test secret API key</label>
+      <comment>
+        <![CDATA[<a target="_blank" rel="noopener noreferrer" href="https://dashboard.stripe.com/account/apikeys">Your Stripe Account</a> &gt; API Keys &gt; Test Secret Key]]>
+      </comment>
+      <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+      <depends>
+        <field id="stripe_mode">test</field>
+      </depends>
+      <config_path>payment/stripe_payments_basic/stripe_test_sk</config_path>
+    </field>
+    <field id="stripe_test_pk" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Test publishable API key</label>
+      <comment>
+        <![CDATA[<a target="_blank" rel="noopener noreferrer" href="https://dashboard.stripe.com/account/apikeys">Your Stripe Account</a> &gt; API Keys &gt; Test Publishable Key]]>
+      </comment>
+      <depends>
+        <field id="stripe_mode">test</field>
+      </depends>
+      <config_path>payment/stripe_payments_basic/stripe_test_pk</config_path>
+    </field>
+    <field id="stripe_live_sk" translate="label" type="obscure" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Live secret API key</label>
+      <comment>
+        <![CDATA[<a target="_blank" rel="noopener noreferrer" href="https://dashboard.stripe.com/account/apikeys">Your Stripe Account</a> &gt; API Keys &gt; Live Secret Key]]>
+      </comment>
+      <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+      <depends>
+        <field id="stripe_mode">live</field>
+      </depends>
+      <config_path>payment/stripe_payments_basic/stripe_live_sk</config_path>
+    </field>
+    <field id="stripe_live_pk" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Live publishable API key</label>
+      <comment>
+        <![CDATA[<a target="_blank" rel="noopener noreferrer" href="https://dashboard.stripe.com/account/apikeys">Your Stripe Account</a> &gt; API Keys &gt; Live Publishable Key]]>
+      </comment>
+      <depends>
+        <field id="stripe_mode">live</field>
+      </depends>
+      <config_path>payment/stripe_payments_basic/stripe_live_pk</config_path>
+    </field>
+    <field id="receipt_emails" translate="label" type="select" sortOrder="122" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Receipt emails</label>
+      <comment>
+        <![CDATA[Allow Stripe to send a receipt email to the customer after they have been charged.]]>
+      </comment>
+      <source_model>StripeIntegration\Payments\Model\Adminhtml\Source\Enabled</source_model>
+      <config_path>payment/stripe_payments/receipt_emails</config_path>
+    </field>
+ </group>
+</include>

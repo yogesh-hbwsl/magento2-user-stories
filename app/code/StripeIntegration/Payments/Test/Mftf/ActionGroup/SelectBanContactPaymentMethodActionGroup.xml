@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="SelectBanContactPaymentMethodActionGroup">
+        <annotations>
+            <description>Switch to Stripe iFrame, switch to BanContact payment method.</description>
+        </annotations>
+        <arguments>
+            <argument name="paymentMethodName" defaultValue="bancontact" type="string"/>
+        </arguments>
+
+        <!-- Switch to Pay By Card iFrame -->
+        <switchToIFrame selector="{{StorefrontCheckoutPaymentMethodSection.payByCardIframe}}" stepKey="switchToPayByCardIframe"/>
+
+        <!-- Wait to load the iFrame -->
+        <waitForAjaxLoad stepKey="waitForIframeLoad" time="10" />
+
+        <conditionalClick selector="{{StorefrontCheckoutPaymentMethodSection.BanContactPaymentMethodTabId}}"
+                          dependentSelector="{{StorefrontCheckoutPaymentMethodSection.BanContactPaymentMethodTabId}}"
+                          visible="true" stepKey="selectPaymentMethodBoxDefault"/>
+
+        <!-- Select Payment method based on the input -->
+        <helper class="StripeIntegration\Payments\Test\Mftf\Helper\PaymentMethodSelectHelper" method="selectPaymentMethodOption" stepKey="selectPaymentMethodOption">
+            <argument name="optionSelector">{{StorefrontCheckoutPaymentMethodSection.additionalPaymentSelectBox}}</argument>
+            <argument name="optionInput">{{paymentMethodName}}</argument>
+        </helper>
+        <!-- Select BanContact Payment method -->
+        <click selector="{{StorefrontCheckoutPaymentMethodSection.BanContactPaymentMethodTabId}}" stepKey="selectBanContactPaymentMethodTab"/>
+
+        <!-- Wait to load the P24 Payment method -->
+        <waitForAjaxLoad stepKey="waitForNewPaymentMethodLoad" time="5" />
+
+        <switchToIFrame stepKey="switchOutOfPayByCardIframe"/>
+    </actionGroup>
+</actionGroups>

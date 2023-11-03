@@ -1,0 +1,261 @@
+/* Module configuration section  */
+.payment-flow-icon {
+    float: left;
+    margin-right: 1.5em;
+    margin-bottom: 1em;
+}
+.wallet-button select[multiple] {
+    height: 10em;
+}
+/* Other  */
+.stripe.payment-info td {
+    padding-right: 20px;
+    vertical-align: middle;
+}
+.stripe.payment-info td.result {
+    color: #666;
+    font-weight: bold;
+    opacity: 0.9;
+}
+.stripe.payment-info td.result.charge.authorized,
+.stripe.payment-info td.result.pass {
+    color: #4DAD52;
+}
+.stripe.payment-info td.result img {
+    display: none;
+}
+.stripe.payment-info td.result.pass img.passed {
+    display: inline-block;
+    width: 14px;
+    position: relative;
+    top: 1px;
+}
+.stripe.payment-info td.result.charge.issuer_declined,
+.stripe.payment-info td.result.charge.blocked,
+.stripe.payment-info td.result.charge.invalid,
+.stripe.payment-info td.result.fail {
+    color: #D8000C;
+}
+.stripe.payment-info td.result.fail img.failed {
+    display: inline-block;
+}
+.stripe.payment-info td.result.unchecked {
+    color: #9E9E9E;
+}
+.stripe.payment-info td.result.charge.manual_review,
+.stripe.payment-info td.result.radar.elevated {
+    color: orange;
+}
+.stripe.payment-info td.result {
+    font-weight: bold;
+}
+ul#payment_form_stripe_payments {
+    padding-left: 0;
+}
+
+.stripe-admin-config .heading {background: url("../img/stripe_logo.svg") no-repeat 0 50% / 18rem auto; padding-left: 20rem;}
+.stripe-admin-config .button-container {float: right;}
+.stripe-admin-config.section-config.active > .admin__collapsible-block + input + fieldset { margin-left: 40px; }
+
+#stripe_payments_configuration_errors {
+    display: none;
+    padding: 0 1em 0.3em;
+    margin: 1em 0px;
+    border: 1px solid #D1D1D1;
+}
+
+/* Payment information block */
+.admin__page-section-item-content .stripe-payment-method {
+    float: right;
+    display: inline-flex;
+    align-items: center;
+    font-size: 1.1em;
+    margin-right: 20px;
+}
+.data-grid-cell-content .stripe-payment-method {
+    display: inline-block;
+    text-align: center;
+    font-size: 1.1em;
+    margin-right: 20px;
+    width: 100%;
+    text-wrap: nowrap;
+}
+.admin__stripe-radar {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+.admin__page-section-item-content .stripe-payment-method .stripe-payment-method-icon {
+    margin-top: -5px;
+    margin-right: 8px;
+    height: 28px;
+}
+.data-grid-cell-content .stripe-payment-method .stripe-payment-method-icon {
+    height: 25px;
+    margin-right: 0.8rem;
+}
+
+.admin__page-section-item-content .stripe-payment-status span,
+.admin__page-section-item-content .stripe-subscription-status span {
+    border-radius: 5px;
+    padding: 2px 7px;
+    font-weight: 500;
+    margin-right: -7px;
+}
+.admin__page-section-item-content .stripe-subscription-status .stripe-subscription-status-canceled,
+.admin__page-section-item-content .stripe-payment-status .stripe-payment-status-refunded,
+.admin__page-section-item-content .stripe-payment-status .stripe-payment-status-partial_refund,
+.admin__page-section-item-content .stripe-payment-status .stripe-payment-status-canceled,
+.admin__page-section-item-content .stripe-payment-status .stripe-payment-status-unknown,
+.admin__page-section-item-content .stripe-payment-status .stripe-payment-status-uncaptured {
+    background-color: #e3e8ee;
+    color: #4f566b;
+}
+.admin__page-section-item-content .stripe-subscription-status .stripe-subscription-status-active,
+.admin__page-section-item-content .stripe-payment-status .stripe-payment-status-succeeded {
+    background-color: #cbf4c9;
+    color: #0e6245;
+}
+.admin__page-section-item-content .stripe-payment-status .stripe-payment-status-pending {
+    background-color: #f9efa5;
+    color: #66640f;
+}
+.admin__page-section-item-content .stripe-payment-status .stripe-payment-status-failed {
+    background-color: #fde2dd;
+    color: #cd3d64;
+}
+.admin__page-section-item-content .stripe-subscription-status .stripe-subscription-status-trialing {
+    background-color: rgb(214 236 255);
+    color: rgb(61 78 172);
+}
+.admin__page-section-item-content .stripe-payment-status span::after {
+    position: relative;
+    content: url('../img/icons/mask.svg');
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    fill: currentColor;
+    background-color: currentColor;
+}
+.admin__page-section-item-content .stripe-payment-status .stripe-payment-status-pending::after,
+.admin__page-section-item-content .stripe-payment-status .stripe-payment-status-unknown::after,
+.admin__page-section-item-content .stripe-payment-status .stripe-payment-status-uncaptured::after {
+    -webkit-mask-image: url('../img/icons/time.svg');
+    mask-image: url('../img/icons/time.svg');
+}
+.admin__page-section-item-content .stripe-payment-status .stripe-payment-status-succeeded::after {
+    -webkit-mask-image: url('../img/icons/check.svg');
+    mask-image: url('../img/icons/check.svg');
+}
+.admin__page-section-item-content .stripe-payment-status .stripe-payment-status-refunded::after,
+.admin__page-section-item-content .stripe-payment-status .stripe-payment-status-canceled::after,
+.admin__page-section-item-content .stripe-payment-status .stripe-payment-status-partial_refund::after {
+    -webkit-mask-image: url('../img/icons/return.svg');
+    mask-image: url('../img/icons/return.svg');
+}
+.admin__page-section-item-content .stripe-payment-status .stripe-payment-status-failed::after {
+    -webkit-mask-image: url('../img/icons/cross.svg');
+    mask-image: url('../img/icons/cross.svg');
+}
+.stripe-payment-risk-score {
+    border-radius: 13px;
+    height: 26px;
+    width: 26px;
+    display: inline-block;
+    margin-right: 5px;
+    position: relative;
+    top: -2px;
+    text-align: center;
+}
+.stripe-payment-risk-score .score-value {
+    display: inline-block;
+    position: relative;
+    top: 2px;
+    font-size: 12px;
+    font-weight: 600;
+}
+.data-grid-cell-content .stripe-payment-risk-score {
+    top: 0;
+}
+.data-grid-cell-content .stripe-payment-risk-score .score-value {
+    top: 4px;
+}
+.stripe-payment-risk-normal .stripe-payment-risk-score {
+    background-color: #cbf4c9;
+    color: #0e6245;
+}
+.stripe-payment-risk-elevated .stripe-payment-risk-score {
+    background-color: #f9efa5;
+    color: #d97917;
+}
+.stripe-payment-risk-highest .stripe-payment-risk-score {
+    background-color: #fde2dd;
+    color: #cd3d64;
+}
+
+/* Admin page card element */
+.admin__fieldset #stripe-card-element {
+    margin: 1.5em 0 1.5em 0;
+    border: 1px solid #adadad;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Saved payment methods */
+.stripe-saved-payment-methods img.payment-method-icon {
+    max-height: 32px;
+    float: right;
+    top: -2px;
+    position: relative;
+}
+.stripe-saved-payment-methods a.action-add {
+    float: right;
+}
+.stripe-saved-payment-methods {
+    margin-bottom: 2em;
+}
+.stripe-saved-payment-methods .saved-payment-method-option {
+    line-height: 32px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    width: 100%;
+}
+.stripe-saved-payment-methods .saved-payment-method-option label {
+    line-height: 32px;
+    cursor: pointer;
+    margin-left: 10px;
+    width: 100%;
+}
+.stripe-saved-payment-methods .stripe.mage-error {
+    margin-top: 1.2em;
+}
+
+/* Product Configuration */
+.admin__field-control input[name="product[stripe_sub_interval_count]"].admin__control-text,
+.admin__field-control input[name="product[stripe_sub_trial]"].admin__control-text,
+.admin__field-control input[name="product[stripe_sub_initial_fee]"].admin__control-text {
+  width: 150px;
+}
+
+/* Cart Price Rules */
+#stripe_subscriptions_coupon_months {
+    width: 164px;
+}
+
+.stripe-expand {
+    border-bottom: 0;
+}
+.stripe-expand > fieldset {
+    display: block !important;
+}
+.stripe-expand.active > fieldset {
+    display: none !important;
+}
+
+/* Product Edit page  */
+body.catalog-product-edit div[data-index="upgrades_downgrades"],
+body.catalog-product-edit div[data-index="prorate_upgrades"],
+body.catalog-product-edit div[data-index="prorate_downgrades"] {
+    margin-bottom: 0;
+}

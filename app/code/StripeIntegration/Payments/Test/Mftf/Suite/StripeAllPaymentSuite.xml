@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suites xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/suiteSchema.xsd">
+    <suite name="StripeAllTestsSuite">
+        <before>
+            <actionGroup ref="AdminStripeSaveConfigurationActionGroup" stepKey="configureAPIKeys">
+                <argument name="pk" value="{{_CREDS.stripe/api_acc1_pk}}" />
+                <argument name="sk" value="{{_CREDS.stripe/api_acc1_sk}}" />
+            </actionGroup>
+        </before>
+        <include>
+            <test name="GuestCustomerNormalCartWithP24PaymentMethodTest"/>
+            <test name="GuestCustomerNormalCartWithSepaDebitPaymentMethodTest"/>
+            <test name="GuestCustomerNormalCartWithiDEALPaymentMethodTest"/>
+            <test name="GuestCustomerNormalCartWithBanContactPaymentMethodTest"/>
+            <!--<test name="SubscriptionProductOrderWithCreateAccount"/>
+            <test name="AdminCreateOrderWithStripe3DCardTest"/>-->
+            <test name="GeneralCustomerNormalCartWithSavedPaymentMethodTest"/>
+            <test name="GeneralCustomerNormalCartWithSavedPaymentMethodAndCvcTest"/>
+            <test name="GeneralCustomerNormalCartWithSavedPaymentMethodAnd3DTest"/>
+            <!--<test name="GuestCustomerNormalCartWithTermsAndConditionTest"/>
+            <test name="GuestCustomerNormalCartWithReCaptchaInvisibleTest"/>-->
+            <test name="GuestCustomerNormalCartWithSepaDebitSubscriptionTest"/>
+            <!--<test name="GuestCustomerNormalCartWithKlarnaPaymentMethodTest"/>-->
+            <!--<test name="GuestCustomerNormalCartWithAUBecsDebitPaymentMethodTest"/>
+            <test name="GuestCustomerNormalCartWithBacsDebitPaymentMethodTest"/>-->
+            <test name="GuestCustomerNormalCartWithBlikPaymentMethodTest"/>
+            <!-- <test name="GuestCustomerNormalCartWithOxxoPaymentMethodTest"/> -->
+            <!--<test name="GuestCustomerNormalCartWithAfterpayPaymentMethodTest"/>-->
+            <!--<test name="GeneralCustomerPlaceOrderWithMultiShippingTest"/>-->
+        </include>
+        <after>
+        </after>
+    </suite>
+</suites>

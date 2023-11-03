@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="StorefrontCheckoutPaymentMethodSection">
+        <element name="checkPaymentMethodByName" type="radio" selector="//div[@id='checkout-payment-method-load']//div[contains(@class,'payment-method')]//label//span[contains(., '{{methodName}}')]/../..//input" parameterized="true"/>
+        <element name="cardNumberIframe" type="iframe" selector="//div[@id='stripe-payments-card-number']//iframe" />
+        <element name="cardNumberField" type="input" selector="//input[@name='cardnumber']" />
+        <element name="expDateIframe" type="iframe" selector="//div[@id='stripe-payments-card-expiry']//iframe" />
+        <element name="expDateField" type="input" selector="//input[@name='exp-date']" />
+        <element name="cvcIframe" type="iframe" selector="//div[@id='stripe-payments-card-cvc']//iframe" />
+        <element name="cvcField" type="input" selector="//input[@name='cvc']" />
+        <element name="payByCardIframe" type="iframe" selector="//div[@id='stripe-payment-element']//iframe" />
+        <element name="payByCardNumberField" type="input" selector="//input[@name='number']" timeout="10" />
+        <element name="payByCardExpField" type="input" selector="//input[@name='expiry']" />
+        <element name="payByCardCvcField" type="input" selector="//input[@name='cvc']" />
+        <element name="checkoutAgreementCheckbox" type="input" selector="//*[starts-with(@id, 'agreement_stripe_payments_')]" />
+        <element name="savedCardIframe" type="iframe" selector="//div[@id='stripe-card-cvc-element']//iframe" />
+        <element name="savedCardCvcField" type="input" selector="//input[@name='cvc']" />
+        <element name="placeOrderField" type="button" selector=".payment-method._active button.action.primary.checkout" />
+        <element name="p24PaymentMethodTabId" type="button" selector="#p24-tab" />
+        <element name="stripeAuthorizeButton" type="button" selector=".common-Button.common-Button--default" />
+        <element name="sepaPaymentMethodTabId" type="button" selector="#sepa_debit-tab" />
+        <element name="ibanField" type="input" selector="//input[@name='iban']" />
+        <element name="BanContactPaymentMethodTabId" type="button" selector="#bancontact-tab" />
+        <element name="SofortPaymentMethodTabId" type="button" selector="#sofort-tab" />
+        <element name="KlarnaPaymentMethodTabId" type="button" selector="#klarna-tab" />
+        <element name="additionalPaymentBox" type="text" selector="div.p-AdditionalPaymentMethods" />
+        <element name="additionalPaymentSelectBox" type="text" selector="select.p-AdditionalPaymentMethods-menu" />
+        <element name="bsbNumberField" type="input" selector="//input[@name='auBsb']" />
+        <element name="accountNumberField" type="input" selector="//input[@name='auBankAccountNumber']" />
+        <element name="BlikPaymentMethodTabId" type="button" selector="#blik-tab" />
+    </section>
+</sections>

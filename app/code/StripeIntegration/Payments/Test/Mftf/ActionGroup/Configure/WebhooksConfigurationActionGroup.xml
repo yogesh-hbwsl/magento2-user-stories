@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="WebhooksConfigurationActionGroup">
+        <annotations>
+            <description>Configure webhooks endpoints.</description>
+        </annotations>
+
+        <executeJS function="var http = new XMLHttpRequest(); http.open('GET', '{{_ENV.MAGENTO_BASE_URL}}/tests/configure/webhooks', true); http.send();" stepKey="configureWebhooks" />
+        <!-- <amOnPage url="/tests/configure/webhooks" stepKey="configureWebhooks"/>
+        <seeInPageSource html="PASSED" stepKey="seeInPageSource" after="configureWebhooks"/> -->
+
+    </actionGroup>
+</actionGroups>

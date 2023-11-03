@@ -1,0 +1,71 @@
+<h4>
+    <span class="stripe-payment-method" style="display: flex; align-items: center;">
+        <?php if ($block->getPaymentMethodIconUrl()): ?>
+            <img src="<?php echo $block->getPaymentMethodIconUrl(); ?>" class="stripe-payment-method-icon" style="margin-right: 1rem;">
+        <?php endif; ?>
+        <?php if ($block->getPaymentMethodName()): ?>
+            <span class="stripe-payment-method-name"><?php echo $block->getPaymentMethodName(); ?></span>
+        <?php endif; ?>
+    </span>
+</h4>
+
+<table class="admin__table-secondary order-information-table stripe payment-info">
+  <tbody>
+
+    <tr>
+        <th><?php echo __('Amount remaining'); ?></th>
+        <td class="stripe-amount">
+            <strong>
+                <?php echo $this->getFormattedAmountRemaining(); ?>
+            </strong>
+        </td>
+    </tr>
+
+    <?php $details = $block->getIbanDetails(); ?>
+    <?php if ($details): ?>
+    <tr>
+        <th><?php echo __('IBAN'); ?></th>
+        <td class="iban" style="word-wrap: break-word; overflow-wrap: break-word; max-width: 150px;">
+            <?php echo $details['iban']; ?>
+        </td>
+    </tr>
+    <tr>
+        <th><?php echo __('BIC'); ?></th>
+        <td class="bic">
+            <?php echo $details['bic']; ?>
+        </td>
+    </tr>
+    <tr>
+        <th><?php echo __('Country'); ?></th>
+        <td class="country">
+            <?php echo $details['country']; ?>
+        </td>
+    </tr>
+    <tr>
+        <th><?php echo __('Account holder name'); ?></th>
+        <td class="account-holder-name">
+            <?php echo $details['account_holder_name']; ?>
+        </td>
+    </tr>
+    <?php endif; ?>
+
+    <?php if ($block->getReference()): ?>
+    <tr>
+        <th><?php echo __('Reference'); ?></th>
+        <td class="reference">
+            <?php echo $block->getReference(); ?>
+        </td>
+    </tr>
+    <?php endif; ?>
+
+    <?php if ($block->getHostedInstructionsUrl()): ?>
+    <tr>
+        <th><?php echo __('Instructions'); ?></th>
+        <td class="instructions">
+            <a href="<?php echo $block->getHostedInstructionsUrl(); ?>" target="_blank" rel="noopener noreferrer">View instructions</a>
+        </td>
+    </tr>
+    <?php endif; ?>
+
+    </tbody>
+</table>

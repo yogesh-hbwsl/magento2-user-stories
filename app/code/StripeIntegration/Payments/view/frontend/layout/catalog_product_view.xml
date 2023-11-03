@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="product.info.addtocart">
+            <block class="StripeIntegration\Payments\Block\Button" name="product.info.stripe_payments_express" template="StripeIntegration_Payments::express/product_button.phtml" before="-" />
+        </referenceBlock>
+
+        <referenceBlock name="product.info.addtocart.additional">
+            <block name="product.info.addtocart.stripe_payments_express.additional" class="StripeIntegration\Payments\Block\Button" template="StripeIntegration_Payments::express/product_button.phtml" before="-" />
+        </referenceBlock>
+
+        <!-- <referenceBlock name="product.info.options.wrapper.bottom">
+            <block class="StripeIntegration\Payments\Block\Button" name="product.info.stripe_payments_express.bottom" after="product.info.addtocart" template="StripeIntegration_Payments::express/product_button.phtml" />
+        </referenceBlock> -->
+    </body>
+</page>
+

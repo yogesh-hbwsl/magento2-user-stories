@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="GeneralCustomerNormalCartWithSavedPaymentMethodAnd3DTest" extends="GeneralCustomerNormalCartWithSavedPaymentMethodTest">
+        <annotations>
+            <features value="Order"/>
+            <stories value="Checkout Orders using Saved Card"/>
+            <title value="General customer normal order with Stripe saved card payment method and 3D secure card"/>
+            <description value="With General Customer ; and a selected store view currency of USDCurrency , save the new payment method, add to the cart the products of NormalCart , proceed to the checkout page and specify NewYorkAddress as the shipping address and FlatRateShippingMethod as the shipping method. Click Next and specify StripeElementsMethod as the payment method, using saved payment method. Finally click Place Order."/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="GeneralCustomerNormalCartWithSavedPaymentMethodAnd3DTest"/>
+            <group value="normal_cart"/>
+            <group value="card_success"/>
+            <group value="stripe_elements"/>
+        </annotations>
+
+        <!-- Store front customer login -->
+        <actionGroup ref="LoginToStorefrontActionGroup" stepKey="storefrontCustomerLogin">
+            <argument name="Customer" value="SimpleStripeCustomerSavedPayment"/>
+        </actionGroup>
+
+        <!-- Fill Payment data into the form -->
+        <actionGroup ref="FillDataOnNewPaymentMethodFormActionGroup" stepKey="fillDataPaymentMethod">
+            <argument name="CardNumber" value="{{Cards.AuthenticationRequiredCard}}"/>
+        </actionGroup>
+
+        <!-- Place the order -->
+        <actionGroup ref="ClickPlaceOrderAuthenticationRequiredSavedCardActionGroup" stepKey="clickPlaceOrder"/>
+
+        <!-- Complete the secure authentication popup -->
+        <actionGroup ref="ClickThreeDSecureActionGroup" stepKey="completeAuthentication" after="clickPlaceOrder"/>
+
+        <waitForPageLoad stepKey="waitForCheckout" after="completeAuthentication" time="30" />
+
+        <!-- See success message is display -->
+        <see selector="{{CheckoutSuccessMainSection.successTitle}}" userInput="Thank you for your purchase!" stepKey="waitForLoadSuccessPage" after="waitForCheckout"/>
+    </test>
+</tests>

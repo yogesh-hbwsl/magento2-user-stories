@@ -1,0 +1,82 @@
+/* Admin and multishipping form styling */
+#payment_form_stripe_payments.standard-form .payment-method.stripe-payments {
+    margin-top: 20px;
+}
+#payment_form_stripe_payments.standard-form .payment-method.stripe-payments label {
+    padding-left: 5px;
+}
+#payment_form_stripe_payments.stripe-payments.indent,
+.stripe-payments.indent,
+.stripe-payments .indent {
+    margin-left: 20px;
+    margin-top: 5px;
+}
+#payment_form_stripe_payments.standard-form fieldset.payment-method.stripe-payments.hide,
+#payment_form_stripe_payments.standard-form fieldset.payment-method.stripe-payments .hide {
+    display: none;
+}
+#payment_form_stripe_payments.standard-form select {
+    width: auto;
+}
+fieldset.payment-method.stripe-payments { border: 0; }
+
+/* Admin styling */
+#payment_form_stripe_payments.admin__fieldset {
+    padding-top: 1em;
+}
+#payment_form_stripe_payments.admin__fieldset #saved-cards {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+.admin__payment-method-wrapper {
+    width: calc(80%);
+}
+
+/* Card Icons */
+.stripe-payments span.type.Visa,
+.stripe-payments span.type.visa { background: url(../img/cards/visa.svg) no-repeat; }
+
+.stripe-payments span.type.American.Express,
+.stripe-payments span.type.amex { background: url(../img/cards/amex.svg) no-repeat; }
+
+.stripe-payments span.type.MasterCard,
+.stripe-payments span.type.mastercard { background: url(../img/cards/mastercard.svg) no-repeat; }
+
+.stripe-payments span.type.Discover,
+.stripe-payments span.type.discover { background: url(../img/cards/discover.svg) no-repeat; }
+
+.stripe-payments span.type.Diners,
+.stripe-payments span.type.diners { background: url(../img/cards/diners.svg) no-repeat; }
+
+.stripe-payments span.type.JCB,
+.stripe-payments span.type.jcb { background: url(../img/cards/jcb.svg) no-repeat; }
+
+.stripe-payments span.type.Cartes.Bancaires,
+.stripe-payments span.type.cartes_bancaires { background: url(../img/svg/cartes_bancaires.svg) no-repeat; }
+
+.stripe-payments span.type.Visa, .stripe-payments span.type.visa,
+.stripe-payments span.type.American.Express, .stripe-payments span.type.amex,
+.stripe-payments span.type.MasterCard, .stripe-payments span.type.mastercard,
+.stripe-payments span.type.Discover, .stripe-payments span.type.discover,
+.stripe-payments span.type.Diners, .stripe-payments span.type.diners,
+.stripe-payments span.type.JCB, .stripe-payments span.type.jcb,
+.stripe-payments span.type.Cartes.Bancaires, .stripe-payments span.type.cartes_bancaires {
+    padding-left: 40px;
+    background-position-y: -3px;
+    display: inline-block;
+    height: 22px;
+    background-size: 30px;
+}
+
+#payment_form_stripe_payments_invoice {
+    margin: 1em 0.5em;
+}
+
+#payment_form_stripe_payments_invoice h4 {
+    margin-bottom: 0.6em;
+}
+
+#payment_form_stripe_payments_invoice .days-due {
+    width: 7em;
+    margin-top: 0px;
+}

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="GuestCustomerNormalCartWithAfterpayPaymentMethodTest" extends="GuestCustomerNormalCartWithRedirectPaymentMethodTest">
+        <annotations>
+            <features value="Order"/>
+            <stories value="Checkout Orders using Afterpay"/>
+            <title value="Guest customer normal order with Stripe Afterpay payment method"/>
+            <description value="With Guest Customer ; and a selected store view currency of GBP Currency, add to the cart the products of NormalCart , proceed to the checkout page and specify US Address as the shipping address and FlatRateShippingMethod as the shipping method. Click Next and specify StripeElementsMethod as the payment method, using Afterpay payment method. Finally click Place Order."/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="GuestCustomerNormalCartWithAfterpayPaymentMethodTest"/>
+            <group value="normal_cart"/>
+            <group value="card_success"/>
+            <group value="stripe_elements"/>
+            <group value="guest_customer"/>
+        </annotations>
+
+        <before>
+            <!-- Update the API details for Afterpay payment method -->
+            <actionGroup ref="AdminStripeSaveConfigurationActionGroup" stepKey="updateConfiguration">
+                <argument name="pk" value="{{_CREDS.stripe/api_acc1_afterpay_pk}}" />
+                <argument name="sk" value="{{_CREDS.stripe/api_acc1_afterpay_sk}}" />
+            </actionGroup>
+
+            <actionGroup ref="AdminStripeUpdateCurrencyActionGroup" stepKey="updateStoreCurrency">
+                <argument name="currency" value="GBP" />
+            </actionGroup>
+        </before>
+
+        <!-- Select Afterpay Payment Method -->
+        <actionGroup ref="SelectRedirectPaymentMethodActionGroup" stepKey="selectRedirectTypePaymentMethod" after="selectPaymentMethod">
+            <argument name="paymentMethodTabId" value="#afterpay_clearpay-tab"/>
+            <argument name="paymentMethodName" value="afterpay_clearpay"/>
+        </actionGroup>
+
+        <after>
+            <actionGroup ref="AdminStripeUpdateCurrencyActionGroup" stepKey="resetStoreCurrency">
+                <argument name="currency" value="USD" />
+            </actionGroup>
+
+            <!-- Reset the API details -->
+            <actionGroup ref="AdminStripeSaveConfigurationActionGroup" stepKey="resetStripeSettings">
+                <argument name="pk" value="{{_CREDS.stripe/api_acc1_pk}}" />
+                <argument name="sk" value="{{_CREDS.stripe/api_acc1_sk}}" />
+            </actionGroup>
+        </after>
+    </test>
+</tests>

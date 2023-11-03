@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="GuestCustomerNormalCartWithBlikPaymentMethodTest">
+        <annotations>
+            <features value="Order"/>
+            <stories value="Checkout Orders using BLIK payment method"/>
+            <title value="Guest customer normal order with Stripe Blik payment method"/>
+            <description value="With Guest Customer ; and a selected store view currency of PLN Currency, add to the cart the products of NormalCart , proceed to the checkout page and specify Poland Address as the shipping address and FlatRateShippingMethod as the shipping method. Go to payment page, Check payment is not visible."/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="GuestCustomerNormalCartWithBlikPaymentMethodTest"/>
+            <group value="normal_cart"/>
+            <group value="stripe_elements"/>
+            <group value="guest_customer"/>
+        </annotations>
+
+        <before>
+            <actionGroup ref="AdminStripeUpdateCurrencyActionGroup" stepKey="updateStoreCurrency">
+                <argument name="currency" value="PLN" />
+            </actionGroup>
+        </before>
+
+        <!-- Navigate to the product page -->
+        <amOnPage url="{{StorefrontProductPage.url(StripeSimpleProduct.urlKey)}}" stepKey="navigateToSimpleProductPage"/>
+        <waitForPageLoad stepKey="waitForSimpleProductPageLoad"/>
+
+        <!-- Add Simple Product to cart -->
+        <actionGroup ref="AddToCartFromStorefrontProductPageActionGroup" stepKey="addToCartFromStorefrontProductPage">
+            <argument name="productName" value="StripeSimpleProduct.name"/>
+        </actionGroup>
+
+        <!-- Go to checkout -->
+        <actionGroup ref="GoToCheckoutFromMinicartActionGroup" stepKey="goToCheckoutFromMinicart"/>
+
+        <!-- Fill Shipment form -->
+        <actionGroup ref="FillGuestCheckoutShippingAddressWithCountryAndStateActionGroup" stepKey="checkoutFillingShippingSection">
+            <argument name="customer" value="PLNCustomer"/>
+            <argument name="customerAddress" value="PLNAddress"/>
+        </actionGroup>
+
+        <actionGroup ref="StorefrontCheckoutClickNextButtonActionGroup" stepKey="clickOnNextButton"/>
+
+        <!-- Wait for payment page -->
+        <waitForPageLoad stepKey="waitForPaymentPageToLoad"/>
+
+        <!-- Check if BLIK payment method is not displayed -->
+        <dontSeeElement selector="{{StorefrontCheckoutPaymentMethodSection.BlikPaymentMethodTabId}}" stepKey="dontSeePaymentMethod"/>
+
+        <after>
+            <actionGroup ref="AdminStripeUpdateCurrencyActionGroup" stepKey="resetStoreCurrency">
+                <argument name="currency" value="USD" />
+            </actionGroup>
+        </after>
+    </test>
+</tests>

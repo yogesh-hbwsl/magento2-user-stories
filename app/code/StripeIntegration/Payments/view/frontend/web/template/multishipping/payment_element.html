@@ -1,0 +1,51 @@
+<div class="payment-method stripe-payments"
+  data-bind="
+    css: {
+      '_active': (getCode() == isChecked())
+    }">
+
+  <div class="payment-method-content" data-bind="if: stripePaymentsError()">
+    <p class="message message-error error">
+      <!-- ko i18n: stripePaymentsError() --><!-- /ko -->
+    </p>
+  </div>
+
+  <div class="payment-method-content stripe-payments-card-form" data-bind="blockLoader: isLoading">
+
+    <div class="stripe-dropdown stripe-element-font stripe-element-border" data-bind="visible: selection">
+        <div class="stripe-dropdown-selection" data-bind="click: toggleDropdown, with: selection">
+          <img data-bind="if: icon, attr: { src: icon }" />
+          <span data-bind="text: label"></span>
+        </div>
+        <div data-bind="visible: isDropdownOpen" class="stripe-dropdown-container">
+          <ul class="stripe-dropdown-list">
+            <!-- ko foreach: dropdownOptions -->
+            <li data-bind="attr: { id: $data.value, class: $data.value }, click: function(data)
+              {
+                $parent.selection(data);
+                $parent.isDropdownOpen(false);
+                $parent.isPaymentFormVisible(false);
+              }">
+              <img data-bind="attr: { src: icon }" />
+              <span class="stripe-dropdown-item" data-bind="text: $data.label"></span>
+            </li>
+            <!-- /ko -->
+            <li class="new" data-bind="click: newPaymentMethod">
+              <a href="javascript:void(0);"><!-- ko i18n: 'New payment method' --><!-- /ko --></a>
+            </li>
+          </ul>
+        </div>
+    </div>
+
+    <div class="stripe-payment-element no-wrap" data-bind="visible: isPaymentFormVisible">
+      <div id="stripe-payment-element" data-bind="afterRender: onContainerRendered"></div>
+    </div>
+
+    <!-- ko foreach: getRegion('messages') -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <!--/ko-->
+
+  </div>
+
+</div>
+

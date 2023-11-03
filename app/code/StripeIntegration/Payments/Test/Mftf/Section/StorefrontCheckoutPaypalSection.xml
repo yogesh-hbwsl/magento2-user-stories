@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="StorefrontCheckoutPaypalSection">
+        <element name="emailField" type="input" selector="#email" />
+        <element name="passwordField" type="input" selector="#password" />
+        <element name="loginBtnField" type="button" selector="#btnLogin" />
+        <element name="paymentSubmitBtnField" type="button" selector="#payment-submit-btn" />
+    </section>
+</sections>

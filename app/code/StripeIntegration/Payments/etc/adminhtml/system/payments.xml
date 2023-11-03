@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<include xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_include.xsd">
+  <group id="payments" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+    <label>Payments</label>
+
+    <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Enabled</label>
+      <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+      <config_path>payment/stripe_payments/active</config_path>
+    </field>
+    <field id="payment_flow" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Payment flow</label>
+      <source_model>StripeIntegration\Payments\Model\Adminhtml\Source\PaymentFlow</source_model>
+      <config_path>payment/stripe_payments/payment_flow</config_path>
+    </field>
+
+    <field id="preview_embedded_payment_flow" translate="label" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label></label>
+      <frontend_model>StripeIntegration\Payments\Model\Adminhtml\Frontend\PreviewEmbeddedPaymentFlow</frontend_model>
+      <depends>
+        <field id="payment_flow">0</field>
+      </depends>
+    </field>
+
+    <field id="preview_redirect_payment_flow" translate="label" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label></label>
+      <frontend_model>StripeIntegration\Payments\Model\Adminhtml\Frontend\PreviewRedirectPaymentFlow</frontend_model>
+      <depends>
+        <field id="payment_flow">1</field>
+      </depends>
+    </field>
+
+    <field id="payment_element_layout" translate="label" type="select" sortOrder="16" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Form layout</label>
+      <source_model>StripeIntegration\Payments\Model\Adminhtml\Source\PaymentElementLayout</source_model>
+      <config_path>payment/stripe_payments/payment_element_layout</config_path>
+      <depends>
+        <field id="payment_flow">0</field>
+      </depends>
+      <comment>
+        <![CDATA[View example layouts at <a href="https://stripe.com/docs/payments/payment-element" target="_blank">stripe.com/docs/payments/payment-element</a>.]]>
+      </comment>
+    </field>
+
+    <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Title</label>
+      <comment><![CDATA[This is the payment method title used at the checkout page]]></comment>
+      <config_path>payment/stripe_payments/title</config_path>
+    </field>
+    <field id="payment_method_configuration" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Payment method configuration</label>
+      <comment><![CDATA[Enable/disable payment methods.]]></comment>
+      <frontend_model>StripeIntegration\Payments\Model\Adminhtml\Frontend\PaymentMethodConfiguration</frontend_model>
+    </field>
+    <field id="payment_action" translate="label" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Payment action</label>
+      <source_model>StripeIntegration\Payments\Model\Adminhtml\Source\PaymentAction</source_model>
+      <config_path>payment/stripe_payments/payment_action</config_path>
+    </field>
+    <field id="expired_authorizations" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Expired authorizations</label>
+      <comment>
+        <![CDATA[Authorizations will typically expire after 7 days. What should we do if an admin tries to capture an expired authorization?]]>
+      </comment>
+      <source_model>StripeIntegration\Payments\Model\Adminhtml\Source\ExpiredAuthorizations</source_model>
+      <depends>
+        <field id="payment_action">authorize</field>
+      </depends>
+      <config_path>payment/stripe_payments/expired_authorizations</config_path>
+    </field>
+    <field id="automatic_invoicing" translate="label" type="select" sortOrder="105" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Automatic invoicing</label>
+      <comment>
+        <![CDATA[For Authorize Only orders, should we automatically create an invoice in Pending status right after the order?]]>
+      </comment>
+      <source_model>StripeIntegration\Payments\Model\Adminhtml\Source\Enabled</source_model>
+      <depends>
+        <field id="payment_action">authorize</field>
+      </depends>
+      <config_path>payment/stripe_payments/automatic_invoicing</config_path>
+    </field>
+    <field id="save_payment_method" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Save customer payment method</label>
+      <source_model>StripeIntegration\Payments\Model\Adminhtml\Source\SavePaymentMethod</source_model>
+      <frontend_model>StripeIntegration\Payments\Model\Adminhtml\Frontend\SavePaymentMethod</frontend_model>
+      <config_path>payment/stripe_payments/save_payment_method</config_path>
+    </field>
+    <field id="cvc_code" translate="label" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Card CVC code</label>
+      <source_model>StripeIntegration\Payments\Model\Adminhtml\Source\VerificationCode</source_model>
+      <config_path>payment/stripe_payments/cvc_code</config_path>
+    </field>
+    <field id="card_icons" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Card icons</label>
+      <source_model>StripeIntegration\Payments\Model\Adminhtml\Source\CardIcons</source_model>
+      <config_path>payment/stripe_payments/card_icons</config_path>
+      <depends>
+        <field id="payment_flow">1</field>
+      </depends>
+    </field>
+    <field id="card_icons_specific" translate="label" type="multiselect" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Select card icons</label>
+      <config_path>payment/stripe_payments/card_icons_specific</config_path>
+      <source_model>StripeIntegration\Payments\Model\Adminhtml\Source\CardIconsSpecific</source_model>
+      <depends>
+        <field id="card_icons">1</field>
+        <field id="payment_flow">1</field>
+      </depends>
+    </field>
+    <field id="statement_descriptor" translate="label" type="text" sortOrder="190" showInDefault="1" showInWebsite="1" showInStore="1">
+      <label>Optional statement descriptor</label>
+      <config_path>payment/stripe_payments/statement_descriptor</config_path>
+      <validate>validate-length maximum-length-22</validate>
+    </field>
+    <field id="sort_order" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
+     <label>Sort order</label>
+     <comment>Adjust this to move the payment method above or below other payment methods</comment>
+     <frontend_class>validate-number</frontend_class>
+     <config_path>payment/stripe_payments_checkout/sort_order</config_path>
+   </field>
+
+ </group>
+</include>

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp/etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="script-src">
+            <values>
+                <value id="stripe-sub" type="host">*.stripe.com</value>
+                <value id="klarna-com" type="host">klarna.com</value>
+                <value id="klarna-sub" type="host">*.klarna.com</value>
+                <value id="klarna-cdn" type="host">*.klarnacdn.net</value>
+                <value id="klarna-evt" type="host">*.klarnaevt.com</value>
+            </values>
+        </policy>
+        <policy id="connect-src">
+            <values>
+                <value id="stripe-sub" type="host">*.stripe.com</value>
+                <value id="klarna-com" type="host">klarna.com</value>
+                <value id="klarna-sub" type="host">*.klarna.com</value>
+                <value id="klarna-cdn" type="host">*.klarnacdn.net</value>
+                <value id="klarna-evt" type="host">*.klarnaevt.com</value>
+            </values>
+        </policy>
+        <policy id="frame-ancestors">
+            <values>
+                <value id="stripe-sub" type="host">*.stripe.com</value>
+                <value id="stripe-com" type="host">stripe.com</value>
+            </values>
+        </policy>
+        <policy id="frame-src">
+            <values>
+                <value id="stripe-sub" type="host">*.stripe.com</value>
+                <value id="klarna-com" type="host">klarna.com</value>
+                <value id="klarna-sub" type="host">*.klarna.com</value>
+                <value id="klarna-cdn" type="host">*.klarnacdn.net</value>
+                <value id="klarna-evt" type="host">*.klarnaevt.com</value>
+            </values>
+        </policy>
+        <policy id="font-src">
+            <values>
+                <value id="stripe-sub" type="host">*.stripe.com</value>
+                <value id="klarna-com" type="host">klarna.com</value>
+                <value id="klarna-sub" type="host">*.klarna.com</value>
+                <value id="klarna-cdn" type="host">*.klarnacdn.net</value>
+                <value id="klarna-evt" type="host">*.klarnaevt.com</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>

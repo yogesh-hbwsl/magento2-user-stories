@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="VariableSubscriptionsCartActionGroup">
+        <annotations>
+            <description>Create a cart which includes 2 subscriptions that renew on 2 different billing intervals.</description>
+        </annotations>
+
+        <amOnPage url="{{StorefrontProductPage.url(SimpleMonthlySubscriptionInitialFeeProduct.urlKey)}}" stepKey="goToSimpleMonthlySubscriptionInitialFeeProductPage"/>
+        <waitForPageLoad stepKey="waitForSimpleMonthlySubscriptionInitialFeeProductPageToLoad" time="60"/>
+        <fillField userInput="2" selector="{{StorefrontProductPageSection.qtyInput}}" stepKey="fillSimpleMonthlySubscriptionInitialFeeProductQty"/>
+        <click selector="{{StorefrontProductInfoMainSection.AddToCart}}" stepKey="clickAddToCartSimpleMonthlySubscriptionInitialFeeProduct"/>
+
+        <amOnPage url="{{StorefrontProductPage.url(SimpleQuarterlySubscriptionProduct.urlKey)}}" stepKey="goToSimpleQuarterlySubscriptionProductPage"/>
+        <waitForPageLoad stepKey="waitForSimpleQuarterlySubscriptionProductPageToLoad" time="60"/>
+        <click selector="{{StorefrontProductInfoMainSection.AddToCart}}" stepKey="clickAddToCartSimpleQuarterlySubscriptionProduct"/>
+
+    </actionGroup>
+</actionGroups>
+
+
+
+

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="FillDataOnNewPaymentMethodFormActionGroup">
+        <annotations>
+            <description>Fills the card number, expiration date and the security code on a Stripe Elements add payment method form.</description>
+        </annotations>
+        <arguments>
+            <argument name="CardNumber" defaultValue="{{Cards.Success}}" type="string"/>
+            <argument name="ExpDate" defaultValue="{{Cards.ExpDate}}" type="string"/>
+            <argument name="CVC" defaultValue="{{Cards.CVC}}" type="string"/>
+            <argument name="country" defaultValue="{{savedPaymentMethod.country}}" type="string"/>
+            <argument name="zipCode" defaultValue="{{savedPaymentMethod.zipCode}}" type="string"/>
+        </arguments>
+
+        <!-- Switch to Pay By Card iFrame -->
+        <switchToIFrame selector="{{StorefrontCustomerPaymentMethodsFormSection.payByCardIframe}}" stepKey="switchToPayByCardIframe"/>
+        <!-- Wait to load the iFrame -->
+        <waitForAjaxLoad stepKey="waitForIframeLoad" time="10" />
+        <!-- Fill the card number -->
+        <fillField selector="{{StorefrontCustomerPaymentMethodsFormSection.payByCardNumberField}}" userInput="{{CardNumber}}" stepKey="fillCardNumber"/>
+        <!-- Fill the expiration date -->
+        <fillField selector="{{StorefrontCustomerPaymentMethodsFormSection.payByCardExpField}}" userInput="{{ExpDate}}" stepKey="fillExpDate"/>
+        <!-- Fill the CVC number -->
+        <fillField selector="{{StorefrontCustomerPaymentMethodsFormSection.payByCardCvcField}}" userInput="{{CVC}}" stepKey="fillCVC"/>
+        <!-- Select the country -->
+        <selectOption selector="{{StorefrontCustomerPaymentMethodsFormSection.payByCardCountryField}}" userInput="{{country}}" stepKey="fillCountry"/>
+        <!-- Wait ten seconds to display Zip Code Field -->
+        <wait time="10" stepKey="waitToDisplayZipField"/>
+        <!-- Fill zip code -->
+        <fillField selector="{{StorefrontCustomerPaymentMethodsFormSection.payByCardZipField}}" userInput="{{zipCode}}" stepKey="fillZipcode"/>
+        <switchToIFrame stepKey="switchOutOfPayByCardIframe"/>
+    </actionGroup>
+</actionGroups>

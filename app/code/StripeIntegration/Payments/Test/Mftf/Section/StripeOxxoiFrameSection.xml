@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="StripeOxxoiFrameSection">
+        <element name="overlayIframe" type="iframe" selector="(//body//div)[1]//iframe" />
+        <element name="oxxoContentiFrame" type="iframe" selector="//iframe[@class='LightboxApp-content']" />
+        <element name="closeButton" type="button" selector="//div[@id='root']//button[@class='Chrome__Close TestmodeClose loc_close']" />
+    </section>
+</sections>

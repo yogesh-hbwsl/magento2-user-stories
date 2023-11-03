@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="StorefrontNavigatePaymentMethodPageActionGroup">
+        <!-- Open payment method page on storefront -->
+        <amOnPage url="{{StorefrontCustomerPaymentMethodsPage.url}}" stepKey="navigateStorefrontPaymentMethodPage"/>
+        <waitForPageLoad time="30" stepKey="waitPageFullyLoaded"/>
+        <waitForElementVisible selector="{{StorefrontCustomerPaymentMethodsFormSection.addPaymentMethodBtn}}" stepKey="waitForAddBtnVisible"/>
+        <seeElement selector="{{StorefrontCustomerPaymentMethodsFormSection.addPaymentMethodBtn}}" stepKey="seeAddBtnPaymentMethodPage"/>
+    </actionGroup>
+</actionGroups>

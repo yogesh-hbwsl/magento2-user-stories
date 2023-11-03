@@ -18,6 +18,7 @@
     },
     "version": "2.4.6",
     "require": {
+        "akeneo/module-magento2-connector-community": "^104.0",
         "magento/composer-dependency-version-audit-plugin": "~0.1",
         "magento/composer-root-update-plugin": "~2.0",
         "magento/module-bundle-sample-data": "100.4.*",
@@ -40,7 +41,8 @@
         "magento/module-widget-sample-data": "100.4.*",
         "magento/module-wishlist-sample-data": "100.4.*",
         "magento/product-community-edition": "2.4.6",
-        "magento/sample-data-media": "100.4.*"
+        "magento/sample-data-media": "100.4.*",
+        "stripe/stripe-php": "^12"
     },
     "autoload": {
         "exclude-from-classmap": [

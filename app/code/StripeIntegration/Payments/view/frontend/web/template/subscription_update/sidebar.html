@@ -1,0 +1,11 @@
+<div data-bind="visible: isDisplayed">
+    <div class="opc-block-summary subscription-update" data-bind="blockLoader: isLoading">
+        <span data-bind="i18n: 'Subscription Update'" class="title"></span>
+        <p data-bind="i18n: 'You are about to change your subscription.'" class="note"></p>
+        <p class="actions">
+            <a data-bind="click: cancelUpdate" class="action cancel">
+            <!-- ko i18n: 'Cancel' --><!-- /ko -->
+            </a>
+        </p>
+    </div>
+</div>

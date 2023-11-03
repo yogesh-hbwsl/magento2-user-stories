@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="GeneralCustomerNormalCartWithSavedPaymentMethodTest">
+        <annotations>
+            <features value="Order"/>
+            <stories value="Checkout Orders using Saved card payment method"/>
+            <title value="General customer normal order with Stripe saved card payment method"/>
+            <description value="With General Customer ; and a selected store view currency of USDCurrency , save the new payment method, add to the cart the products of NormalCart , proceed to the checkout page and specify NewYorkAddress as the shipping address and FlatRateShippingMethod as the shipping method. Click Next and specify StripeElementsMethod as the payment method, using saved payment method. Finally click Place Order."/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="GeneralCustomerNormalCartWithSavedPaymentMethodTest"/>
+            <group value="normal_cart"/>
+            <group value="card_success"/>
+            <group value="stripe_elements"/>
+        </annotations>
+
+        <!-- Store front customer login -->
+        <actionGroup ref="LoginToStorefrontActionGroup" stepKey="storefrontCustomerLogin">
+            <argument name="Customer" value="SimpleStripeCustomer"/>
+        </actionGroup>
+
+        <!-- Check if payment method page is exist -->
+        <actionGroup ref="StorefrontNavigatePaymentMethodPageActionGroup" stepKey="navigateToPaymentMethodPage" />
+
+        <!-- Fill Payment data into the form -->
+        <actionGroup ref="FillDataOnNewPaymentMethodFormActionGroup" stepKey="fillDataPaymentMethod">
+            <argument name="CardNumber" value="{{Cards.SuccessCard}}"/>
+        </actionGroup>
+
+        <!-- Save the payment method -->
+        <actionGroup ref="SaveNewPaymentMethodActionGroup" stepKey="saveNewPaymentMethod"/>
+
+        <!-- Navigate to the product page -->
+        <amOnPage url="{{StorefrontProductPage.url(StripeSimpleProduct.urlKey)}}" stepKey="navigateToSimpleProductPage"/>
+        <waitForPageLoad stepKey="waitForSimpleProductPageLoad"/>
+
+        <!-- Add Simple Product to cart -->
+        <actionGroup ref="AddToCartFromStorefrontProductPageActionGroup" stepKey="addToCartFromStorefrontProductPage">
+            <argument name="productName" value="StripeSimpleProduct.name"/>
+        </actionGroup>
+
+        <!-- Go to checkout -->
+        <actionGroup ref="GoToCheckoutFromMinicartActionGroup" stepKey="goToCheckoutFromMinicart"/>
+        <actionGroup ref="CheckoutSelectFlatRateShippingMethodActionGroup" stepKey="selectFlatRate"/>
+        <actionGroup ref="StorefrontCheckoutForwardFromShippingStepActionGroup" stepKey="goToReview"/>
+
+        <!-- Select the payment method -->
+        <actionGroup ref="SelectPaymentMethodActionGroup" stepKey="selectPaymentMethod">
+            <argument name="MethodSelector" value="{{StorefrontCheckoutPaymentMethodSection.checkPaymentMethodByName('Pay by Card')}}"/>
+        </actionGroup>
+
+        <!-- Place the order -->
+        <actionGroup ref="ClickPlaceOrderActionGroup" stepKey="clickPlaceOrder"/>
+
+        <after>
+            <actionGroup ref="StorefrontCustomerLogoutActionGroup" stepKey="logoutStorefront"/>
+        </after>
+    </test>
+</tests>

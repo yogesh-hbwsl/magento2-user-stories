@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="GuestCustomerNormalCartWithTermsAndConditionTest">
+        <annotations>
+            <features value="Order"/>
+            <stories value="Checkout Orders with Terms and Condition"/>
+            <title value="Guest customer normal order with terms and condition via Stripe Elements."/>
+            <description value="With GuestCustomer ; and a selected store view currency of USDCurrency , add to the cart the products of NormalCart , proceed to the checkout page and specify NewYorkAddress as the shipping address and FlatRateShippingMethod as the shipping method. Click Next and specify StripeElementsMethod as the payment method, filling SuccessCard in the payment form. Finally click Place Order."/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="GuestCustomerNormalCartWithTermsAndConditionMethod"/>
+            <group value="checkout_orders"/>
+            <group value="guest_customer"/>
+            <group value="normal_cart"/>
+            <group value="card_success"/>
+            <group value="stripe_elements"/>
+        </annotations>
+
+        <before>
+            <magentoCLI command="config:set checkout/options/enable_agreements 1" stepKey="setEnableTermsOnCheckout"/>
+
+            <actionGroup ref="AdminLoginActionGroup" stepKey="adminLogin"/>
+        </before>
+
+        <!-- Create New Terms and Condition entry -->
+        <actionGroup ref="AdminTermsConditionsOpenNewTermPageActionGroup" stepKey="openNewTerm"/>
+        <actionGroup ref="AdminTermsConditionsFillTermEditFormActionGroup" stepKey="fillNewTerm">
+            <argument name="term" value="activeHtmlTerm"/>
+        </actionGroup>
+
+        <!-- Save New Terms and Condition entry -->
+        <actionGroup ref="AdminTermsConditionsSaveTermActionGroup" stepKey="saveNewTerm"/>
+
+        <openNewTab stepKey="openStorefrontTab"/>
+
+        <!-- Add products to the cart -->
+        <actionGroup ref="NormalCartWithTermsConditionActionGroup" stepKey="createNormalCart" />
+
+        <!-- Go to checkout -->
+        <actionGroup ref="GoToCheckoutFromMinicartActionGroup" stepKey="goToCheckoutPage"/>
+        <waitForPageLoad stepKey="waitForCheckoutPageToLoad"/>
+        <dontSeeJsError stepKey="dontSeeShippingPageJsError"/>
+
+        <!-- Fill Shipment form -->
+        <actionGroup ref="GuestCheckoutFillingShippingSectionActionGroup" stepKey="fillOrderShippingInfo">
+            <argument name="customerVar" value="Simple_US_Customer"/>
+            <argument name="customerAddressVar" value="US_Address_TX"/>
+        </actionGroup>
+
+        <!-- Select the payment method -->
+        <actionGroup ref="SelectPaymentMethodActionGroup" stepKey="selectPaymentMethod">
+            <argument name="MethodSelector" value="{{StorefrontCheckoutPaymentMethodSection.checkPaymentMethodByName('Pay by Card')}}"/>
+        </actionGroup>
+
+        <!-- Wait to initiate payment form -->
+        <wait time="4" stepKey="waitForPayByCardFormToInitialize" />
+
+        <actionGroup ref="CheckBillingAddressInCheckoutActionGroup" stepKey="guestSeeAddress">
+            <argument name="customerVar" value="Simple_US_Customer"/>
+            <argument name="customerAddressVar" value="US_Address_TX"/>
+        </actionGroup>
+
+        <!-- Fill payment form -->
+        <actionGroup ref="FillCardDetailsTermsAndConditionActionGroup" stepKey="fillCardDetails">
+            <argument name="CardNumber" value="{{Cards.SuccessCard}}"/>
+        </actionGroup>
+
+        <!-- Check Terms and Condition Checkbox Before Place Order -->
+        <actionGroup ref="CheckTermsAndConditionCheckboxInCheckoutActionGroup" stepKey="assertTermInCheckout">
+            <argument name="termCheckboxText" value="{{activeHtmlTerm.checkboxText}}"/>
+        </actionGroup>
+
+        <waitForPageLoad stepKey="waitForPaymentPageRendering"/>
+        <waitForPageLoad stepKey="waitForPaymentRendering"/>
+
+        <!-- Place the order -->
+        <actionGroup ref="ClickPlaceOrderActionGroup" stepKey="clickPlaceOrder"/>
+
+        <!-- Close the store front tab -->
+        <closeTab stepKey="closeStorefrontTab"/>
+
+        <after>
+            <magentoCLI command="config:set checkout/options/enable_agreements 0" stepKey="setEnableTermsOnCheckout"/>
+
+            <!-- Delete the active term -->
+            <actionGroup ref="AdminTermsConditionsOpenGridActionGroup" stepKey="openTermsGridToDelete"/>
+            <actionGroup ref="AdminTermsConditionsEditTermByNameActionGroup" stepKey="openTermToDelete">
+                <argument name="termName" value="{{activeHtmlTerm.name}}"/>
+            </actionGroup>
+            <actionGroup ref="AdminTermsConditionsDeleteTermByNameActionGroup" stepKey="deleteOpenedTerm"/>
+
+            <!-- Admin Logout -->
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="adminLogout"/>
+        </after>
+    </test>
+</tests>

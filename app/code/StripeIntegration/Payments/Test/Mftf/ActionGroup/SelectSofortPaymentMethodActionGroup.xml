@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="SelectSofortPaymentMethodActionGroup">
+        <annotations>
+            <description>Switch to Stripe iFrame, switch to SOFORT payment method.</description>
+        </annotations>
+        <arguments>
+            <argument name="paymentMethodName" defaultValue="sofort" type="string"/>
+        </arguments>
+
+        <!-- Switch to Pay By Card iFrame -->
+        <switchToIFrame selector="{{StorefrontCheckoutPaymentMethodSection.payByCardIframe}}" stepKey="switchToPayByCardIframe"/>
+
+        <!-- Wait to load the iFrame -->
+        <waitForAjaxLoad stepKey="waitForIframeLoad" time="10" />
+
+        <!-- Select SOFORT Payment method -->
+        <conditionalClick selector="{{StorefrontCheckoutPaymentMethodSection.additionalPaymentSelectBox}}"
+                          dependentSelector="{{StorefrontCheckoutPaymentMethodSection.additionalPaymentBox}}"
+                          visible="true" stepKey="selectPaymentMethodBox"/>
+        <selectOption userInput="{{paymentMethodName}}" selector="{{StorefrontCheckoutPaymentMethodSection.additionalPaymentSelectBox}}" stepKey="selectPaymentMethodOption"/>
+        <click selector="{{StorefrontCheckoutPaymentMethodSection.SofortPaymentMethodTabId}}" stepKey="selectSofortPaymentMethodTab"/>
+
+        <!-- Wait to load the SOFORT Payment method -->
+        <waitForAjaxLoad stepKey="waitForNewPaymentMethodLoad" time="10" />
+
+        <switchToIFrame stepKey="switchOutOfPayByCardIframe"/>
+    </actionGroup>
+</actionGroups>

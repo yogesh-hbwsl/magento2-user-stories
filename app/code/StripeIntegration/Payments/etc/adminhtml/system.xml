@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+  <system>
+    <section id="payment">
+      <group id="stripe_payments" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+        <label>Stripe</label>
+        <comment>Accept online payments using Stripe, the platform of choice of forward-thinking businesses around the world.</comment>
+        <fieldset_css>complex stripe-admin-config</fieldset_css>
+        <frontend_model>StripeIntegration\Payments\Block\Adminhtml\Config\Fieldset</frontend_model>
+        <attribute type="displayIn">recommended_solutions</attribute>
+        <include path="StripeIntegration_Payments::system/basic.xml"/>
+        <include path="StripeIntegration_Payments::system/payments.xml"/>
+        <include path="StripeIntegration_Payments::system/bank_transfers.xml"/>
+        <include path="StripeIntegration_Payments::system/express.xml"/>
+        <include path="StripeIntegration_Payments::system/fraud.xml"/>
+        <include path="StripeIntegration_Payments::system/subscriptions.xml"/>
+      </group>
+    </section>
+  </system>
+</config>

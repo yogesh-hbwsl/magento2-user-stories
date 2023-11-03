@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="SelectRedirectPaymentMethodActionGroup">
+        <annotations>
+            <description>Switch to Stripe iFrame, switch to Redirect payment method like (BanContact, P24 etc).</description>
+        </annotations>
+        <arguments>
+            <argument name="paymentMethodTabId" defaultValue="#card-tab" type="string"/>
+            <argument name="paymentMethodName" defaultValue="card" type="string"/>
+        </arguments>
+
+        <!-- Switch to Pay By Card iFrame -->
+        <switchToIFrame selector="{{StorefrontCheckoutPaymentMethodSection.payByCardIframe}}" stepKey="switchToPayByCardIframe"/>
+
+        <!-- Wait to load the iFrame -->
+        <waitForAjaxLoad stepKey="waitForIframeLoad" time="10" />
+
+        <!-- Select the payment method if it is exist in the default tab -->
+        <conditionalClick selector="{{paymentMethodTabId}}"
+                          dependentSelector="{{paymentMethodTabId}}"
+                          visible="true" stepKey="selectPaymentMethodBoxDefault"/>
+
+        <!-- Select Payment method based on the input -->
+        <helper class="StripeIntegration\Payments\Test\Mftf\Helper\PaymentMethodSelectHelper" method="selectPaymentMethodOption" stepKey="selectPaymentMethodOption">
+            <argument name="optionSelector">{{StorefrontCheckoutPaymentMethodSection.additionalPaymentSelectBox}}</argument>
+            <argument name="optionInput">{{paymentMethodName}}</argument>
+        </helper>
+        <click selector="{{paymentMethodTabId}}" stepKey="selectRedirectPaymentMethodTab"/>
+
+        <!-- Wait to load the Redirect Payment method -->
+        <waitForAjaxLoad stepKey="waitForNewPaymentMethodLoad" time="10" />
+
+        <switchToIFrame stepKey="switchOutOfPayByCardIframe"/>
+    </actionGroup>
+</actionGroups>

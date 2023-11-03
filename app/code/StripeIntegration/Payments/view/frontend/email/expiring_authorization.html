@@ -1,0 +1,13 @@
+<!--@subject A payment authorization is expiring today. @-->
+
+{{template config_path="design/email/header_template"}}
+
+<h2>Action needed</h2>
+
+<p>A payment authorization for multiple orders placed via the multishipping page will expire today. Unless the orders are fully invoiced or canceled, the authorization will expire.</p>
+
+<p>To capture a payment before the authorization expires, please review and invoice or cancel the following orders:</p>
+
+<p>{{var orderNumbers}}</p>
+
+{{template config_path="design/email/footer_template"}}

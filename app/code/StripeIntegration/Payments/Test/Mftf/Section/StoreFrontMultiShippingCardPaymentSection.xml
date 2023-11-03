@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="StoreFrontMultiShippingCardPaymentSection">
+        <element name="payByCardIframe" type="iframe" selector="//div[@id='stripe-card-element']//iframe" />
+        <element name="payByCardNumberField" type="input" selector="//input[@name='cardnumber']" timeout="10" />
+        <element name="payByCardExpField" type="input" selector="//input[@name='exp-date']" />
+        <element name="payByCardCvcField" type="input" selector="//input[@name='cvc']" />
+    </section>
+</sections>

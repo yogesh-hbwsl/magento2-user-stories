@@ -1,0 +1,41 @@
+<fieldset class="admin__fieldset fieldset-stripe-subscriptions">
+    <legend class="admin__legend">
+        <span><?= $block->escapeHtml($block->getTitle()) ?></span>
+    </legend>
+    <div class="admin__field field start-date">
+        <label class="admin__field-label"><?= $block->escapeHtml(__('Start on specific date')) ?></label>
+        <div class="admin__field-control">
+            <input type="checkbox" name="start_date_enabled" id="start_date_enabled" data-role="start_date_enabled" >
+        </div>
+    </div>
+    <div class="admin__field field start-date-picker">
+        <label class="admin__field-label"><?= $block->escapeHtml(__('Start date')) ?></label>
+        <div class="admin__field-control">
+            <input type="text" name="start_date" id="start_date" class="admin__control-text" data-role="start_date" >
+        </div>
+    </div>
+</fieldset>
+
+<script type="text/javascript">
+    require(['jquery', 'mage/calendar'], function($) {
+        $(document).ready(function() {
+            var start_date_enabled = $('#start_date_enabled');
+            var start_date_picker = $('#start_date');
+
+            start_date_picker.hide();
+
+            start_date_enabled.on('click', function() {
+                if (start_date_enabled.is(':checked')) {
+                    start_date_picker.show();
+                } else {
+                    start_date_picker.hide();
+                }
+            });
+
+            start_date_picker.calendar({
+                dateFormat: "yyyy-MM-dd",
+                showsTime: false
+            });
+        });
+    });
+</script>

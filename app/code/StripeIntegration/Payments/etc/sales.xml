@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Sales:etc/sales.xsd">
+    <section name="quote">
+        <group name="totals">
+            <item name="initial_fee" instance="StripeIntegration\Payments\Model\InitialFee" sort_order="150"></item>
+            <item name="prorations" instance="StripeIntegration\Payments\Model\Prorations" sort_order="160"></item>
+        </group>
+    </section>
+    <section name="order_invoice">
+        <group name="totals">
+            <item name="initial_fee" instance="StripeIntegration\Payments\Model\Invoice\Total\InitialFee" sort_order="150"/>
+        </group>
+    </section>
+    <section name="order_creditmemo">
+        <group name="totals">
+            <item name="initial_fee" instance="StripeIntegration\Payments\Model\Creditmemo\Total\InitialFee" sort_order="150"/>
+        </group>
+    </section>
+</config>

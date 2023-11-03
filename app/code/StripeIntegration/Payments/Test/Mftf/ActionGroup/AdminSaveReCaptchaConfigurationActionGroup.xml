@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="AdminSaveReCaptchaConfigurationActionGroup">
+        <annotations>
+            <description>Save reCaptcha configuration.</description>
+        </annotations>
+        <arguments>
+            <argument name="websiteKey" defaultValue="{{_CREDS.reCaptcha/website_key}}" type="string"/>
+            <argument name="secretKey" defaultValue="{{_CREDS.reCaptcha/secret_key}}" type="string"/>
+            <argument name="enableCheckout" defaultValue="recaptcha_v3" type="string"/>
+        </arguments>
+
+        <!-- Save website and secret key -->
+        <conditionalClick selector="{{AdminConfigurationReCaptchaSection.DefaultLayoutsTab}}" dependentSelector="{{AdminConfigurationReCaptchaSection.CheckIfTabExpand}}" visible="true" stepKey="clickTabReCaptchaV3"/>
+        <fillField selector="{{AdminConfigurationReCaptchaSection.websiteKey}}" userInput="{{websiteKey}}" stepKey="fillReCaptchaWebsiteKey"/>
+        <fillField selector="{{AdminConfigurationReCaptchaSection.secretKey}}" userInput="{{secretKey}}" stepKey="fillReCaptchaSecretKey"/>
+
+        <!-- Show ReCaptcha for checkout Page -->
+        <conditionalClick selector="{{AdminConfigurationReCaptchaSection.DefaultLayoutsTabStoreFront}}" dependentSelector="{{AdminConfigurationReCaptchaSection.CheckIfTabExpandStoreFront}}" visible="true" stepKey="clickTabStoreFront"/>
+        <uncheckOption selector="{{AdminConfigurationReCaptchaSection.enableCheckoutUseSystemValue}}" stepKey="uncheckCheckoutUseSystemValue"/>
+        <selectOption selector="{{AdminConfigurationReCaptchaSection.enableForCheckout}}" userInput="{{enableCheckout}}" stepKey="setReCaptchaForCheckout"/>
+
+        <!-- Save Configuration -->
+        <click selector="{{AdminConfigSection.saveButton}}" stepKey="saveConfig"/>
+
+        <!-- Clean Cache After Save Config -->
+        <magentoCLI command="cache:clean config full_page" stepKey="cleanCache"/>
+    </actionGroup>
+</actionGroups>

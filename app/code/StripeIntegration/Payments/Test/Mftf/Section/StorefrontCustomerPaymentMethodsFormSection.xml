@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="StorefrontCustomerPaymentMethodsFormSection">
+        <element name="payByCardIframe" type="iframe" selector="//div[@id='stripe-setup-element']//iframe" />
+        <element name="payByCardNumberField" type="input" selector="//input[@name='number']" />
+        <element name="payByCardExpField" type="input" selector="//input[@name='expiry']" />
+        <element name="payByCardCvcField" type="input" selector="//input[@name='cvc']" />
+        <element name="payByCardCountryField" type="select" selector="//select[@name='country']" />
+        <element name="payByCardZipField" type="input" selector="//input[@name='postalCode']" />
+        <element name="addPaymentMethodBtn" type="button" selector="div.add-new-payment-method div.stripe-payments-card-form div div button"/>
+        <element name="deletePaymentMethodGrid" type="block" selector="div.saved-payment-methods"/>
+        <element name="deletePaymentMethodBtn" type="button" selector="div.saved-payment-methods table tr td a.stripe-payments"/>
+        <element name="successMessage" type="text" selector=".message-success"/>
+    </section>
+</sections>

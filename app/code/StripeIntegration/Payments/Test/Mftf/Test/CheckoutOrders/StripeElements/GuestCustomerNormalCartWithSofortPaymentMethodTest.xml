@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="GuestCustomerNormalCartWithSofortPaymentMethodTest" extends="GuestCustomerNormalCartWithRedirectPaymentMethodTest">
+        <annotations>
+            <features value="Order"/>
+            <stories value="Checkout Orders using SOFORT"/>
+            <title value="Guest customer normal order with Stripe SOFORT payment method"/>
+            <description value="With Guest Customer ; and a selected store view currency of EUR Currency, add to the cart the products of NormalCart , proceed to the checkout page and specify UK Address as the shipping address and FlatRateShippingMethod as the shipping method. Click Next and specify StripeElementsMethod as the payment method, using SOFORT payment method. Finally click Place Order."/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="GuestCustomerNormalCartWithSofortPaymentMethodTest"/>
+            <group value="normal_cart"/>
+            <group value="card_success"/>
+            <group value="stripe_elements"/>
+        </annotations>
+
+        <before>
+            <actionGroup ref="AdminStripeUpdateCurrencyActionGroup" stepKey="updateStoreCurrency">
+                <argument name="currency" value="EUR" />
+            </actionGroup>
+        </before>
+
+        <!-- Select SOFORT Payment Method -->
+        <actionGroup ref="SelectSofortPaymentMethodActionGroup" stepKey="selectRedirectTypePaymentMethod" after="selectPaymentMethod"/>
+
+        <after>
+            <actionGroup ref="AdminStripeUpdateCurrencyActionGroup" stepKey="resetStoreCurrency">
+                <argument name="currency" value="USD" />
+            </actionGroup>
+        </after>
+    </test>
+</tests>

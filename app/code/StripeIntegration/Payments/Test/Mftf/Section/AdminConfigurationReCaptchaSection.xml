@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="AdminConfigurationReCaptchaSection">
+        <element name="DefaultLayoutsTab" type="button" selector="#recaptcha_frontend_type_recaptcha_v3-head"/>
+        <element name="CheckIfTabExpand" type="button" selector="#recaptcha_frontend_type_recaptcha_v3-head:not(.open)"/>
+        <element name="websiteKey" type="input" selector="#recaptcha_frontend_type_recaptcha_v3_public_key"/>
+        <element name="secretKey" type="input" selector="#recaptcha_frontend_type_recaptcha_v3_private_key"/>
+        <element name="DefaultLayoutsTabStoreFront" type="button" selector="#recaptcha_frontend_type_for-head"/>
+        <element name="CheckIfTabExpandStoreFront" type="button" selector="#recaptcha_frontend_type_for-head:not(.open)"/>
+        <element name="enableCheckoutUseSystemValue" type="checkbox" selector="#recaptcha_frontend_type_for_place_order_inherit"/>
+        <element name="enableForCheckout" type="select" selector="#recaptcha_frontend_type_for_place_order"/>
+    </section>
+</sections>

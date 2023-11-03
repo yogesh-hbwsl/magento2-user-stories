@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="FillCardDetailsTermsAndConditionActionGroup">
+        <annotations>
+            <description>Fills the card number, expiration date and the security code on a Stripe Elements payment form.</description>
+        </annotations>
+        <arguments>
+            <argument name="CardNumber" defaultValue="{{Cards.Success}}" type="string"/>
+            <argument name="ExpDate" defaultValue="{{Cards.ExpDate}}" type="string"/>
+            <argument name="CVC" defaultValue="{{Cards.CVC}}" type="string"/>
+        </arguments>
+
+        <!-- Switch to Pay By Card iFrame -->
+        <switchToIFrame selector="{{StorefrontCheckoutPaymentMethodSection.payByCardIframe}}" stepKey="switchToPayByCardIframe"/>
+
+        <!-- Wait to load the iFrame -->
+        <waitForAjaxLoad stepKey="waitForIframeLoad" time="30" />
+
+        <!-- Fill the card number -->
+        <fillField selector="{{StorefrontCheckoutPaymentMethodSection.payByCardNumberField}}" userInput="{{CardNumber}}" stepKey="fillCardNumber"/>
+
+        <!-- Fill the expiration date -->
+        <fillField selector="{{StorefrontCheckoutPaymentMethodSection.payByCardExpField}}" userInput="{{ExpDate}}" stepKey="fillExpDate"/>
+
+        <!-- Fill the CVC number -->
+        <fillField selector="{{StorefrontCheckoutPaymentMethodSection.payByCardCvcField}}" userInput="{{CVC}}" stepKey="fillCVC"/>
+
+        <switchToIFrame stepKey="switchOutOfPayByCardIframe"/>
+    </actionGroup>
+</actionGroups>

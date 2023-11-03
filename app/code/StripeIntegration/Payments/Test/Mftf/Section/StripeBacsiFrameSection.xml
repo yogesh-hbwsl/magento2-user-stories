@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="StripeBacsiFrameSection">
+        <element name="bacsIframe" type="iframe" selector="(//body//div)[1]//iframe" />
+        <!--<element name="confirmButton" type="button" selector="//button[@class='SubmitButton SubmitButton&#45;&#45;clickable']" />-->
+        <element name="confirmButton" type="button" selector="//span[contains(text(),'Confirm')]" />
+        <element name="sortCodeField" type="input" selector="//input[@name='sortCode']" />
+        <element name="accountNumberField" type="input" selector="//input[@name='accountNumber']" />
+        <element name="placeOrder" type="button" selector=".payment-method._active button.action.primary.checkout" timeout="10"/>
+    </section>
+</sections>

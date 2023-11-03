@@ -1,0 +1,81 @@
+<!-- ko foreach: getRegion('messages') -->
+<!-- ko template: getTemplate() --><!-- /ko -->
+<!--/ko-->
+
+<div class="message info empty saved-payment-methods" data-bind="hidden: hasPaymentMethods, blockLoader: processingSavedPaymentMethods">
+  <span><!-- ko i18n: 'You do not have any saved payment methods.' --><!-- /ko --></span>
+</div>
+
+<div class="table-wrapper stripe-payments saved-payment-methods" data-bind="visible: hasPaymentMethods, blockLoader: processingSavedPaymentMethods">
+  <table class="data table table-order-items history saved-cards" id="my-saved-payment-methods-table">
+    <caption class="table-caption"><!-- ko i18n: 'Saved payment methods' --><!-- /ko --></caption>
+    <thead>
+      <tr>
+        <th scope="col" class="col cards">
+          <!-- ko i18n: 'Payment Method' --><!-- /ko -->
+        </th>
+        <th scope="col" class="col actions"><!-- ko i18n: 'Actions' --><!-- /ko --></th>
+      </tr>
+    </thead>
+    <tbody>
+
+    <!-- ko foreach: savedPaymentMethods -->
+    <tr>
+      <td data-th="Payment Method" class="col brand saved-payment-method-name">
+        <img data-bind="attr: { src: icon }" height="32" class="saved-payment-method-icon" />
+        <label data-bind="text: label"></label>
+      </td>
+      <td data-th="Actions" class="col actions">
+        <a href="javascript:void(0);" data-bind="click: $parent.deletePaymentMethod.bind($parent)" class="stripe-payments delete-method">
+          <!-- ko i18n: 'Delete' --><!-- /ko -->
+        </a>
+      </td>
+    </tr>
+    <!--/ko-->
+
+    </tbody>
+  </table>
+</div>
+
+<div class="add-new-payment-method">
+  <legend class="legend">
+    <span><!-- ko i18n: 'Add a new payment method' --><!-- /ko --></span>
+  </legend>
+
+  <div class="payment-method stripe-payments">
+
+    <div class="payment-method-content" data-bind="if: stripePaymentsError()">
+      <p class="message message-error error">
+        <!-- ko i18n: stripePaymentsError() --><!-- /ko -->
+      </p>
+    </div>
+
+    <div class="payment-method-content stripe-payments-card-form" data-bind="blockLoader: isLoading">
+
+      <div class="stripe-payments-elements no-wrap">
+        <div id="stripe-setup-element" data-bind="afterRender: onContainerRendered">
+        <!-- a Stripe Payment Element will be inserted here. -->
+        </div>
+      </div>
+
+      <div data-bind="if: permanentError, visible: permanentError" class="stripe-permanent-error">
+        <span><!-- ko i18n: permanentError --><!-- /ko --></span>
+      </div>
+
+      <div class="actions-toolbar" id="actions-toolbar" data-bind="ifnot: permanentError">
+        <div class="primary">
+          <button class="action primary" type="submit"
+            data-bind="
+              click: onClick,
+              attr: {title: $t('Add')}
+            ">
+            <span data-bind="i18n: 'Add'"></span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

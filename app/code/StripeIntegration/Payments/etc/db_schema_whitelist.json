@@ -1,0 +1,340 @@
+{
+    "stripe_customers": {
+        "column": {
+            "id": true,
+            "customer_id": true,
+            "stripe_id": true,
+            "last_retrieved": true,
+            "customer_email": true,
+            "session_id": true,
+            "pk": true
+        },
+        "index": {
+            "STRIPE_CUSTOMERS_PK": true,
+            "STRIPE_CUSTOMERS_STRIPE_ID": true,
+            "STRIPE_CUSTOMERS_CUSTOMER_ID": true,
+            "STRIPE_CUSTOMERS_CUSTOMER_EMAIL": true,
+            "STRIPE_CUSTOMERS_SESSION_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "stripe_webhooks": {
+        "column": {
+            "id": true,
+            "config_version": true,
+            "webhook_id": true,
+            "publishable_key": true,
+            "live_mode": true,
+            "active": true,
+            "last_event": true,
+            "api_version": true,
+            "url": true,
+            "enabled_events": true,
+            "secret": true,
+            "created_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "stripe_webhook_events": {
+        "column": {
+            "id": true,
+            "event_id": true,
+            "event_type": true,
+            "created_at": true,
+            "order_increment_id": true,
+            "payment_intent_id": true,
+            "is_processed": true,
+            "processed_at": true,
+            "retries": true,
+            "updated_at": true,
+            "last_error": true,
+            "last_error_status_code": true,
+            "last_error_at": true
+        },
+        "index": {
+            "STRIPE_WEBHOOK_EVENTS_EVENT_TYPE": true,
+            "STRIPE_WEBHOOK_EVENTS_CREATED_AT": true,
+            "STRIPE_WEBHOOK_EVENTS_ORDER_INCREMENT_ID": true,
+            "STRIPE_WEBHOOK_EVENTS_PAYMENT_INTENT_ID": true,
+            "STRIPE_WEBHOOK_EVENTS_IS_PROCESSED": true,
+            "STRIPE_WEBHOOK_EVENTS_RETRIES": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "STRIPE_WEBHOOK_EVENTS_EVENT_ID": true
+        }
+    },
+    "stripe_sources": {
+        "column": {
+            "id": true,
+            "source_id": true,
+            "order_increment_id": true,
+            "stripe_customer_id": true
+        },
+        "index": {
+            "STRIPE_SOURCES_SOURCE_ID": true,
+            "STRIPE_SOURCES_ORDER_INCREMENT_ID": true,
+            "STRIPE_SOURCES_STRIPE_CUSTOMER_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "stripe_subscriptions": {
+        "column": {
+            "id": true,
+            "created_at": true,
+            "store_id": true,
+            "livemode": true,
+            "subscription_id": true,
+            "order_increment_id": true,
+            "product_id": true,
+            "magento_customer_id": true,
+            "stripe_customer_id": true,
+            "payment_method_id": true,
+            "name": true,
+            "quantity": true,
+            "currency": true,
+            "grand_total": true,
+            "last_updated": true,
+            "reorder_from_quote_id": true,
+            "status": true
+        },
+        "index": {
+            "STRIPE_SUBSCRIPTIONS_SUBSCRIPTION_ID": true,
+            "STRIPE_SUBSCRIPTIONS_STORE_ID": true,
+            "STRIPE_SUBSCRIPTIONS_LIVEMODE": true,
+            "STRIPE_SUBSCRIPTIONS_STRIPE_CUSTOMER_ID": true,
+            "STRIPE_SUBSCRIPTIONS_MAGENTO_CUSTOMER_ID": true,
+            "STRIPE_SUBSCRIPTIONS_PRODUCT_ID": true,
+            "STRIPE_SUBSCRIPTIONS_CREATED_AT": true,
+            "STRIPE_SUBSCRIPTIONS_ORDER_INCREMENT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "stripe_coupons": {
+        "column": {
+            "id": true,
+            "rule_id": true,
+            "coupon_duration": true,
+            "coupon_months": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "stripe_invoices": {
+        "column": {
+            "id": true,
+            "invoice_id": true,
+            "order_increment_id": true
+        },
+        "index": {
+            "STRIPE_INVOICES_INVOICE_ID": true,
+            "STRIPE_INVOICES_ORDER_INCREMENT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "stripe_payment_intents": {
+        "column": {
+            "pi_id": true,
+            "quote_id": true,
+            "order_increment_id": true,
+            "invoice_id": true,
+            "customer_id": true,
+            "order_id": true,
+            "pm_id": true,
+            "created_at": true
+        },
+        "index": {
+            "STRIPE_PAYMENT_INTENTS_PI_ID": true,
+            "STRIPE_PAYMENT_INTENTS_QUOTE_ID": true,
+            "STRIPE_PAYMENT_INTENTS_ORDER_INCREMENT_ID": true,
+            "STRIPE_PAYMENT_INTENTS_ORDER_ID": true,
+            "STRIPE_PAYMENT_INTENTS_CUSTOMER_ID": true,
+            "STRIPE_PAYMENT_INTENTS_PM_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "stripe_checkout_sessions": {
+        "column": {
+            "id": true,
+            "quote_id": true,
+            "order_increment_id": true,
+            "checkout_session_id": true,
+            "created_at": true
+        },
+        "index": {
+            "STRIPE_CHECKOUT_SESSIONS_QUOTE_ID": true,
+            "STRIPE_CHECKOUT_SESSIONS_CHECKOUT_SESSION_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "stripe_payment_elements": {
+        "column": {
+            "id": true,
+            "quote_id": true,
+            "payment_intent_id": true,
+            "setup_intent_id": true,
+            "subscription_id": true,
+            "payment_method_id": true,
+            "order_increment_id": true,
+            "created_at": true
+        },
+        "index": {
+            "STRIPE_PAYMENT_ELEMENTS_QUOTE_ID": true,
+            "STRIPE_PAYMENT_ELEMENTS_ORDER_INCREMENT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "stripe_multishipping_quotes": {
+        "column": {
+            "id": true,
+            "quote_id": true,
+            "payment_method_id": true,
+            "payment_intent_id": true,
+            "manual_capture": true,
+            "captured": true,
+            "warning_email_sent": true,
+            "created_at": true
+        },
+        "index": {
+            "STRIPE_MULTISHIPPING_QUOTES_QUOTE_ID": true,
+            "STRIPE_MULTISHIPPING_QUOTES_PAYMENT_INTENT_ID": true,
+            "STRIPE_MULTISHIPPING_QUOTES_MANUAL_CAPTURE": true,
+            "STRIPE_MULTISHIPPING_QUOTES_CREATED_AT": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "stripe_multishipping_orders": {
+        "column": {
+            "id": true,
+            "quote_id": true,
+            "order_id": true,
+            "last_error": true
+        },
+        "index": {
+            "STRIPE_MULTISHIPPING_ORDERS_QUOTE_ID": true,
+            "STRIPE_MULTISHIPPING_ORDERS_ORDER_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "quote": {
+        "column": {
+            "is_used_for_recurring_orders": true
+        },
+        "index": {
+            "QUOTE_IS_USED_FOR_RECURRING_ORDERS": true
+        }
+    },
+    "sales_payment_transaction": {
+        "index": {
+            "SALES_PAYMENT_TRANSACTION_TXN_ID": true
+        }
+    },
+    "sales_order_item": {
+        "column": {
+            "initial_fee": true,
+            "base_initial_fee": true,
+            "initial_fee_tax": true,
+            "base_initial_fee_tax": true
+        }
+    },
+    "quote_item": {
+        "column": {
+            "initial_fee": true,
+            "base_initial_fee": true,
+            "initial_fee_tax": true,
+            "base_initial_fee_tax": true
+        }
+    },
+    "sales_order": {
+        "column": {
+            "stripe_radar_risk_score": true,
+            "stripe_radar_risk_level": true,
+            "stripe_payment_method_type": true,
+            "stripe_payment_method_card": true,
+            "stripe_payment_method_label": true
+        },
+        "index": {
+            "SALES_ORDER_STRIPE_RADAR_RISK_SCORE": true,
+            "SALES_ORDER_STRIPE_RADAR_RISK_LEVEL": true,
+            "SALES_ORDER_STRIPE_PAYMENT_METHOD_TYPE": true,
+            "SALES_ORDER_STRIPE_PAYMENT_METHOD_CARD": true,
+            "SALES_ORDER_STRIPE_PAYMENT_METHOD_LABEL": true
+        }
+    },
+    "sales_order_grid": {
+        "column": {
+            "stripe_radar_risk_score": true,
+            "stripe_radar_risk_level": true,
+            "stripe_payment_method_type": true,
+            "stripe_payment_method_card": true,
+            "stripe_payment_method_label": true
+        }
+    },
+    "stripe_payment_methods": {
+        "column": {
+            "entity_id": true,
+            "order_id": true,
+            "payment_method_type": true,
+            "payment_method_card_data": true
+        },
+        "index": {
+            "STRIPE_PAYMENT_METHODS_ORDER_ID": true,
+            "STRIPE_PAYMENT_METHODS_PAYMENT_METHOD_TYPE": true,
+            "STRIPE_PAYMENT_METHODS_PAYMENT_METHOD_CARD_DATA": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "stripe_subscription_options": {
+        "column": {
+            "product_id": true,
+            "sub_enabled": true,
+            "sub_interval": true,
+            "sub_interval_count": true,
+            "sub_trial": true,
+            "sub_initial_fee": true,
+            "start_on_specific_date": true,
+            "start_date": true,
+            "first_payment": true,
+            "prorate_first_payment": true,
+            "sub_ud": true,
+            "use_config_sub_ud": true,
+            "sub_prorate_u": true,
+            "use_config_sub_prorate_u": true,
+            "sub_prorate_d": true,
+            "use_config_sub_prorate_d": true,
+            "upgrades_downgrades": true,
+            "upgrades_downgrades_use_config": true,
+            "prorate_upgrades": true,
+            "prorate_upgrades_use_config": true,
+            "prorate_downgrades": true,
+            "prorate_downgrades_use_config": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "STRIPE_SUBSCRIPTION_OPTS_PRD_ID_CAT_PRD_ENTT_ENTT_ID": true
+        }
+    }
+}
