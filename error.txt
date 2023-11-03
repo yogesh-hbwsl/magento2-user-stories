@@ -1,0 +1,24 @@
+1 exception(s):
+Exception #0 (Exception): Warning: Undefined array key "id" in /var/www/magento2/vendor/magento/module-config/Model/Config/Structure/Element/Iterator.php on line 63
+
+Exception #0 (Exception): Warning: Undefined array key "id" in /var/www/magento2/vendor/magento/module-config/Model/Config/Structure/Element/Iterator.php on line 63
+<pre>#1 Magento\Config\Model\Config\Structure\Element\Iterator->setElements() called at [vendor/magento/module-config/Model/Config/Structure.php:146]
+#2 Magento\Config\Model\Config\Structure->getTabs() called at [vendor/magento/module-config/Model/Config/Structure.php:211]
+#3 Magento\Config\Model\Config\Structure->getFirstSection() called at [vendor/magento/module-config/Controller/Adminhtml/System/AbstractConfig.php:63]
+#4 Magento\Config\Controller\Adminhtml\System\AbstractConfig->dispatch() called at [vendor/magento/framework/Interception/Interceptor.php:58]
+#5 Magento\Config\Controller\Adminhtml\System\Config\Index\Interceptor->___callParent() called at [vendor/magento/framework/Interception/Interceptor.php:138]
+#6 Magento\Config\Controller\Adminhtml\System\Config\Index\Interceptor->Magento\Framework\Interception\{closure}() called at [vendor/magento/module-backend/App/Action/Plugin/Authentication.php:145]
+#7 Magento\Backend\App\Action\Plugin\Authentication->aroundDispatch() called at [vendor/magento/framework/Interception/Interceptor.php:135]
+#8 Magento\Config\Controller\Adminhtml\System\Config\Index\Interceptor->Magento\Framework\Interception\{closure}() called at [vendor/magento/framework/Interception/Interceptor.php:153]
+#9 Magento\Config\Controller\Adminhtml\System\Config\Index\Interceptor->___callPlugins() called at [generated/code/Magento/Config/Controller/Adminhtml/System/Config/Index/Interceptor.php:32]
+#10 Magento\Config\Controller\Adminhtml\System\Config\Index\Interceptor->dispatch() called at [vendor/magento/framework/App/FrontController.php:245]
+#11 Magento\Framework\App\FrontController->getActionResponse() called at [vendor/magento/framework/App/FrontController.php:212]
+#12 Magento\Framework\App\FrontController->processRequest() called at [vendor/magento/framework/App/FrontController.php:147]
+#13 Magento\Framework\App\FrontController->dispatch() called at [vendor/magento/framework/Interception/Interceptor.php:58]
+#14 Magento\Framework\App\FrontController\Interceptor->___callParent() called at [vendor/magento/framework/Interception/Interceptor.php:138]
+#15 Magento\Framework\App\FrontController\Interceptor->Magento\Framework\Interception\{closure}() called at [vendor/magento/framework/Interception/Interceptor.php:153]
+#16 Magento\Framework\App\FrontController\Interceptor->___callPlugins() called at [generated/code/Magento/Framework/App/FrontController/Interceptor.php:23]
+#17 Magento\Framework\App\FrontController\Interceptor->dispatch() called at [vendor/magento/framework/App/Http.php:116]
+#18 Magento\Framework\App\Http->launch() called at [vendor/magento/framework/App/Bootstrap.php:264]
+#19 Magento\Framework\App\Bootstrap->run() called at [pub/index.php:30]
+</pre>
