@@ -100,8 +100,13 @@ class SaveAddressPlugin
                         $this->setRegion($components->getStateAbbreviation(), $address);
                     }
                     $metaData = $firstCandidate->getMetadata();
+                    // dump($metaData->getRdi());
                     if ($county = $metaData->getCountyName()) {
                         $address->setCustomAttribute('county', $county);
+                    }
+
+                    if ($rdi = $metaData->getRdi()) {
+                        $address->setCustomAttribute('new_field', $rdi);
                     }
                 } else {
                     /** @var \SmartyStreets\PhpSdk\International_Street\Candidate $firstCandidate */
